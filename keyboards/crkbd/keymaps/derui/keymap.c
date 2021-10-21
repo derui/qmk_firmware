@@ -1,6 +1,5 @@
 #include QMK_KEYBOARD_H
 #include <stdio.h>
-#include "bootloader.h"
 #include "custom_keycodes.h"
 #include "next_util.h"
 #include "action_util.h"
