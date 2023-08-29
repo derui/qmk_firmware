@@ -39,9 +39,9 @@ enum layer_number {
 #define KC______ KC_TRNS
 #define KC_XXXXX KC_NO
 #define KC_LOWER MO(_LOWER)
-#define KC_RAISE LT(_RAISE, KC_MHEN)
+#define KC_RAISE LT(_RAISE, KC_INT5)
 #define KC_ADJUST MO(_ADJUST)
-#define KC_RST   RESET
+#define KC_RST   QK_BOOT
 #define KC_LRST  RGBRST
 #define KC_LTOG  RGB_TOG
 #define KC_LHUI  RGB_HUI
@@ -133,7 +133,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ADJUST] = LAYOUT( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        RESET,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      XXXXXXX,    KC_W,    KC_E,    KC_S,    KC_B,  KC_DEL,\
+      KC_RST ,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      XXXXXXX,    KC_W,    KC_E,    KC_S,    KC_B,  KC_DEL,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, XXXXXXX,                      KC_LEFT, KC_DOWN,  KC_UP,  KC_RGHT, KC_SCLN,    KC_R,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -163,19 +163,23 @@ static bool is_roma = true;
 
 void der_switch_to_kana(void) {
   SEND_STRING(SS_TAP(X_INT4));
-  SEND_STRING(SS_TAP(X_LANG1));
+  SEND_STRING(SS_TAP(X_LNG1));
+
   if (!is_roma) {
     layer_on(_GAMING);
   }
+
   der_init_variables();
 }
 
 void der_switch_to_eisu(void) {
   SEND_STRING(SS_TAP(X_INT5));
-  SEND_STRING(SS_TAP(X_LANG2));
+  SEND_STRING(SS_TAP(X_LNG2));
+
   if (!is_roma) {
     layer_off(_GAMING);
   }
+
   der_init_variables();
 }
 
