@@ -9,8 +9,8 @@
 #define KC_M_EISU M_EISU
 #define KC_LEISU M_LOWER_EISU
 #define KC_RKANA M_RAISE_KANA
-#define KC_LOWER LT(MO(_LOWER), KC_ESC)
-#define KC_RAISE LT(MO(_RAISE), KC_ESC)
+#define KC_LOWER MO(_LOWER)
+#define KC_RAISE MO(_RAISE)
 
 #ifdef RGBLIGHT_ENABLE
 //Following line allows macro to read current RGB settings
@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
       KC_LCTL,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,        KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,  KC_ENT,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-      KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,        KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT, MO(_FN),
+      KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,        KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, RSFT_T(KC_ESC), MO(_FN),
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
                KC_LGUI, KC_M_EISU,    KC_LOWER,   KC_SFT_SPC,       KC_SFT_ENT,  KC_RAISE,  KC_M_KANA, KC_RGUI 
           //`---------------------------------------------|   |--------------------------------------------'
@@ -59,29 +59,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                _______, _______, _______, _______,              _______, _______,          KC_STOP, _______ 
           //`---------------------------------------------|   |--------------------------------------------'
   ),
-    [_RAISE] = LAYOUT(
+    [_LOWER] = LAYOUT(
   //,-----------------------------------------------------|   |--------------------------------------------------------------------------------.
       _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,       KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12,  KC_INS,  KC_DEL,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
-      JP_QUOT, JP_EXLM, JP_QUES, JP_LBRC, JP_RBRC, JP_TILD,       KC_P6,   KC_P7,   KC_P8,   KC_P9, JP_ASTR, JP_SLSH, _______, KC_BSPC,
+      _______, _______, _______, _______, _______, _______,     XXXXXXX,   KC_P7,   KC_P8,   KC_P9, _______, _______, _______, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
-      JP_QUOT, JP_HASH, JP_DQUO, JP_LPRN, JP_RPRN,   JP_AT,     XXXXXXX,   KC_P4,   KC_P5,   KC_P6, JP_MINS,  JP_EQL, _______,
+      _______, _______, _______, _______, _______, _______,     XXXXXXX,   KC_P4,   KC_P5,   KC_P6, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-      JP_CIRC, JP_PERC, JP_AMPR, JP_SCLN, JP_COLN, JP_PIPE,       KC_P0,   KC_P1,   KC_P2,   KC_P3, JP_PLUS, _______, _______,
+      _______, _______, _______, _______, _______, _______,       KC_P0,   KC_P1,   KC_P2,   KC_P3, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
                _______, _______,KC_LOWER, _______,            _______, KC_RAISE,        JP_DOT, _______ 
           //`---------------------------------------------|   |--------------------------------------------'
   ),
 
-  [_LOWER] = LAYOUT(
+  [_RAISE] = LAYOUT(
   //,-----------------------------------------------------|   |--------------------------------------------------------------------------------.
       _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,       KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12,  KC_INS,  KC_DEL,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
-       KC_TAB,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,     XXXXXXX, XXXXXXX,   KC_UP, XXXXXXX, KC_PGUP, XXXXXXX, _______, KC_BSPC,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX,   KC_UP, XXXXXXX, KC_PGUP, XXXXXXX, _______, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
-LCTL_T(KC_F11),XXXXXXX,   KC_F2,   KC_F3,   KC_F4,   KC_F5,     XXXXXXX, KC_LEFT, KC_DOWN,KC_RIGHT, XXXXXXX, XXXXXXX, _______,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, KC_LEFT, KC_DOWN,KC_RIGHT, XXXXXXX, XXXXXXX, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-SFT_T(KC_F12),   KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PGDN, _______, _______,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PGDN, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
                _______, _______, _______, _______,              _______, _______,          _______, _______ 
           //`---------------------------------------------|   |--------------------------------------------'
@@ -136,7 +136,6 @@ void matrix_init_user(void) {
 
 static bool interrupt_in_layer = false;
 static bool enable_lalt = false;
-static bool enable_lgui = false;
 static bool enable_lower = false;
 static bool enable_raise = false;
 static bool is_mac = false;
@@ -157,8 +156,6 @@ bool der_is_special_key(uint16_t keycode) {
   case M_JAPAN_KANA:
   case M_ENABLE_MAC:
   case M_DISABLE_MAC:
-  case M_LSFT_LGUI:
-  case M_RSFT_RGUI:
   case M_LOWER_EISU:
   case M_EISU:
   case M_RAISE_KANA:
@@ -173,17 +170,13 @@ bool der_is_special_key(uint16_t keycode) {
 }
 
 bool der_is_any_flag_enabled(void) {
-  return enable_lalt || enable_lgui || enable_lower || enable_raise;
+  return enable_lalt || enable_lower || enable_raise;
 }
 
 void der_register_special_mod(void) {
   if (interrupt_in_layer) {
     if (enable_lalt) {
       register_mods(MOD_LALT);
-    }
-
-    if (enable_lgui) {
-      register_mods(MOD_LGUI);
     }
 
     if (enable_lower) {
@@ -202,10 +195,6 @@ void der_unregister_special_mod(void) {
   if (interrupt_in_layer) {
     if (!enable_lalt) {
       unregister_mods(MOD_LALT);
-    }
-
-    if (!enable_lgui) {
-      unregister_mods(MOD_LGUI);
     }
 
     if (!enable_lower) {
@@ -240,26 +229,16 @@ bool der_press_special_key(uint16_t keycode) {
   case M_DISABLE_MAC:
     is_mac = false;
     break;
-  case M_LSFT_LGUI:
-  case M_RSFT_RGUI:
-    if (is_mac) {
-      register_mods(MOD_LGUI);
-    } else {
-      register_mods(MOD_LSFT);
-    }
-    break;
   case M_LOWER_EISU:
     enable_lower = true;
     break;
   case M_EISU:
+  case M_KANA:
     enable_lalt = true;
     break;
   case M_RAISE_TAB:
   case M_RAISE_KANA:
     enable_raise = true;
-    break;
-  case M_KANA:
-    enable_lgui = true;
     break;
   default:
     break;
@@ -277,14 +256,6 @@ bool der_press_special_key(uint16_t keycode) {
 
 bool der_release_special_key(uint16_t keycode) {
   switch(keycode) {
-  case M_LSFT_LGUI:
-  case M_RSFT_RGUI:
-    if (is_mac) {
-      unregister_mods(MOD_LGUI);
-    } else {
-      unregister_mods(MOD_LSFT);
-    }
-    break;
   case M_LOWER_EISU:
     if (enable_lower && !interrupt_in_layer) {
       /* KC_MHEN equals KC_INT5 */
@@ -294,6 +265,7 @@ bool der_release_special_key(uint16_t keycode) {
     enable_lower = false;
     break;
   case M_EISU:
+  case M_KANA:
     if (enable_lalt && !interrupt_in_layer) {
       /* KC_MHEN equals KC_INT5 */
       der_switch_to_eisu();
@@ -317,14 +289,6 @@ bool der_release_special_key(uint16_t keycode) {
     }
 
     enable_raise = false;
-    break;
-  case M_KANA:
-    if (enable_lgui && !interrupt_in_layer) {
-      /* KC_HENK equals KC_INT4 */
-      der_switch_to_kana();
-    }
-
-    enable_lgui = false;
     break;
   default:
     break;
