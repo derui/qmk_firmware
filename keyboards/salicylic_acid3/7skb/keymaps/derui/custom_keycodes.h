@@ -27,8 +27,6 @@ enum custom_keycodes {
   M_GAMING,
   M_ENABLE_MAC,
   M_DISABLE_MAC,
-  M_LSFT_LGUI,
-  M_RSFT_RGUI,
   M_LOWER_EISU,
   M_RAISE_KANA,
   M_RAISE_TAB,
