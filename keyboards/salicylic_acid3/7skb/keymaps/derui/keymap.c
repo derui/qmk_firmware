@@ -2,16 +2,12 @@
 #include "custom_keycodes.h"
 #include "next_util.h"
 #include "keymap_japanese.h"
+#include "custom_keys.h"
 
 #define KC_SFT_ENT LSFT_T(KC_ENT)
 #define KC_SFT_SPC LSFT_T(KC_SPC)
-#define KC_M_KANA M_KANA
-#define KC_M_EISU M_EISU
-#define KC_LEISU M_LOWER_EISU
-#define KC_RKANA M_RAISE_KANA
-#define KC_LOWER LT(MO(_LOWER), KC_ESC)
-#define KC_RAISE LT(MO(_RAISE), KC_ESC)
-
+#define KC_LOWER LT(_LOWER, M_EISU)
+#define KC_RAISE LT(_RAISE, M_KANA)
 #ifdef RGBLIGHT_ENABLE
 //Following line allows macro to read current RGB settings
 extern rgblight_config_t rgblight_config;
@@ -25,10 +21,10 @@ extern uint8_t is_master;
 // entirely and just use numbers.
 enum layer_number {
   _QWERTY = 0,
-  _FN,
+  _MAC,
   _LOWER,
   _RAISE,
-  _ADJUST,
+  _FN,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -38,38 +34,38 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_LBRC, KC_RBRC,KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
-      KC_LCTL,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,        KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,  KC_ENT,
+      KC_LCTL,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,        KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,KC_ENTER,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-      KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,        KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_ESC, MO(_FN),
+      KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,        KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT, MO(_FN),
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-               KC_LGUI, KC_M_EISU,  KC_LOWER,   KC_SFT_SPC,  KC_SFT_ENT,  KC_RAISE,     KC_M_KANA, KC_RGUI 
+               KC_LGUI, KC_LALT,  KC_LOWER,     KC_SFT_SPC,  KC_SFT_ENT,  KC_RAISE,      KC_RALT, KC_RGUI
           //`---------------------------------------------|   |--------------------------------------------'
   ),
-
-  [_FN] = LAYOUT(
+  [_MAC] = LAYOUT(
   //,-----------------------------------------------------|   |--------------------------------------------------------------------------------.
-  TG(_ADJUST),   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,       KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12,  KC_INS,  KC_DEL,
+      _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______,_______,  _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
-      _______, _______, _______, _______, _______, _______,     _______, _______, KC_PSCR, KC_SCRL,KC_PAUSE,   KC_UP, _______, KC_BSPC,
+      _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
-      _______, _______, _______, _______, _______, _______,     _______, _______, KC_HOME, KC_PGUP, KC_LEFT,KC_RIGHT, _______,
+      _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-      _______, _______, _______, _______, _______, _______,     _______, _______,  KC_END, KC_PGDN, KC_DOWN, _______, _______,
+      _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-               _______, _______, _______, _______,              _______, _______,          KC_STOP, _______ 
+               KC_LALT, KC_LGUI, _______,          _______,     _______,          _______, KC_RGUI, KC_RALT
           //`---------------------------------------------|   |--------------------------------------------'
-  ),
+   ),
+
     [_LOWER] = LAYOUT(
   //,-----------------------------------------------------|   |--------------------------------------------------------------------------------.
       _______, _______, _______, _______, _______, _______,       KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12,  KC_INS,  KC_DEL,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
       _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, _______, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
-      _______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, _______,     _______, _______, _______, _______, _______, _______, _______,
+      _______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,  KC_GRV,     _______, _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-      _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______,KC_TILDE,     _______, _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-               _______, _______,KC_LOWER,          _______,     _______,         KC_RAISE, _______, _______
+               _______, _______, _______,          _______,     _______,          _______, _______, _______
           //`---------------------------------------------|   |--------------------------------------------'
   ),
 
@@ -79,25 +75,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
       _______, _______, _______, _______, _______, _______,     _______, _______,KC_EQUAL, KC_PLUS, _______, _______, _______, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
-      _______, _______, _______, _______, _______, _______,      KC_GRV, KC_LGUI, KC_LALT, KC_LSFT, KC_LCTL, _______, _______,
+      _______, _______, _______, _______, _______, _______,     KC_MINS, KC_LGUI, KC_LALT, KC_LSFT, KC_LCTL, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-      _______, _______, _______, _______, _______, _______,    KC_TILDE, _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______,     KC_UNDS, _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
                _______, _______, _______, _______,              _______, _______,          _______, _______ 
           //`---------------------------------------------|   |--------------------------------------------'
   ),
-
-  [_ADJUST] = LAYOUT( /* Base */
+    [_FN] = LAYOUT(
   //,-----------------------------------------------------|   |--------------------------------------------------------------------------------.
-  TG(_ADJUST), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   QK_BOOT,
+      QK_BOOT,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,       KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12,TG(_MAC),  KC_DEL,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     RGB_RST, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      _______, _______, _______, _______, _______, _______,     _______, _______, KC_PSCR, KC_SCRL,KC_PAUSE,   KC_UP, _______,  KC_INS,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     RGB_TOG, RGB_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      _______, _______, _______, _______, _______, _______,     _______, _______, KC_HOME, KC_PGUP, KC_LEFT,KC_RIGHT, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     RGB_VAD, RGB_VAI, RGB_HUD, RGB_HUI, RGB_SAD, RGB_SAI, XXXXXXX,
+      _______, _______, _______, _______, _______, _______,     _______, _______,  KC_END, KC_PGDN, KC_DOWN, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-               XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,              XXXXXXX, XXXXXXX,          KC_STOP, XXXXXXX 
+               _______, _______, _______, _______,              _______, _______,          KC_STOP, _______ 
           //`---------------------------------------------|   |--------------------------------------------'
   )
 };
@@ -110,14 +105,14 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     case _FN:
       rgblight_sethsv_at(HSV_BLUE, 0);
       break;
+    case _MAC:
+      rgblight_sethsv_at(HSV_PURPLE, 0);
+      break;
     case _LOWER:
       rgblight_sethsv_at(HSV_BLUE, 0);
       break;
     case _RAISE:
       rgblight_sethsv_at(HSV_RED, 0);
-      break;
-    case _ADJUST:
-      rgblight_sethsv_at(HSV_PURPLE, 0);
       break;
     default: //  for any other layers, or the default layer
       rgblight_sethsv_at( 0, 0, 0, 0);
@@ -131,196 +126,44 @@ return state;
 int RGB_current_mode;
 
 // my configurations
-void matrix_init_user(void) {
-}
-
-static bool interrupt_in_layer = false;
-static bool enable_lalt = false;
-static bool enable_lower = false;
-static bool enable_raise = false;
-static bool is_mac = false;
-static bool is_roma = true;
-
-void der_switch_to_kana(void) {
+void tapped_kc_raise() {
   SEND_STRING(SS_TAP(X_INT4));
   SEND_STRING(SS_TAP(X_LNG1));
 }
 
-void der_switch_to_eisu(void) {
+void tapped_kc_lower() {
   SEND_STRING(SS_TAP(X_INT5));
   SEND_STRING(SS_TAP(X_LNG2));
 }
 
-bool der_is_special_key(uint16_t keycode) {
-  switch(keycode) {
-  case M_JAPAN_ROMA:
-  case M_JAPAN_KANA:
-  case M_ENABLE_MAC:
-  case M_DISABLE_MAC:
-  case M_LOWER_EISU:
-  case M_EISU:
-  case M_RAISE_KANA:
-  case M_KANA:
-  case M_RAISE_TAB:
-    return true;
-  default:
-    break;
-  }
+custom_key_t kc_raise = {
+  KC_RAISE,
+  RELEASED,
+  0,
+  der_nop,
+  .on_tapped = tapped_kc_raise,
+  .on_interrupted = der_nop,
+  .on_start_holding = der_nop,
+  .on_release_holding = der_nop,
+};
 
-  return false;
-}
+custom_key_t kc_lower = {
+  KC_LOWER,
+  RELEASED,
+  0,
+  der_nop,
+  .on_tapped = tapped_kc_lower,
+  .on_interrupted = der_nop,
+  .on_start_holding = der_nop,
+  .on_release_holding = der_nop,
+};
 
-bool der_is_any_flag_enabled(void) {
-  return enable_lalt || enable_lower || enable_raise;
-}
-
-void der_register_special_mod(void) {
-  if (interrupt_in_layer) {
-    if (enable_lalt) {
-      register_mods(MOD_LALT);
-    }
-
-    if (enable_lower) {
-      layer_on(_LOWER);
-      update_tri_layer(_LOWER, _RAISE, _ADJUST);
-    }
-
-    if (enable_raise) {
-      layer_on(_RAISE);
-      update_tri_layer(_LOWER, _RAISE, _ADJUST);
-    }
-  }
-}
-
-void der_unregister_special_mod(void) {
-  if (interrupt_in_layer) {
-    if (!enable_lalt) {
-      unregister_mods(MOD_LALT);
-    }
-
-    if (!enable_lower) {
-      layer_off(_LOWER);
-      update_tri_layer(_LOWER, _RAISE, _ADJUST);
-    }
-
-    if (!enable_raise) {
-      layer_off(_RAISE);
-      update_tri_layer(_LOWER, _RAISE, _ADJUST);
-    }
-  }
-}
-
-bool der_press_special_key(uint16_t keycode) {
-  if (der_is_any_flag_enabled()) {
-    interrupt_in_layer = true;
-    der_register_special_mod();
-  }
-
-  switch(keycode) {
-  case M_JAPAN_ROMA:
-    is_roma = true;
-    default_layer_set(_QWERTY);
-    break;
-  case M_JAPAN_KANA:
-    is_roma = false;
-    break;
-  case M_ENABLE_MAC:
-    is_mac = true;
-    break;
-  case M_DISABLE_MAC:
-    is_mac = false;
-    break;
-  case M_LOWER_EISU:
-    enable_lower = true;
-    break;
-  case M_EISU:
-  case M_KANA:
-    enable_lalt = true;
-    break;
-  case M_RAISE_TAB:
-  case M_RAISE_KANA:
-    enable_raise = true;
-    break;
-  default:
-    break;
-  }
-
-  der_register_special_mod();
-
-  if (der_is_special_key(keycode)) {
-    return false;
-  }
-
-  return true;
-}
-
-
-bool der_release_special_key(uint16_t keycode) {
-  switch(keycode) {
-  case M_LOWER_EISU:
-    if (enable_lower && !interrupt_in_layer) {
-      /* KC_MHEN equals KC_INT5 */
-      der_switch_to_eisu();
-    }
-
-    enable_lower = false;
-    break;
-  case M_EISU:
-    if (enable_lalt && !interrupt_in_layer) {
-      /* KC_MHEN equals KC_INT5 */
-      der_switch_to_eisu();
-    }
-
-    enable_lalt = false;
-    break;
-  case M_KANA:
-    if (enable_lalt && !interrupt_in_layer) {
-      /* KC_MHEN equals KC_INT5 */
-      der_switch_to_kana();
-    }
-
-    enable_lalt = false;
-    break;
-  case M_RAISE_TAB:
-
-    if (enable_raise && !interrupt_in_layer) {
-      tap_code(KC_TAB);
-    }
-
-    enable_raise = false;
-    break;
-  case M_RAISE_KANA:
-
-    if (enable_raise && !interrupt_in_layer) {
-      /* KC_HENK equals KC_INT4 */
-      der_switch_to_kana();
-    }
-
-    enable_raise = false;
-    break;
-  default:
-    break;
-  }
-
-  if (!der_is_any_flag_enabled()) {
-    der_unregister_special_mod();
-    interrupt_in_layer = false;
-  }
-
-  if (der_is_special_key(keycode)) {
-    return false;
-  }
-
-  return true;
-}
-
-bool process_record_derui(uint16_t keycode, keyrecord_t *record) {
-  if (record->event.pressed) {
-    return der_press_special_key(keycode);
-  } else {
-    return der_release_special_key(keycode);
-  }
-}
+int all_defined_key_count = 2;
+custom_key_t *local_keys[] = {
+  &kc_lower,
+  &kc_raise,
+};
+custom_key_t **defined_keys = local_keys;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   bool result = false;

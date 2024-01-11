@@ -1,15 +1,33 @@
 #ifndef CONFIG_DERUI_NEXT_UTIL_H
 #define CONFIG_DERUI_NEXT_UTIL_H
 
-#define KC_M_KANA M_KANA
-#define KC_M_EISU M_EISU
+enum key_state {
+  PRESSED,
+  RELEASED,
+  HOLDING,
+};
 
-void der_init_variables(void);
-bool der_is_any_key_pressed(void);
-bool der_is_shifting_repeated(void);
-bool der_is_key_pressed(uint8_t key);
-bool der_process_nn(uint16_t keycode, keyrecord_t *record);
-void der_update_timer(void);
-bool der_is_shifting(void);
+typedef struct {
+  enum custom_keycodes custom_keycode;
+  enum key_state key_state;
+  uint16_t pressed_timer;
+
+  /* invoke on key pressed */
+  void (* on_pressed)(void);
+  /* invoke on key tapped */
+  void (* on_tapped)(void);
+  /* invoke on interrupted other key pressed while this key pressed */
+  void (* on_interrupted)(void);
+  /* invoke on start holding without interrupted other key pressed */
+  void (* on_start_holding)(void);
+  /* invoke on release holding key is released */
+  void (* on_release_holding)(void);
+} custom_key_t;
+
+int all_defined_key_count;
+custom_key_t** defined_keys;
+
+void der_nop(void);
+bool process_record_derui(uint16_t keycode, keyrecord_t *record);
 
 #endif
