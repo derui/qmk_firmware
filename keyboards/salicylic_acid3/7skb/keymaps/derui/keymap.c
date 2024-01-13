@@ -4,8 +4,8 @@
 #include "keymap_japanese.h"
 #include "custom_keys.h"
 
-#define KC_SFT_ENT LSFT_T(KC_ENT)
 #define KC_SFT_SPC LSFT_T(KC_SPC)
+#define KC_ELSFT LSFT_T(KC_ESC)
 #define KC_LOWER M_LOWER
 #define KC_RAISE M_RAISE
 #ifdef RGBLIGHT_ENABLE
@@ -33,13 +33,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------|   |--------------------------------------------------------------------------------.
        KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,        KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_MINS,  KC_EQL, KC_BSLS,  KC_GRV,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
-       KC_ESC,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_LBRC, KC_RBRC,KC_BSPC,
+       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_LBRC, KC_RBRC,KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
       M_CTLTB,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,        KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,KC_ENTER,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-      KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,        KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT, MO(_FN),
+     KC_ELSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,        KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT, MO(_FN),
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-               KC_LGUI, KC_LALT,  KC_LOWER,     KC_SFT_SPC,  KC_SFT_ENT,    KC_RAISE,      KC_RALT, KC_RGUI
+               KC_LGUI, KC_LALT,  KC_LOWER,     KC_SFT_SPC,    KC_RAISE,    M_ENTER,      KC_RALT, KC_RGUI
           //`---------------------------------------------|   |--------------------------------------------'
   ),
   [_MAC] = LAYOUT(
@@ -185,6 +185,18 @@ void release_holding_m_ctltb() {
   unregister_code(KC_LCTL);
 }
 
+void tapped_m_enter() {
+  tap_code(KC_ENTER);
+}
+
+void interrupted_m_enter() {
+  register_code(KC_RGUI);
+}
+
+void release_holding_m_enter() {
+  unregister_code(KC_RGUI);
+}
+
 custom_key_t m_ctltb = {
   M_CTLTB,
   RELEASED,
@@ -215,11 +227,22 @@ custom_key_t kc_lower = {
   .on_release_holding = release_holding_kc_lower,
 };
 
-int all_defined_key_count = 3;
+custom_key_t m_enter = {
+  M_ENTER,
+  RELEASED,
+  0,
+  .on_pressed = der_nop,
+  .on_tapped = tapped_m_enter,
+  .on_interrupted = interrupted_m_enter,
+  .on_release_holding = release_holding_m_enter,
+};
+
+int all_defined_key_count = 4;
 custom_key_t *local_keys[] = {
   &kc_lower,
   &kc_raise,
   &m_ctltb,
+  &m_enter,
 };
 custom_key_t **defined_keys = local_keys;
 

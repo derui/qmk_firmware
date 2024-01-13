@@ -9,6 +9,7 @@ enum custom_keycodes {
   M_CTLTB,
   M_LOWER,
   M_RAISE,
+  M_ENTER,
 };
 
 #endif

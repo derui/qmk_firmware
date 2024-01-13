@@ -13,4 +13,8 @@ void tapped_m_ctltb(void);
 void interrupted_m_ctltb(void);
 void release_holding_m_ctltb(void);
 
+void tapped_m_enter(void);
+void interrupted_m_enter(void);
+void release_holding_m_enter(void);
+
 #endif
