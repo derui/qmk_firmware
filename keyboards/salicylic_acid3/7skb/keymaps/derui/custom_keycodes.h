@@ -6,6 +6,9 @@ enum custom_keycodes {
   M_EISU,
   M_KANA,
   RGB_RST,
+  M_CTLTB,
+  M_LOWER,
+  M_RAISE,
 };
 
 #endif

@@ -1,13 +1,13 @@
 #include QMK_KEYBOARD_H
 #include "custom_keycodes.h"
-#include "next_util.h"
+#include "custom_key_handling.h"
 #include "keymap_japanese.h"
 #include "custom_keys.h"
 
 #define KC_SFT_ENT LSFT_T(KC_ENT)
 #define KC_SFT_SPC LSFT_T(KC_SPC)
-#define KC_LOWER LT(_LOWER, M_EISU)
-#define KC_RAISE LT(_RAISE, M_KANA)
+#define KC_LOWER M_LOWER
+#define KC_RAISE M_RAISE
 #ifdef RGBLIGHT_ENABLE
 //Following line allows macro to read current RGB settings
 extern rgblight_config_t rgblight_config;
@@ -24,6 +24,7 @@ enum layer_number {
   _MAC,
   _LOWER,
   _RAISE,
+  _ADJUST,
   _FN,
 };
 
@@ -32,13 +33,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------|   |--------------------------------------------------------------------------------.
        KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,        KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_MINS,  KC_EQL, KC_BSLS,  KC_GRV,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
-       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_LBRC, KC_RBRC,KC_BSPC,
+       KC_ESC,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_LBRC, KC_RBRC,KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
-      KC_LCTL,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,        KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,KC_ENTER,
+      M_CTLTB,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,        KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,KC_ENTER,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
       KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,        KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT, MO(_FN),
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-               KC_LGUI, KC_LALT,  KC_LOWER,     KC_SFT_SPC,  KC_SFT_ENT,  KC_RAISE,      KC_RALT, KC_RGUI
+               KC_LGUI, KC_LALT,  KC_LOWER,     KC_SFT_SPC,  KC_SFT_ENT,    KC_RAISE,      KC_RALT, KC_RGUI
           //`---------------------------------------------|   |--------------------------------------------'
   ),
   [_MAC] = LAYOUT(
@@ -59,11 +60,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------|   |--------------------------------------------------------------------------------.
       _______, _______, _______, _______, _______, _______,       KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12,  KC_INS,  KC_DEL,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
-      _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, _______, KC_BSPC,
+      _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,     _______, _______, _______, _______, _______, _______, _______, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
-      _______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI,  KC_GRV,     _______, _______, _______, _______, _______, _______, _______,
+      _______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, _______,     _______, _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-      _______, _______, _______, _______, _______,KC_TILDE,     _______, _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
                _______, _______, _______,          _______,     _______,          _______, _______, _______
           //`---------------------------------------------|   |--------------------------------------------'
@@ -73,18 +74,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------|   |--------------------------------------------------------------------------------.
       _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,     _______, _______, _______, _______, _______, _______, _______,  KC_INS,  KC_DEL,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
-      _______, _______, _______, _______, _______, _______,     _______, _______,KC_EQUAL, KC_PLUS, _______, _______, _______, KC_BSPC,
+      _______, _______, _______, _______, _______, _______,      KC_GRV, KC_MINS,KC_EQUAL, KC_BSLS, _______, _______, _______, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
-      _______, _______, _______, _______, _______, _______,     KC_MINS, KC_LGUI, KC_LALT, KC_LSFT, KC_LCTL, _______, _______,
+      _______, _______, _______, _______, _______, _______,     KC_BSPC, KC_LGUI, KC_LALT, KC_LSFT, KC_LCTL, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-      _______, _______, _______, _______, _______, _______,     KC_UNDS, _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______,    KC_TILDE, KC_UNDS, KC_PLUS, KC_PIPE, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
                _______, _______, _______, _______,              _______, _______,          _______, _______ 
           //`---------------------------------------------|   |--------------------------------------------'
   ),
-    [_FN] = LAYOUT(
+  [_ADJUST] = LAYOUT(
   //,-----------------------------------------------------|   |--------------------------------------------------------------------------------.
-      QK_BOOT,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,       KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12,TG(_MAC),  KC_DEL,
+      QK_BOOT, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, _______, _______,  KC_DEL,
+  //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
+      _______, _______, _______, _______, _______, _______,     _______, _______,   KC_UP, _______, _______, _______, _______,  KC_INS,
+  //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
+      _______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, _______,     _______, KC_LEFT,KC_RIGHT, _______, _______,  KC_ENT, _______,
+  //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
+      _______, _______, _______, _______, _______, _______,     _______, KC_DOWN, _______, _______, _______, _______, _______,
+  //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
+               _______, _______, _______, _______,              _______, _______,          _______, _______ 
+          //`---------------------------------------------|   |--------------------------------------------'
+  ),
+  [_FN] = LAYOUT(
+  //,-----------------------------------------------------|   |--------------------------------------------------------------------------------.
+      QK_BOOT, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, _______,TG(_MAC),  KC_DEL,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
       _______, _______, _______, _______, _______, _______,     _______, _______, KC_PSCR, KC_SCRL,KC_PAUSE,   KC_UP, _______,  KC_INS,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
@@ -103,7 +117,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #ifdef RGBLIGHT_ENABLE
     switch (get_highest_layer(state)) {
     case _FN:
-      rgblight_sethsv_at(HSV_BLUE, 0);
+      rgblight_sethsv_at(HSV_GOLD, 0);
       break;
     case _MAC:
       rgblight_sethsv_at(HSV_PURPLE, 0);
@@ -114,11 +128,14 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     case _RAISE:
       rgblight_sethsv_at(HSV_RED, 0);
       break;
+    case _ADJUST:
+      rgblight_sethsv_at(HSV_GREEN, 0);
+      break;
     default: //  for any other layers, or the default layer
       rgblight_sethsv_at( 0, 0, 0, 0);
       break;
     }
-    rgblight_set_effect_range( 1, 11);
+    rgblight_set_effect_range(1, 11);
 #endif
 return state;
 }
@@ -131,37 +148,78 @@ void tapped_kc_raise() {
   SEND_STRING(SS_TAP(X_LNG1));
 }
 
+void interrupted_kc_raise() {
+  layer_on(_RAISE);
+  update_tri_layer(_LOWER, _RAISE, _ADJUST);
+}
+
+void release_holding_kc_raise() {
+  layer_off(_RAISE);
+  update_tri_layer(_LOWER, _RAISE, _ADJUST);
+}
+
 void tapped_kc_lower() {
   SEND_STRING(SS_TAP(X_INT5));
   SEND_STRING(SS_TAP(X_LNG2));
 }
 
+void interrupted_kc_lower() {
+  layer_on(_LOWER);
+  update_tri_layer(_LOWER, _RAISE, _ADJUST);
+}
+
+void release_holding_kc_lower() {
+  layer_off(_LOWER);
+  update_tri_layer(_LOWER, _RAISE, _ADJUST);
+}
+
+void tapped_m_ctltb() {
+  tap_code(KC_TAB);
+}
+
+void interrupted_m_ctltb() {
+  register_code(KC_LCTL);
+}
+
+void release_holding_m_ctltb() {
+  unregister_code(KC_LCTL);
+}
+
+custom_key_t m_ctltb = {
+  M_CTLTB,
+  RELEASED,
+  0,
+  .on_pressed = der_nop,
+  .on_tapped = tapped_m_ctltb,
+  .on_interrupted = interrupted_m_ctltb,
+  .on_release_holding = release_holding_m_ctltb,
+};
+
 custom_key_t kc_raise = {
   KC_RAISE,
   RELEASED,
   0,
-  der_nop,
+  .on_pressed = der_nop,
   .on_tapped = tapped_kc_raise,
-  .on_interrupted = der_nop,
-  .on_start_holding = der_nop,
-  .on_release_holding = der_nop,
+  .on_interrupted = interrupted_kc_raise,
+  .on_release_holding = release_holding_kc_raise,
 };
 
 custom_key_t kc_lower = {
   KC_LOWER,
   RELEASED,
   0,
-  der_nop,
+  .on_pressed = der_nop,
   .on_tapped = tapped_kc_lower,
-  .on_interrupted = der_nop,
-  .on_start_holding = der_nop,
-  .on_release_holding = der_nop,
+  .on_interrupted = interrupted_kc_lower,
+  .on_release_holding = release_holding_kc_lower,
 };
 
-int all_defined_key_count = 2;
+int all_defined_key_count = 3;
 custom_key_t *local_keys[] = {
   &kc_lower,
   &kc_raise,
+  &m_ctltb,
 };
 custom_key_t **defined_keys = local_keys;
 
