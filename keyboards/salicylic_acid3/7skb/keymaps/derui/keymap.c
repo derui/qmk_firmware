@@ -204,6 +204,7 @@ custom_key_t m_ctltb = {
   .on_pressed = der_nop,
   .on_tapped = tapped_m_ctltb,
   .on_interrupted = interrupted_m_ctltb,
+  .on_start_holding = interrupted_m_ctltb,
   .on_release_holding = release_holding_m_ctltb,
 };
 
@@ -214,6 +215,7 @@ custom_key_t kc_raise = {
   .on_pressed = der_nop,
   .on_tapped = tapped_kc_raise,
   .on_interrupted = interrupted_kc_raise,
+  .on_start_holding = interrupted_kc_raise,
   .on_release_holding = release_holding_kc_raise,
 };
 
@@ -224,6 +226,7 @@ custom_key_t kc_lower = {
   .on_pressed = der_nop,
   .on_tapped = tapped_kc_lower,
   .on_interrupted = interrupted_kc_lower,
+  .on_start_holding = interrupted_kc_lower,
   .on_release_holding = release_holding_kc_lower,
 };
 
@@ -234,6 +237,7 @@ custom_key_t m_enter = {
   .on_pressed = der_nop,
   .on_tapped = tapped_m_enter,
   .on_interrupted = interrupted_m_enter,
+  .on_start_holding = interrupted_m_enter,
   .on_release_holding = release_holding_m_enter,
 };
 

@@ -7,6 +7,18 @@ void der_nop(void) {}
 
 /* defined keys */
 
+void matrix_scan_user(void) {
+  for (int i = 0; i < all_defined_key_count;i++) {
+    custom_key_t* key = defined_keys[i];
+    if (key->key_state == PRESSED) {
+      if (timer_elapsed(key->pressed_timer) > TAPPING_TERM) {
+        key->on_start_holding();
+        key->key_state = HOLDING;
+      }
+    }
+  }
+}
+
 bool process_record_derui(uint16_t keycode, keyrecord_t *record) {
   for (int i = 0; i < all_defined_key_count;i++) {
     custom_key_t* key = defined_keys[i];
