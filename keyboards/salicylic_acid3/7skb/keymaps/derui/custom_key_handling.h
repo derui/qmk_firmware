@@ -18,6 +18,8 @@ typedef struct {
   void (* on_tapped)(void);
   /* invoke on interrupted other key pressed while this key pressed */
   void (* on_interrupted)(void);
+  /* invoke on start hoding if the key is pressed without interrupted */
+  void (* on_start_holding)(void);
   /* invoke on release holding key is released. Holding state is activated after interrupted */
   void (* on_release_holding)(void);
 } custom_key_t;
