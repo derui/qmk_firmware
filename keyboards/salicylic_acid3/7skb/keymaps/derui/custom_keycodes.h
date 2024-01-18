@@ -10,6 +10,8 @@ enum custom_keycodes {
   M_LOWER,
   M_RAISE,
   M_ENTER,
+  M_LSFTESC,
+  M_SPACE,
 };
 
 #endif
