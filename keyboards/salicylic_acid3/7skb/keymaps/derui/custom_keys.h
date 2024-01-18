@@ -17,4 +17,12 @@ void tapped_m_enter(void);
 void interrupted_m_enter(void);
 void release_holding_m_enter(void);
 
+void tapped_m_space(void);
+void interrupted_m_space(void);
+void release_holding_m_space(void);
+
+void tapped_m_lsftesc(void);
+void interrupted_m_lsftesc(void);
+void release_holding_m_lsftesc(void);
+
 #endif
