@@ -13,14 +13,12 @@
    RSFT8(A) => Aと右親指の同時シフト
    SFT8(A, K) => AとKの同時シフト
  */
-#define LSFT8(k) {M_SPACE, KC_ ## k}
-#define RSFT8(k) {M_ENTER, KC_ ## k}
+#define LSFT8(k) {M_KANA_LSHIFT, KC_ ## k}
+#define RSFT8(k) {M_KANA_RSHIFT, KC_ ## k}
 #define SFT8(k1, k2) {KC_ ## k1, KC_ ## k2}
 
 /* 単打の定義 */
 single_tap_definition_t single_tap_definitions[] = {
-  {M_KANA_SPACE, RELEASED, SS_TAP(X_SPACE)},
-  {M_KANA_ENTER, RELEASED, SS_TAP(X_ENTER)},
   /* Q行 */
   {KC_Q, RELEASED, SS_TAP(X_DOT)},
   {KC_W, RELEASED, "na"},
