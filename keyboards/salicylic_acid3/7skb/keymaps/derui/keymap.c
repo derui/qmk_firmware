@@ -3,6 +3,7 @@
 #include "custom_key_handling.h"
 #include "keymap_japanese.h"
 #include "custom_keys.h"
+#include "keymap_8x3.h"
 
 #define KC_SFT_SPC M_SPACE
 #define KC_ELSFT M_LSFTESC
@@ -142,11 +143,13 @@ return state;
 }
 
 int RGB_current_mode;
+bool kana_mode = false;
 
 // my configurations
 void tapped_kc_raise() {
   SEND_STRING(SS_TAP(X_INT4));
   SEND_STRING(SS_TAP(X_LNG1));
+  kana_mode = true;
 }
 
 void interrupted_kc_raise() {
@@ -160,6 +163,7 @@ void release_holding_kc_raise() {
 void tapped_kc_lower() {
   SEND_STRING(SS_TAP(X_INT5));
   SEND_STRING(SS_TAP(X_LNG2));
+  kana_mode = false;
 }
 
 void interrupted_kc_lower() {
@@ -322,6 +326,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     default:
       result = true;
       break;
+  }
+
+  /* when kana_mode enabled, all keys handling on user's process */
+  if (kana_mode && !get_mods() && !get_oneshot_mods()) {
+    if (!process_record_8x3(keycode, record)) {
+      return false;
+    }
   }
 
   if (!process_record_derui(keycode, record)) {
