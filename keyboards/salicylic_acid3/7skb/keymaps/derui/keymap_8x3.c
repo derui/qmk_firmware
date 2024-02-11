@@ -62,7 +62,7 @@ single_tap_definition_t single_tap_definitions[] = {
 shift_definition_t shift_definitions[] = {
   /* 左シフト */
   /* Q行 */
-  {LSFT8(Q), NO_SHIFT, "pe"},
+  /* {LSFT8(Q), NO_SHIFT, "pe"}, */
   {LSFT8(W), NO_SHIFT, "ke"},
   {LSFT8(E), NO_SHIFT, "yo"},
   /* {LSFT8(R), NO_SHIFT, "so"}, */
@@ -80,11 +80,11 @@ shift_definition_t shift_definitions[] = {
   {LSFT8(F), NO_SHIFT, "sa"},
   {LSFT8(G), NO_SHIFT, "xu"},
   {LSFT8(H), NO_SHIFT, "xi"},
-  {LSFT8(J), NO_SHIFT, "gu"},
-  {LSFT8(K), NO_SHIFT, "ji"},
-  {LSFT8(L), NO_SHIFT, "do"},
-  {LSFT8(SCLN), NO_SHIFT, "pi"},
-  /* {LSFT8(QUOT), NO_SHIFT, "si"}, */
+  {LSFT8(J), NO_SHIFT, "xa"},
+  {LSFT8(K), NO_SHIFT, "gu"},
+  {LSFT8(L), NO_SHIFT, "ji"},
+  {LSFT8(SCLN), NO_SHIFT, "do"},
+  /* {LSFT8(QUOT), NO_SHIFT, "pi"}, */
   /* Z行 */
   {LSFT8(Z), NO_SHIFT, "xyu"},
   {LSFT8(X), NO_SHIFT, "xya"},
@@ -99,7 +99,7 @@ shift_definition_t shift_definitions[] = {
 
   /* 右シフト */
   /* Q行 */
-  {RSFT8(Q), NO_SHIFT, "pa"},
+  /* {RSFT8(Q), NO_SHIFT, "pa"}, */
   {RSFT8(W), NO_SHIFT, "ge"},
   {RSFT8(E), NO_SHIFT, "de"},
   {RSFT8(R), NO_SHIFT, "ze"},
@@ -123,7 +123,7 @@ shift_definition_t shift_definitions[] = {
   {RSFT8(SCLN), NO_SHIFT, "wa"},
   {RSFT8(QUOT), NO_SHIFT, "ne"},
   /* Z行 */
-  {RSFT8(Z), NO_SHIFT, "po"},
+  /* {RSFT8(Z), NO_SHIFT, "po"}, */
   {RSFT8(X), NO_SHIFT, "bo"},
   {RSFT8(C), NO_SHIFT, "bu"},
   {RSFT8(V), NO_SHIFT, "pu"},
@@ -137,7 +137,15 @@ shift_definition_t shift_definitions[] = {
   /* 特殊打鍵 */
   {SFT8(D, K), NO_SHIFT, "wo"},
 
+
   /* 8x3のマトリックス定義 */
+  /* Pa/Pi/Pu/Pe/Po */
+  {SFT8(G, H), NO_SHIFT, "pa"},
+  {SFT8(G, U), NO_SHIFT, "pi"},
+  {SFT8(C, H), NO_SHIFT, "pu"},
+  {SFT8(G, SLSH), NO_SHIFT, "pe"},
+  {SFT8(H, X), NO_SHIFT, "po"},
+  
   /* あ */
   {SFT8(M, Q), NO_SHIFT, "xe"},
   {SFT8(M, W), NO_SHIFT, "xu"},
