@@ -328,15 +328,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
   }
 
-  /* when kana_mode enabled, all keys handling on user's process */
-  if (kana_mode && !get_mods() && !get_oneshot_mods()) {
-    if (!process_record_8x3(keycode, record)) {
-      return false;
-    }
-  }
-
   if (!process_record_derui(keycode, record)) {
     return false;
+  }
+
+  /* when kana_mode enabled, all keys handling on user's process */
+  if (kana_mode && !get_mods() && !get_oneshot_mods()) {
+    result = process_record_8x3(keycode, record);
   }
 
   return result;

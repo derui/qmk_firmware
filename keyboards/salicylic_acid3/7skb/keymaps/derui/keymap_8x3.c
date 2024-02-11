@@ -136,7 +136,8 @@ shift_definition_t shift_definitions[] = {
 
   /* 特殊打鍵 */
   {SFT8(D, K), NO_SHIFT, "wo"},
-
+  {SFT8(D, COMM), NO_SHIFT, SS_TAP(X_COMM)},
+  {SFT8(D, DOT), NO_SHIFT, SS_TAP(X_DOT)},
 
   /* 8x3のマトリックス定義 */
   /* Pa/Pi/Pu/Pe/Po */
