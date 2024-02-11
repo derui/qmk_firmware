@@ -19,8 +19,8 @@
 
 /* 単打の定義 */
 single_tap_definition_t single_tap_definitions[] = {
-  {M_SPACE, RELEASED, SS_TAP(X_SPACE)},
-  {M_ENTER, RELEASED, SS_TAP(X_ENTER)},
+  {M_KANA_SPACE, RELEASED, SS_TAP(X_SPACE)},
+  {M_KANA_ENTER, RELEASED, SS_TAP(X_ENTER)},
   /* Q行 */
   {KC_Q, RELEASED, SS_TAP(X_DOT)},
   {KC_W, RELEASED, "na"},
