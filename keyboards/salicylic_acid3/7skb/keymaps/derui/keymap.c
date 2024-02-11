@@ -5,7 +5,6 @@
 #include "custom_keys.h"
 #include "keymap_8x3.h"
 
-#define KC_SFT_SPC M_SPACE
 #define KC_ELSFT M_LSFTESC
 #define KC_LOWER M_LOWER
 #define KC_RAISE M_RAISE
@@ -41,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
     M_LSFTESC,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,        KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT, MO(_FN),
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-               KC_LGUI, KC_LALT,  KC_LOWER,     KC_SFT_SPC,     M_ENTER,         KC_RAISE, KC_RALT, KC_RGUI
+               KC_LGUI, KC_LALT,  KC_LOWER,        M_SPACE,     M_ENTER,         KC_RAISE, KC_RALT, KC_RGUI
           //`---------------------------------------------|   |--------------------------------------------'
   ),
 
@@ -55,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
     M_LSFTESC,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,        KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT, MO(_FN),
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-               KC_LGUI, KC_LALT,  KC_LOWER,   M_KANA_SPACE,    M_KANA_ENTER,     KC_RAISE, KC_RALT, KC_RGUI
+               KC_LGUI, KC_LALT,  M_KANA_LSHIFT,   M_SPACE,     M_ENTER,    M_KANA_RSHIFT, KC_RALT, KC_RGUI
           //`---------------------------------------------|   |--------------------------------------------'
   ),
 
@@ -164,7 +163,7 @@ bool kana_mode = false;
 void tapped_kc_raise() {
   SEND_STRING(SS_TAP(X_INT4));
   SEND_STRING(SS_TAP(X_LNG1));
-  default_layer_set(_KANA);
+  layer_on(_KANA);
   kana_mode = true;
 }
 
@@ -179,7 +178,7 @@ void release_holding_kc_raise() {
 void tapped_kc_lower() {
   SEND_STRING(SS_TAP(X_INT5));
   SEND_STRING(SS_TAP(X_LNG2));
-  default_layer_set(_QWERTY);
+  layer_off(_KANA);
   kana_mode = false;
 }
 
@@ -224,11 +223,19 @@ void tapped_m_space() {
 }
 
 void interrupted_m_space() {
-  register_code(KC_LSFT);
+  if (!kana_mode) {
+    register_code(KC_LSFT);
+  } else {
+    layer_on(_LOWER);
+  }
 }
 
 void release_holding_m_space() {
-  unregister_code(KC_LSFT);
+  if (!kana_mode) {
+    unregister_code(KC_LSFT);
+  } else {
+    layer_off(_LOWER);
+  }
 }
 
 void tapped_m_lsftesc() {
@@ -350,7 +357,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   /* when kana_mode enabled, all keys handling on user's process */
-  if (kana_mode && !get_mods() && !get_oneshot_mods()) {
+  if (kana_mode && !has_anymod()) {
     result = process_record_8x3(keycode, record);
   }
 
