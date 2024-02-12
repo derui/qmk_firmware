@@ -371,7 +371,8 @@ void ng_update_buffer_pressed(uint16_t keycode) {
 void ng_update_buffer_released(uint16_t keycode) {
   enum ng_key key = ng_keycode_to_ng_key(keycode);
   if (key == N_SFT) {
-    key_buffer &= 0x7FFF;
+    /* シフトキーの場合、全体をリセットする必要がある */
+    key_buffer = 0;
   } else {
     /* シフトキー以外の場合、そもそも確定していないのであれば、シフト部分以外をresetする */
     key_buffer &= SHIFT_BIT;
