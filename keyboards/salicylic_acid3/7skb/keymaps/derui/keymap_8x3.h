@@ -38,16 +38,10 @@ enum ng_key {
 
 /* シフトキーを定義する構造体。 */
 typedef struct {
-  /* least left bit is shift mark. */
+  /* LSB is shift mark. */
   uint16_t keycodes;
   const char* sequence;
-} multi_definition_t;
-
-/* 単打とシフトを定義する構造体 */
-typedef struct {
-  uint8_t keycode;
-  const char* sequence;
-} single_definition_t;
+} seq_definition_t;
 
 void ng_reset_state(void);
 bool process_record_ng(uint16_t keycode, keyrecord_t *record);

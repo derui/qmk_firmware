@@ -22,10 +22,10 @@
 #define NM3(k1, k2, k3, seq) { N_ ## k1 | (N_ ## k2 << 5) | (N_ ## k3 << 10), seq}
 
 
-/* 単打の定義 */
-single_definition_t single_definitions[] = {
+/* 複数キーの定義 */
+seq_definition_t seq_definitions[] = {
   /* シフトは、自分自身だけがあるような場合にだけ有効になる */
-  {0x80, SS_TAP(X_SPACE)},
+  {SHIFT_BIT, SS_TAP(X_SPACE)},
   /* Q行 */
   NSI(Q, "vu"),
   NSI(W, "ki"),
@@ -62,10 +62,6 @@ single_definition_t single_definitions[] = {
   NSI(DOT, "ra"),
   NSI(SLSH, "re"),
 
-};
-
-/* 複数キーの定義 */
-multi_definition_t multi_definitions[] = {
   /* シフト面の定義 */
   /* Q行 */
   /* NSS(Q, "vu"), */
@@ -312,7 +308,17 @@ uint32_t ng_bits_to_32bit(uint16_t bits) {
 
 /* キー配列を特定の流れに変換して、比較をしやすくする */
 uint16_t ng_normalized_key_bits(uint16_t bits) {
-  uint8_t result[3] = ng_bits_to_normalized_key_bytes(bits);
+  uint8_t temp[3];
+  uint8_t result[3];
+  
+  for (int i = 0; i < MAX_KEY_CODES; i++) {
+    temp[i] = (bits >> (KEY_DEF_BITS * i)) & 0x1F;
+  }
+
+  int sort_pattern = ((temp[0] <= temp[1]) ? 1 : 0) + ((temp[1] <= temp[2]) ? 2 : 0) + ((temp[2] <= temp[0]) ? 4 : 0);
+  result[0] = temp[ng_sort_patterns_3[sort_pattern][0]];
+  result[1] = temp[ng_sort_patterns_3[sort_pattern][1]];
+  result[2] = temp[ng_sort_patterns_3[sort_pattern][2]];
 
   return (bits & 0x8000) | (result[0] << (KEY_DEF_BITS * 2)) | (result[1] << KEY_DEF_BITS) | result[2];
 }
@@ -324,8 +330,8 @@ bool ng_match_key_bits(uint16_t a, uint16_t b) {
   return normalized_a == normalized_b;
 }
 
-/* 現在入力されているキーの一覧でが含まれるような場合を検出する */
-bool ng_match_key_bits(uint16_t source, uint16_t target) {
+/* 現在入力されているキーの一覧が含まれるような場合を検出する */
+bool ng_similar_key_bits(uint16_t source, uint16_t target) {
   uint32_t normalized_a = ng_bits_to_32bit(source);
   uint32_t normalized_b = ng_bits_to_32bit(target);
   
@@ -372,35 +378,30 @@ void ng_update_buffer_released(uint16_t keycode) {
   }
 }
 
-multi_definition_t* ng_find_multi_definition(uint16_t buffer) {
-  int count = sizeof(multi_definitions) / sizeof(multi_definition_t);
+seq_definition_t* ng_find_seq_definition(uint16_t buffer, bool contain_similar) {
+  int count = sizeof(seq_definitions) / sizeof(seq_definition_t);
+
+  seq_definition_t* result = NULL;
+  bool found_other_def = false;
   
   for (int i = 0; i < count; i++) {
-    if (ng_match_key_bits(buffer, multi_definitions[i].keycodes)) {
-      return &multi_definitions[i];
+    if (ng_match_key_bits(buffer, seq_definitions[i].keycodes)) {
+      result = &seq_definitions[i];
+      /* 一致する物自体は高々一つしか存在していない */
+      if (!contain_similar) {
+        return result;
+      }
+    } else if (ng_similar_key_bits(buffer, seq_definitions[i].keycodes)) {
+      found_other_def = true;
     }
   }
 
-  return NULL;
-}
-
-single_definition_t* ng_find_single_definition(uint16_t buffer) {
-  int count = sizeof(single_definitions) / sizeof(single_definition_t);
-  
-  for (int i = 0; i < count; i++) {
-    /* 単打の場合、シフトされていると入力できないので、あえてシフトをかけて、そのままではできないようにする */
-    uint16_t single_key = single_definitions[i].keycode & 0x7F;
-    uint16_t shift_bit = single_definitions[i].keycode & 0x80;
-    single_key = (shift_bit << 8) | single_key;
-    
-    if (ng_match_key_bits(buffer, single_key)) {
-      return &single_definitions[i];
-    }
+  if (found_other_def) {
+    return NULL;
   }
 
-  return NULL;
+  return result;
 }
-
 
 /* 全体の状態を元に戻す */
 void ng_reset_state() {
@@ -421,13 +422,14 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
     ng_update_buffer_pressed(keycode);
 
-    multi_definition_t* multi_def = ng_find_multi_definition(key_buffer);
+    seq_definition_t* seq_def = ng_find_seq_definition(key_buffer, true);
 
-    if (!multi_def) {
+    /* 確定できる場合、一つしか存在していないので、そのまま決定してしまって良い */
+    if (!seq_def) {
       return false;
     }
 
-    send_string(multi_def->sequence);
+    send_string(seq_def->sequence);
     ng_update_buffer_released(keycode);
 
     /* If shift key is pressing, set mark. */
@@ -442,12 +444,12 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
       return false;
     }
 
-    /* releaseされた場合、単打以外は確定できない */
-    single_definition_t* single_def = ng_find_single_definition(key_buffer);
-    ng_update_buffer_released(keycode);
+    /* releaseされた場合、現在のバッファと一致するものを強制する */
+    seq_definition_t* def = ng_find_seq_definition(key_buffer, false);
 
-    if (!single_def) {
-      /* 単打で見つからないような場合、何もしないようにする */
+    if (!def) {
+      /* reset state if exact match sequence is not found */
+      ng_reset_state();
       return false;
     }
 
@@ -457,8 +459,9 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
       return false;
     }
 
-    send_string(single_def->sequence);
+    send_string(def->sequence);
     ng_reset_state();
+
     return false;
   }
 }
