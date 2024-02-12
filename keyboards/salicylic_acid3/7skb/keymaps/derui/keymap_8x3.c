@@ -208,6 +208,7 @@ seq_definition_t seq_definitions[] = {
 
   /* 特殊 */
   NM2(V, M, SS_TAP(X_ENTER)),
+  NM3(J, K, T, SS_TAP(X_SLSH)),
 };
 
 /* global states */
