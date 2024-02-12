@@ -3,348 +3,462 @@
 #include "custom_key_handling.h"
 #include "keymap_8x3.h"
 
-/* シン蜂蜜小梅配列を実装する。 */
-#define MAX_KEY_CODES 2
+/* 薙刀式を実装する */
+#define MAX_KEY_CODES 3
+#define KEY_DEF_BITS 5
+#define SHIFT_BIT 0x8000
 
 /* 各シフトシーケンスを生成するためのdefinition
    次のように使う。
 
-   LSFT8(A) => Aと左親指の同時シフト
-   RSFT8(A) => Aと右親指の同時シフト
-   SFT8(A, K) => AとKの同時シフト
+   NSI(A) => Aの単打
+   NSS(A) => Aのシフト面単打
+   NM2(F, K) => FとKの同時シフト
+   MN3(F, K, Q) => AとKとQの同時シフト
  */
-#define LSFT8(k) {M_KANA_LSHIFT, KC_ ## k}
-#define RSFT8(k) {M_KANA_RSHIFT, KC_ ## k}
-#define SFT8(k1, k2) {KC_ ## k1, KC_ ## k2}
+#define NSI(k, seq) { N_ ## k, seq }
+#define NSS(k, seq) { SHIFT_BIT | N_ ## k, seq }
+#define NM2(k1, k2, seq) { (N_ ## k1 | (N_ ## k2 << 5)), seq }
+#define NM3(k1, k2, k3, seq) { N_ ## k1 | (N_ ## k2 << 5) | (N_ ## k3 << 10), seq}
+
 
 /* 単打の定義 */
-single_tap_definition_t single_tap_definitions[] = {
+single_definition_t single_definitions[] = {
+  /* シフトは、自分自身だけがあるような場合にだけ有効になる */
+  {0x80, SS_TAP(X_SPACE)},
   /* Q行 */
-  {KC_Q, RELEASED, SS_TAP(X_DOT)},
-  {KC_W, RELEASED, "na"},
-  {KC_E, RELEASED, "te"},
-  {KC_R, RELEASED, "se"},
-  {KC_T, RELEASED, "so"},
-  {KC_Y, RELEASED, SS_TAP(X_SLSH)},
-  {KC_U, RELEASED, "o"},
-  {KC_I, RELEASED, "no"},
-  {KC_O, RELEASED, "ni"},
-  /* {KC_P, RELEASED, "na"}, */
-  {KC_LBRC, RELEASED, SS_TAP(X_COMMA)},
+  NSI(Q, "vu"),
+  NSI(W, "ki"),
+  NSI(E, "te"),
+  NSI(R, "si"),
+  NSI(T, SS_TAP(X_LEFT)),
+  NSI(Y, SS_TAP(X_RIGHT)),
+  NSI(U, SS_TAP(X_BSPC)),
+  NSI(I, "ru"),
+  NSI(O, "su"),
+  NSI(P, "he"),
+
   /* A行 */
-  {KC_A, RELEASED, "ko"},
-  {KC_S, RELEASED, "ta"},
-  {KC_D, RELEASED, "ka"},
-  {KC_F, RELEASED, "ru"},
-  {KC_G, RELEASED, "ha"},
-  {KC_H, RELEASED, SS_TAP(X_MINS)},
-  {KC_J, RELEASED, "nn"},
-  {KC_K, RELEASED, "i"},
-  {KC_L, RELEASED, "si"},
-  {KC_SCLN, RELEASED, "to"},
-  {KC_QUOT, RELEASED, SS_TAP(X_BSPC)},
+  NSI(A, "ro"),
+  NSI(S, "ke"),
+  NSI(D, "to"),
+  NSI(F, "ka"),
+  NSI(G, "xtu"),
+  NSI(H, "ku"),
+  NSI(J, "a"),
+  NSI(K, "i"),
+  NSI(L, "u"),
+  NSI(SCLN, SS_TAP(X_MINS)),
+  
   /* Z行 */
-  {KC_Z, RELEASED, "yu"},
-  {KC_X, RELEASED, "ho"},
-  {KC_C, RELEASED, "ma"},
-  {KC_V, RELEASED, "ro"},
-  /* {KC_B, RELEASED, "so"}, */
-  {KC_N, RELEASED, "xtu"},
-  {KC_M, RELEASED, "u"},
-  {KC_COMM, RELEASED, "su"},
-  {KC_DOT, RELEASED, "ra"},
-  {KC_SLSH, RELEASED, "he"},
+  NSI(Z, "ho"),
+  NSI(X, "hi"),
+  NSI(C, "ha"),
+  NSI(V, "ko"),
+  NSI(B, "so"),
+  NSI(N, "ta"),
+  NSI(M, "na"),
+  NSI(COMM, "nn"),
+  NSI(DOT, "ra"),
+  NSI(SLSH, "re"),
+
 };
 
-/* シフトの定義 */
-shift_definition_t shift_definitions[] = {
-  /* 左シフト */
+/* 複数キーの定義 */
+multi_definition_t multi_definitions[] = {
+  /* シフト面の定義 */
   /* Q行 */
-  /* {LSFT8(Q), NO_SHIFT, "pe"}, */
-  {LSFT8(W), NO_SHIFT, "ke"},
-  {LSFT8(E), NO_SHIFT, "yo"},
-  /* {LSFT8(R), NO_SHIFT, "so"}, */
-  /* {LSFT8(T), NO_SHIFT, "na"}, */
-  /* {LSFT8(Y), NO_SHIFT, "o"}, */
-  {LSFT8(U), NO_SHIFT, "bi"},
-  {LSFT8(I), NO_SHIFT, "gi"},
-  {LSFT8(O), NO_SHIFT, "du"},
-  /* {LSFT8(P), NO_SHIFT, "ni"}, */
-  /* {LSFT8(LBRC), NO_SHIFT, "na"}, */
+  /* NSS(Q, "vu"), */
+  NSS(W, "nu"),
+  NSS(E, "ri"),
+  NSS(R, "ne"),
+  /* NSS(T, SS_TAP(X_RIGHT)), */
+  /* NSS(Y, SS_TAP(X_LEFT)), */
+  NSS(U, "sa"),
+  NSS(I, "yo"),
+  NSS(O, "e"),
+  NSS(P, "yu"),
+
   /* A行 */
-  {LSFT8(A), NO_SHIFT, "me"},
-  {LSFT8(S), NO_SHIFT, "ya"},
-  {LSFT8(D), NO_SHIFT, "mo"},
-  {LSFT8(F), NO_SHIFT, "sa"},
-  {LSFT8(G), NO_SHIFT, "xu"},
-  {LSFT8(H), NO_SHIFT, "xi"},
-  {LSFT8(J), NO_SHIFT, "xa"},
-  {LSFT8(K), NO_SHIFT, "gu"},
-  {LSFT8(L), NO_SHIFT, "ji"},
-  {LSFT8(SCLN), NO_SHIFT, "do"},
-  /* {LSFT8(QUOT), NO_SHIFT, "pi"}, */
-  /* Z行 */
-  {LSFT8(Z), NO_SHIFT, "xyu"},
-  {LSFT8(X), NO_SHIFT, "xya"},
-  {LSFT8(C), NO_SHIFT, "hu"},
-  {LSFT8(V), NO_SHIFT, "xyo"},
-  {LSFT8(B), NO_SHIFT, "xo"},
-  {LSFT8(N), NO_SHIFT, "xe"},
-  {LSFT8(M), NO_SHIFT, "vu"},
-  {LSFT8(COMMA), NO_SHIFT, "zu"},
-  {LSFT8(DOT), NO_SHIFT, "di"},
-  {LSFT8(SLSH), NO_SHIFT, "be"},
-
-  /* 右シフト */
-  /* Q行 */
-  /* {RSFT8(Q), NO_SHIFT, "pa"}, */
-  {RSFT8(W), NO_SHIFT, "ge"},
-  {RSFT8(E), NO_SHIFT, "de"},
-  {RSFT8(R), NO_SHIFT, "ze"},
-  {RSFT8(T), NO_SHIFT, "zo"},
-  /* {RSFT8(Y), NO_SHIFT, "o"}, */
-  {RSFT8(U), NO_SHIFT, "hi"},
-  {RSFT8(I), NO_SHIFT, "ki"},
-  {RSFT8(O), NO_SHIFT, "tu"},
-  /* {RSFT8(P), NO_SHIFT, "ni"}, */
-  /* {RSFT8(LBRC), NO_SHIFT, "na"}, */
-  /* A行 */
-  {RSFT8(A), NO_SHIFT, "go"},
-  {RSFT8(S), NO_SHIFT, "da"},
-  {RSFT8(D), NO_SHIFT, "ga"},
-  {RSFT8(F), NO_SHIFT, "za"},
-  {RSFT8(G), NO_SHIFT, "ba"},
-  {RSFT8(H), NO_SHIFT, "mu"},
-  {RSFT8(J), NO_SHIFT, "re"},
-  {RSFT8(K), NO_SHIFT, "ku"},
-  {RSFT8(L), NO_SHIFT, "ri"},
-  {RSFT8(SCLN), NO_SHIFT, "wa"},
-  {RSFT8(QUOT), NO_SHIFT, "ne"},
-  /* Z行 */
-  /* {RSFT8(Z), NO_SHIFT, "po"}, */
-  {RSFT8(X), NO_SHIFT, "bo"},
-  {RSFT8(C), NO_SHIFT, "bu"},
-  {RSFT8(V), NO_SHIFT, "pu"},
-  {RSFT8(B), NO_SHIFT, "xwa"},
-  {RSFT8(N), NO_SHIFT, "mi"},
-  {RSFT8(M), NO_SHIFT, "a"},
-  {RSFT8(COMMA), NO_SHIFT, "e"},
-  {RSFT8(DOT), NO_SHIFT, "ti"},
-  {RSFT8(SLSH), NO_SHIFT, "nu"},
-
-  /* 特殊打鍵 */
-  {SFT8(D, K), NO_SHIFT, "wo"},
-  {SFT8(D, COMM), NO_SHIFT, SS_TAP(X_COMM)},
-  {SFT8(D, DOT), NO_SHIFT, SS_TAP(X_DOT)},
-
-  /* 8x3のマトリックス定義 */
-  /* Pa/Pi/Pu/Pe/Po */
-  {SFT8(G, H), NO_SHIFT, "pa"},
-  {SFT8(G, U), NO_SHIFT, "pi"},
-  {SFT8(C, H), NO_SHIFT, "pu"},
-  {SFT8(G, SLSH), NO_SHIFT, "pe"},
-  {SFT8(H, X), NO_SHIFT, "po"},
+  NSS(A, "se"),
+  NSS(S, "me"),
+  NSS(D, "ni"),
+  NSS(F, "ma"),
+  NSS(G, "ti"),
+  NSS(H, "ya"),
+  NSS(J, "no"),
+  NSS(K, "mo"),
+  NSS(L, "tu"),
+  NSS(SCLN, "hu"),
   
-  /* あ */
-  {SFT8(M, Q), NO_SHIFT, "xe"},
-  {SFT8(M, W), NO_SHIFT, "xu"},
-  {SFT8(M, E), NO_SHIFT, "xo"},
-  {SFT8(M, R), NO_SHIFT, "xa"},
-  {SFT8(M, T), NO_SHIFT, "xi"},
+  /* Z行 */
+  /* NSS(Z, "ho"), */
+  /* NSS(X, "hi"), */
+  NSS(C, "wo"),
+  NSS(V, SS_TAP(X_COMM)),
+  NSS(B, "mi"),
+  NSS(N, "o"),
+  NSS(M, SS_TAP(X_DOT)),
+  NSS(COMM, "mu"),
+  NSS(DOT, "wa"),
+  /* NSS(SLSH, "re"),   */
 
+  /* 濁音 */
+  /* か行 */
+  NM2(J, F, "ga"),
+  NM2(J, W, "gi"),
+  NM2(F, H, "gu"),
+  NM2(J, S, "ge"),
+  NM2(J, V, "go"),
+
+  /* さ行 */
+  NM2(F, U, "za"),
+  NM2(J, R, "zi"),
+  NM2(F, O, "zu"),
+  NM2(J, A, "ze"),
+  NM2(J, B, "zo"),
+
+  /* た行 */
+  NM2(F, N, "da"),
+  NM2(J, G, "di"),
+  NM2(F, L, "du"),
+  NM2(J, E, "de"),
+  NM2(J, D, "do"),
+
+  /* は行 */
+  NM2(J, C, "ba"),
+  NM2(J, X, "bi"),
+  NM2(F, SCLN, "bu"),
+  NM2(F, P, "be"),
+  NM2(J, Z, "bo"),
+
+  /* 半濁音 */
+  /* は行 */
+  NM2(M, C, "pa"),
+  NM2(M, X, "pi"),
+  NM2(V, SCLN, "pu"),
+  NM2(V, P, "pe"),
+  NM2(M, Z, "po"),
+
+  /* 拗音 - 清音 */
   /* き */
-  {SFT8(I, Q), NO_SHIFT, "kye"},
-  {SFT8(I, W), NO_SHIFT, "kyu"},
-  {SFT8(I, E), NO_SHIFT, "kyo"},
-  {SFT8(I, R), NO_SHIFT, "kya"},
-  {SFT8(I, T), NO_SHIFT, "kyi"},
-
-  /* ぎ */
-  {SFT8(I, Z), NO_SHIFT, "gye"},
-  {SFT8(I, X), NO_SHIFT, "gyu"},
-  {SFT8(I, C), NO_SHIFT, "gyo"},
-  {SFT8(I, V), NO_SHIFT, "gya"},
-  {SFT8(I, B), NO_SHIFT, "gyi"},
+  NM2(W, H, "kya"),
+  NM2(W, P, "kyu"),
+  NM2(W, I, "kyo"),
 
   /* し */
-  {SFT8(L, A), NO_SHIFT, "sye"},
-  {SFT8(L, S), NO_SHIFT, "syu"},
-  {SFT8(L, D), NO_SHIFT, "syo"},
-  {SFT8(L, F), NO_SHIFT, "sya"},
-  {SFT8(L, G), NO_SHIFT, "syi"},
-
-  /* じ */
-  {SFT8(L, Z), NO_SHIFT, "zye"},
-  {SFT8(L, X), NO_SHIFT, "zyu"},
-  {SFT8(L, C), NO_SHIFT, "zyo"},
-  {SFT8(L, V), NO_SHIFT, "zya"},
-  {SFT8(L, B), NO_SHIFT, "zyi"},
+  NM2(R, H, "sya"),
+  NM2(R, P, "syu"),
+  NM2(R, I, "syo"),
 
   /* ち */
-  {SFT8(DOT, Q), NO_SHIFT, "tye"},
-  {SFT8(DOT, W), NO_SHIFT, "tyu"},
-  {SFT8(DOT, E), NO_SHIFT, "tyo"},
-  {SFT8(DOT, R), NO_SHIFT, "tya"},
-  {SFT8(DOT, T), NO_SHIFT, "tyi"},
-
-  /* ぢ */
-  {SFT8(DOT, Z), NO_SHIFT, "dye"},
-  {SFT8(DOT, X), NO_SHIFT, "dyu"},
-  {SFT8(DOT, C), NO_SHIFT, "dyo"},
-  {SFT8(DOT, V), NO_SHIFT, "dya"},
-  {SFT8(DOT, B), NO_SHIFT, "dyi"},
-
-  /* て */
-  {SFT8(COMM, S), NO_SHIFT, "texi"},
-  {SFT8(COMM, G), NO_SHIFT, "texyu"},
-
-  /* で */
-  {SFT8(COMM, X), NO_SHIFT, "dexi"},
-  {SFT8(COMM, B), NO_SHIFT, "dexyu"},
+  NM2(G, H, "tya"),
+  NM2(G, P, "tyu"),
+  NM2(G, I, "tyo"),
 
   /* に */
-  {SFT8(O, A), NO_SHIFT, "nye"},
-  {SFT8(O, S), NO_SHIFT, "nyu"},
-  {SFT8(O, D), NO_SHIFT, "nyo"},
-  {SFT8(O, F), NO_SHIFT, "nya"},
-  {SFT8(O, G), NO_SHIFT, "nyi"},
+  NM2(D, H, "nya"),
+  NM2(D, P, "nyu"),
+  NM2(D, I, "nyo"),
 
   /* ひ */
-  {SFT8(U, Q), NO_SHIFT, "hye"},
-  {SFT8(U, W), NO_SHIFT, "hyu"},
-  {SFT8(U, E), NO_SHIFT, "hyo"},
-  {SFT8(U, R), NO_SHIFT, "hya"},
-  {SFT8(U, T), NO_SHIFT, "hyi"},
-  
-  /* び */
-  {SFT8(U, Z), NO_SHIFT, "bye"},
-  {SFT8(U, X), NO_SHIFT, "byu"},
-  {SFT8(U, C), NO_SHIFT, "byo"},
-  {SFT8(U, V), NO_SHIFT, "bya"},
-  {SFT8(U, B), NO_SHIFT, "byi"},
-
-  /* ぴ */
-  {SFT8(H, Q), NO_SHIFT, "pye"},
-  {SFT8(H, W), NO_SHIFT, "pyu"},
-  {SFT8(H, E), NO_SHIFT, "pyo"},
-  {SFT8(H, R), NO_SHIFT, "pya"},
-  {SFT8(H, T), NO_SHIFT, "pyi"},
-
-  /* ふ */
-  {SFT8(J, A), NO_SHIFT, "fe"},
-  {SFT8(J, S), NO_SHIFT, "fyu"},
-  {SFT8(J, D), NO_SHIFT, "fo"},
-  {SFT8(J, F), NO_SHIFT, "fa"},
-  {SFT8(J, G), NO_SHIFT, "fi"},
-
-  /* ぶ */
-  {SFT8(J, Z), NO_SHIFT, "buxa"},
-  {SFT8(J, X), NO_SHIFT, "buxu"},
-  {SFT8(J, C), NO_SHIFT, "buxo"},
-  {SFT8(J, V), NO_SHIFT, "buxa"},
-  {SFT8(J, B), NO_SHIFT, "buxi"},
+  NM2(X, H, "hya"),
+  NM2(X, P, "hyu"),
+  NM2(X, I, "hyo"),
 
   /* み */
-  {SFT8(N, Q), NO_SHIFT, "mye"},
-  {SFT8(N, W), NO_SHIFT, "myu"},
-  {SFT8(N, E), NO_SHIFT, "myo"},
-  {SFT8(N, R), NO_SHIFT, "mya"},
-  {SFT8(N, T), NO_SHIFT, "myi"},
+  NM2(B, H, "mya"),
+  NM2(B, P, "myu"),
+  NM2(B, I, "myo"),
 
   /* り */
-  {SFT8(L, Q), NO_SHIFT, "rye"},
-  {SFT8(L, W), NO_SHIFT, "ryu"},
-  {SFT8(L, E), NO_SHIFT, "ryo"},
-  {SFT8(L, R), NO_SHIFT, "rya"},
-  {SFT8(L, T), NO_SHIFT, "ryi"},
+  NM2(E, H, "rya"),
+  NM2(E, P, "ryu"),
+  NM2(E, I, "ryo"),
+
+  /* 拗音 - 濁音 */
+  /* き */
+  NM3(W, H, J, "gya"),
+  NM3(W, P, J, "gyu"),
+  NM3(W, I, J, "gyo"),
+
+  /* し */
+  NM3(R, H, J, "zya"),
+  NM3(R, P, J, "zyu"),
+  NM3(R, I, J, "zyo"),
+
+  /* ち */
+  NM3(G, H, J, "dya"),
+  NM3(G, P, J, "dyu"),
+  NM3(G, I, J, "dyo"),
+
+  /* ひ */
+  NM3(X, H, J, "bya"),
+  NM3(X, P, J, "byu"),
+  NM3(X, I, J, "byo"),
+
+  /* 拗音 - 半濁音 */
+  /* ひ */
+  NM3(X, H, M, "pya"),
+  NM3(X, P, M, "pyu"),
+  NM3(X, I, M, "pyo"),
+
+  /* 小書き */
+  NM2(Q, J, "xa"),
+  NM2(Q, K, "xi"),
+  NM2(Q, L, "xu"),
+  NM2(Q, O, "xe"),
+  NM2(Q, N, "xo"),
+
+  /* 特殊 */
+  NM2(V, M, SS_TAP(X_ENTER)),
 };
 
-/* キーコードが対象のdefinitionに含まれるかどうかを返す */
-bool contains_keycodes(uint16_t keycode, shift_definition_t* shift_definition) {
-  return shift_definition->keycodes[0] == keycode || shift_definition->keycodes[1] == keycode;
+/* global states */
+uint16_t key_buffer = 0;
+/* The flag to detect shift-key-only release or not */
+bool least_one_sequence_sent = false;
+
+uint8_t ng_sort_patterns_3[8][3] = {
+  {2, 1, 0},
+  {0, 2, 1},
+  {1,0,2},
+  {0,1,2},
+  {2,1,0},
+  {2,0,1},
+  {1,2,0},
+  {0,1,2}
+};
+
+enum ng_key ng_keycode_to_ng_key(uint16_t keycode) {
+  switch (keycode) {
+  case KC_A:
+    return N_A;
+  case KC_B:
+    return N_B;
+  case KC_C:
+    return N_C;
+  case KC_D:
+    return N_D;
+  case KC_E:
+    return N_E;
+  case KC_F:
+    return N_F;
+  case KC_G:
+    return N_G;
+  case KC_H:
+    return N_H;
+  case KC_I:
+    return N_I;
+  case KC_J:
+    return N_J;
+  case KC_K:
+    return N_K;
+  case KC_L:
+    return N_L;
+  case KC_M:
+    return N_M;
+  case KC_N:
+    return N_N;
+  case KC_O:
+    return N_O;
+  case KC_P:
+    return N_P;
+  case KC_Q:
+    return N_Q;
+  case KC_R:
+    return N_R;
+  case KC_S:
+    return N_S;
+  case KC_T:
+    return N_T;
+  case KC_U:
+    return N_U;
+  case KC_V:
+    return N_V;
+  case KC_W:
+    return N_W;
+  case KC_X:
+    return N_X;
+  case KC_Y:
+    return N_Y;
+  case KC_Z:
+    return N_Z;
+  case KC_COMM:
+    return N_COMM;
+  case KC_DOT:
+    return N_DOT;
+  case KC_SLSH:
+    return N_SLSH;
+  case KC_SCLN:
+    return N_SCLN;
+  case M_KANA_SHIFT:
+    return N_SFT;
+  default:
+    return N_UNKNOWN;
+  }
 }
 
-/*
-  必要ならreduce、つまりsequenceを送信する。
-  reduceの条件としては、
-- すでにreducing = なんらかのキーでシフトが行われている
-- その状態でもう一回同じdefinitionに対してこの処理が呼ばれる
+uint32_t ng_bits_to_32bit(uint16_t bits) {
+  uint32_t result = 0;
+  
+  for (int i = 0; i < MAX_KEY_CODES; i++) {
+    uint8_t value = (bits >> (KEY_DEF_BITS * i)) & 0x1F;
+    result |= (1 << (value - 1));
+  }
 
-となる。
- */
-bool reduce_shift_if_necessary(uint16_t keycode, shift_definition_t* shift_definition) {
-  if (!contains_keycodes(keycode, shift_definition)) {
-    return false;
+  return result;
+}
+
+/* キー配列を特定の流れに変換して、比較をしやすくする */
+uint16_t ng_normalized_key_bits(uint16_t bits) {
+  uint8_t result[3] = ng_bits_to_normalized_key_bytes(bits);
+
+  return (bits & 0x8000) | (result[0] << (KEY_DEF_BITS * 2)) | (result[1] << KEY_DEF_BITS) | result[2];
+}
+
+bool ng_match_key_bits(uint16_t a, uint16_t b) {
+  uint16_t normalized_a = ng_normalized_key_bits(a);
+  uint16_t normalized_b = ng_normalized_key_bits(b);
+  
+  return normalized_a == normalized_b;
+}
+
+/* 現在入力されているキーの一覧でが含まれるような場合を検出する */
+bool ng_match_key_bits(uint16_t source, uint16_t target) {
+  uint32_t normalized_a = ng_bits_to_32bit(source);
+  uint32_t normalized_b = ng_bits_to_32bit(target);
+  
+  return (normalized_a & normalized_b) == normalized_a;
+}
+
+bool ng_is_key_pressed(enum ng_key key, uint16_t buffer) {
+  uint16_t buf = buffer;
+
+  if (key == N_SFT) {
+    return (buf & SHIFT_BIT) == SHIFT_BIT;
   }
   
-  if (shift_definition->shift_state == REDUCING) {
-    shift_definition->shift_state = NO_SHIFT;
-    send_string(shift_definition->sequence);
-
-    return true;
+  for (int i = 0; i < MAX_KEY_CODES; i++) {
+    if ((buf & 0x1F) == key) {
+      return true;
+    }
+    buf = buf >> KEY_DEF_BITS;
   }
 
-  shift_definition->shift_state = REDUCING;
   return false;
 }
 
-/* 全体の状態を元に戻す */
-void reset_states_8x3() {
-  int count = sizeof(shift_definitions) / sizeof(shift_definition_t);
-  for (int i = 0; i < count;i++) {
-    shift_definitions[i].shift_state = NO_SHIFT;
-  }
-
-  int single_tap_definition_count = sizeof(single_tap_definitions) / sizeof(single_tap_definition_t);
-  for (int i = 0; i < single_tap_definition_count;i++) {
-    single_tap_definitions[i].tap_state = RELEASED;
+void ng_update_buffer_pressed(uint16_t keycode) {
+  enum ng_key key = ng_keycode_to_ng_key(keycode);
+  if (key == N_SFT) {
+    key_buffer = key_buffer | SHIFT_BIT;
+  } else {
+    /* バッファがあふれるのをさけるために、一回32bitにつめなおしている */
+    uint32_t current = key_buffer & 0x7FFF;
+    current = (current << KEY_DEF_BITS) | key;
+    
+    key_buffer = (key_buffer & 0x8000) | (current & 0x7FFF);
   }
 }
 
-bool process_record_8x3(uint16_t keycode, keyrecord_t *record) {
-  /* シフト→単打の順で判定を行う */
-  int shift_definition_count = sizeof(shift_definitions) / sizeof(shift_definition_t);
-  int single_tap_definition_count = sizeof(single_tap_definitions) / sizeof(single_tap_definition_t);
+void ng_update_buffer_released(uint16_t keycode) {
+  enum ng_key key = ng_keycode_to_ng_key(keycode);
+  if (key == N_SFT) {
+    key_buffer &= 0x7FFF;
+  } else {
+    /* シフトキー以外の場合、そもそも確定していないのであれば、シフト部分以外をresetする */
+    key_buffer &= SHIFT_BIT;
+  }
+}
 
-  bool shift_reduced = false;
-
-  for (int i = 0; i < shift_definition_count;i++) {
-    shift_definition_t* def = &shift_definitions[i];
-
-    if (record->event.pressed) {
-      /* シフトに含まれる場合、その状態を判定する。 */
-      shift_reduced = reduce_shift_if_necessary(keycode, def);
-
-      if (shift_reduced) {
-        reset_states_8x3();
-        break;
-      }
+multi_definition_t* ng_find_multi_definition(uint16_t buffer) {
+  int count = sizeof(multi_definitions) / sizeof(multi_definition_t);
+  
+  for (int i = 0; i < count; i++) {
+    if (ng_match_key_bits(buffer, multi_definitions[i].keycodes)) {
+      return &multi_definitions[i];
     }
   }
 
-  if (shift_reduced) {
+  return NULL;
+}
+
+single_definition_t* ng_find_single_definition(uint16_t buffer) {
+  int count = sizeof(single_definitions) / sizeof(single_definition_t);
+  
+  for (int i = 0; i < count; i++) {
+    /* 単打の場合、シフトされていると入力できないので、あえてシフトをかけて、そのままではできないようにする */
+    uint16_t single_key = single_definitions[i].keycode & 0x7F;
+    uint16_t shift_bit = single_definitions[i].keycode & 0x80;
+    single_key = (shift_bit << 8) | single_key;
+    
+    if (ng_match_key_bits(buffer, single_key)) {
+      return &single_definitions[i];
+    }
+  }
+
+  return NULL;
+}
+
+
+/* 全体の状態を元に戻す */
+void ng_reset_state() {
+  key_buffer = 0;
+  least_one_sequence_sent = false;
+}
+
+bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
+  /* シフト→単打の順で判定を行う */
+  enum ng_key key = ng_keycode_to_ng_key(keycode);
+
+  /* サポートできないキーの場合は無視する */
+  if (key == N_UNKNOWN) {
+    return true;
+  }
+
+  /* 押された場合、現在のバッファで確定できるものがあるか探す */
+  if (record->event.pressed) {
+    ng_update_buffer_pressed(keycode);
+
+    multi_definition_t* multi_def = ng_find_multi_definition(key_buffer);
+
+    if (!multi_def) {
+      return false;
+    }
+
+    send_string(multi_def->sequence);
+    ng_update_buffer_released(keycode);
+
+    /* If shift key is pressing, set mark. */
+    if (key_buffer & SHIFT_BIT) {
+      least_one_sequence_sent = true;
+    }
+    
+    return false;
+  } else {
+    /* キーがおされていない場合は何もしない */
+    if (!ng_is_key_pressed(key, key_buffer)) {
+      return false;
+    }
+
+    /* releaseされた場合、単打以外は確定できない */
+    single_definition_t* single_def = ng_find_single_definition(key_buffer);
+    ng_update_buffer_released(keycode);
+
+    if (!single_def) {
+      /* 単打で見つからないような場合、何もしないようにする */
+      return false;
+    }
+
+    /* Do not send string if shift key is released and other sequence already sent */
+    if (key == N_SFT && least_one_sequence_sent) {
+      ng_reset_state();
+      return false;
+    }
+
+    send_string(single_def->sequence);
+    ng_reset_state();
     return false;
   }
-
-  for (int i = 0; i < single_tap_definition_count;i++) {
-    single_tap_definition_t* def = &single_tap_definitions[i];
-
-    if (def->keycode == keycode) {
-      if (record->event.pressed) {
-        if (def->tap_state == RELEASED) {
-          def->tap_state = PRESSED;
-          return false;
-        }
-      } else {
-        if (def->tap_state == PRESSED) {
-          def->tap_state = RELEASED;
-          send_string(def->sequence);
-          reset_states_8x3();
-          return false;
-        }
-      }
-    }
-  }
-
-  return true;
 }

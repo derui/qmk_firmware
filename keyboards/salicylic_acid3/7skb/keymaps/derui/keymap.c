@@ -54,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
     M_LSFTESC,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,        KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT, MO(_FN),
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-               KC_LGUI, KC_LALT,  M_KANA_LSHIFT,   M_SPACE,     M_ENTER,    M_KANA_RSHIFT, KC_RALT, KC_RGUI
+               KC_LGUI, KC_LALT, M_LOWER,     M_KANA_SHIFT,    M_KANA_SHIFT,     KC_RAISE, KC_RALT, KC_RGUI
           //`---------------------------------------------|   |--------------------------------------------'
   ),
 
@@ -358,7 +358,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   /* when kana_mode enabled, all keys handling on user's process */
   if (kana_mode && !has_anymod()) {
-    result = process_record_8x3(keycode, record);
+    result = process_record_ng(keycode, record);
   }
 
   return result;
