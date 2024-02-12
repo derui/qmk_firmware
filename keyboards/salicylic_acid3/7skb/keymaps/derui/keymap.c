@@ -168,11 +168,13 @@ void tapped_kc_raise() {
 }
 
 void interrupted_kc_raise() {
-  register_code(KC_RGUI);
+  layer_on(_RAISE);
+  update_tri_layer(_LOWER, _RAISE, _ADJUST);
 }
 
 void release_holding_kc_raise() {
-  unregister_code(KC_RGUI);
+  layer_off(_RAISE);
+  update_tri_layer(_LOWER, _RAISE, _ADJUST);
 }
 
 void tapped_kc_lower() {
@@ -208,34 +210,16 @@ void tapped_m_enter() {
   tap_code(KC_ENTER);
 }
 
-void interrupted_m_enter() {
-  layer_on(_RAISE);
-  update_tri_layer(_LOWER, _RAISE, _ADJUST);
-}
-
-void release_holding_m_enter() {
-  layer_off(_RAISE);
-  update_tri_layer(_LOWER, _RAISE, _ADJUST);
-}
-
 void tapped_m_space() {
   tap_code(KC_SPACE);
 }
 
 void interrupted_m_space() {
-  if (!kana_mode) {
-    register_code(KC_LSFT);
-  } else {
-    layer_on(_LOWER);
-  }
+  register_code(KC_LSFT);
 }
 
 void release_holding_m_space() {
-  if (!kana_mode) {
-    unregister_code(KC_LSFT);
-  } else {
-    layer_off(_LOWER);
-  }
+  unregister_code(KC_LSFT);
 }
 
 void tapped_m_lsftesc() {
@@ -290,9 +274,9 @@ custom_key_t m_enter = {
   0,
   .on_pressed = der_nop,
   .on_tapped = tapped_m_enter,
-  .on_interrupted = interrupted_m_enter,
-  .on_start_holding = interrupted_m_enter,
-  .on_release_holding = release_holding_m_enter,
+  .on_interrupted = interrupted_m_space,
+  .on_start_holding = interrupted_m_space,
+  .on_release_holding = release_holding_m_space,
 };
 
 custom_key_t m_space = {
