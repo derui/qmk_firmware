@@ -449,7 +449,7 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
 
     if (!def) {
       /* reset state if exact match sequence is not found */
-      ng_reset_state();
+      ng_update_buffer_released(keycode);
       return false;
     }
 
@@ -460,7 +460,12 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
     }
 
     send_string(def->sequence);
-    ng_reset_state();
+    ng_update_buffer_released(keycode);
+
+    /* If shift key is pressing, set mark. */
+    if (key_buffer & SHIFT_BIT) {
+      least_one_sequence_sent = true;
+    }
 
     return false;
   }
