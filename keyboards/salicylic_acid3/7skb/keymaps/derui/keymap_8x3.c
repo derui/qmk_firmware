@@ -209,6 +209,8 @@ seq_definition_t seq_definitions[] = {
   /* 特殊 */
   NM2(V, M, SS_TAP(X_ENTER)),
   NM3(J, K, T, SS_TAP(X_SLSH)),
+  NM3(J, K, D, "?"),
+  NM3(J, K, C, "!"),
 };
 
 /* global states */
@@ -301,6 +303,9 @@ uint32_t ng_bits_to_32bit(uint16_t bits) {
   
   for (int i = 0; i < MAX_KEY_CODES; i++) {
     uint8_t value = (bits >> (KEY_DEF_BITS * i)) & 0x1F;
+    if (value == 0) {
+      continue;
+    }
     result |= (1 << (value - 1));
   }
 
@@ -309,8 +314,8 @@ uint32_t ng_bits_to_32bit(uint16_t bits) {
 
 /* キー配列を特定の流れに変換して、比較をしやすくする */
 uint16_t ng_normalized_key_bits(uint16_t bits) {
-  uint8_t temp[3];
-  uint8_t result[3];
+  uint8_t temp[MAX_KEY_CODES];
+  uint8_t result[MAX_KEY_CODES];
   
   for (int i = 0; i < MAX_KEY_CODES; i++) {
     temp[i] = (bits >> (KEY_DEF_BITS * i)) & 0x1F;
@@ -333,10 +338,10 @@ bool ng_match_key_bits(uint16_t a, uint16_t b) {
 
 /* 現在入力されているキーの一覧が含まれるような場合を検出する */
 bool ng_similar_key_bits(uint16_t source, uint16_t target) {
-  uint32_t normalized_a = ng_bits_to_32bit(source);
-  uint32_t normalized_b = ng_bits_to_32bit(target);
+  uint32_t normalized_source = ng_bits_to_32bit(source);
+  uint32_t normalized_target = ng_bits_to_32bit(target);
   
-  return (normalized_a & normalized_b) == normalized_a;
+  return (normalized_source & normalized_target) == normalized_source;
 }
 
 bool ng_is_key_pressed(enum ng_key key, uint16_t buffer) {
@@ -393,7 +398,7 @@ seq_definition_t* ng_find_seq_definition(uint16_t buffer, bool contain_similar) 
       if (!contain_similar) {
         return result;
       }
-    } else if (ng_similar_key_bits(buffer, seq_definitions[i].keycodes)) {
+    } else if (contain_similar && ng_similar_key_bits(buffer, seq_definitions[i].keycodes)) {
       found_other_def = true;
     }
   }

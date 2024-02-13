@@ -340,8 +340,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return false;
   }
 
-  /* when kana_mode enabled, all keys handling on user's process */
-  if (kana_mode && !has_anymod()) {
+  /* かなは、他のレイヤーが有効ではないときにだけにしておく */
+  if (!has_anymod() && get_highest_layer(layer_state) == _KANA) {
     result = process_record_ng(keycode, record);
   }
 
