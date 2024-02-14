@@ -21,8 +21,8 @@ extern uint8_t is_master;
 // entirely and just use numbers.
 enum layer_number {
   _QWERTY = 0,
-  _KANA,
   _MAC,
+  _KANA,
   _LOWER,
   _RAISE,
   _ADJUST,
@@ -54,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
     M_LSFTESC,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,        KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT, MO(_FN),
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-               KC_LGUI, KC_LALT, M_LOWER,     M_KANA_SHIFT,    M_KANA_SHIFT,     KC_RAISE, KC_RALT, KC_RGUI
+               _______, _______, M_LOWER,     M_KANA_SHIFT,    M_KANA_SHIFT,     KC_RAISE, _______, _______
           //`---------------------------------------------|   |--------------------------------------------'
   ),
 
@@ -341,7 +341,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   /* かなは、他のレイヤーが有効ではないときにだけにしておく */
-  if (!has_anymod() && get_highest_layer(layer_state) == _KANA) {
+  if (!has_anymod() && kana_mode) {
     result = process_record_ng(keycode, record);
   }
 
