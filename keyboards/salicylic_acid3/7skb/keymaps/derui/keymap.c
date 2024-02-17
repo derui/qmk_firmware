@@ -160,7 +160,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   /* かなは、他のレイヤーが有効ではないときにだけにしておく */
-  if (!has_anymod() && ng_is_enabled()) {
+  uint16_t current_layer = get_highest_layer(layer_state);
+  if (!has_anymod() && (current_layer == _QWERTY || current_layer == _MAC) && ng_is_enabled()) {
     result = process_record_ng(keycode, record);
   }
 
