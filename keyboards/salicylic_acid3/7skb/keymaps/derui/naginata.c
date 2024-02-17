@@ -65,7 +65,7 @@ typedef struct {
 
 /* 複数キーの定義 */
 seq_definition_t seq_definitions[] = {
-  NSI(SFT, SS_TAP(X_SPACE)),
+  {SHIFT_BIT, SS_TAP(X_SPACE)},
   
   /* Q行 */
   NSI(Q, "vu"),
