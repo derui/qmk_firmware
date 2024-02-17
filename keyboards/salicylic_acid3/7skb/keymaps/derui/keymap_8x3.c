@@ -21,7 +21,6 @@
 #define NM2(k1, k2, seq) { (N_ ## k1 | (N_ ## k2 << 5)), seq }
 #define NM3(k1, k2, k3, seq) { N_ ## k1 | (N_ ## k2 << 5) | (N_ ## k3 << 10), seq}
 
-
 /* 複数キーの定義 */
 seq_definition_t seq_definitions[] = {
   /* シフトは、自分自身だけがあるような場合にだけ有効になる */
@@ -291,7 +290,8 @@ enum ng_key ng_keycode_to_ng_key(uint16_t keycode) {
     return N_SLSH;
   case KC_SCLN:
     return N_SCLN;
-  case M_KANA_SHIFT:
+  case M_SPACE:
+  case M_ENTER:
     return N_SFT;
   default:
     return N_UNKNOWN;

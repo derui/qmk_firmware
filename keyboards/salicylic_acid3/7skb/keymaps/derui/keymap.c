@@ -22,7 +22,6 @@ extern uint8_t is_master;
 enum layer_number {
   _QWERTY = 0,
   _MAC,
-  _KANA,
   _LOWER,
   _RAISE,
   _ADJUST,
@@ -41,20 +40,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     M_LSFTESC,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,        KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT, MO(_FN),
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
                KC_LGUI, KC_LALT,  KC_LOWER,        M_SPACE,     M_ENTER,         KC_RAISE, KC_RALT, KC_RGUI
-          //`---------------------------------------------|   |--------------------------------------------'
-  ),
-
-  [_KANA] = LAYOUT(
-  //,-----------------------------------------------------|   |--------------------------------------------------------------------------------.
-       KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,        KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_MINS,  KC_EQL, KC_BSLS,  KC_GRV,
-  //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------+--------|
-       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,        KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_LBRC, KC_RBRC,KC_BSPC,
-  //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------+--------|
-      M_CTLTB,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,        KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,KC_ENTER,
-  //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-    M_LSFTESC,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,        KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT, MO(_FN),
-  //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------+--------|
-               _______, _______, M_LOWER,     M_KANA_SHIFT,    M_KANA_SHIFT,     KC_RAISE, _______, _______
           //`---------------------------------------------|   |--------------------------------------------'
   ),
 
@@ -163,7 +148,6 @@ bool kana_mode = false;
 void tapped_kc_raise() {
   SEND_STRING(SS_TAP(X_INT4));
   SEND_STRING(SS_TAP(X_LNG1));
-  layer_on(_KANA);
   kana_mode = true;
 }
 
@@ -180,7 +164,6 @@ void release_holding_kc_raise() {
 void tapped_kc_lower() {
   SEND_STRING(SS_TAP(X_INT5));
   SEND_STRING(SS_TAP(X_LNG2));
-  layer_off(_KANA);
   kana_mode = false;
 }
 
