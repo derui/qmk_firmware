@@ -142,13 +142,12 @@ return state;
 }
 
 int RGB_current_mode;
-bool kana_mode = false;
 
 // my configurations
 void tapped_kc_raise() {
   SEND_STRING(SS_TAP(X_INT4));
   SEND_STRING(SS_TAP(X_LNG1));
-  kana_mode = true;
+  ng_enable();
 }
 
 void interrupted_kc_raise() {
@@ -164,7 +163,7 @@ void release_holding_kc_raise() {
 void tapped_kc_lower() {
   SEND_STRING(SS_TAP(X_INT5));
   SEND_STRING(SS_TAP(X_LNG2));
-  kana_mode = false;
+  ng_disable();
 }
 
 void interrupted_kc_lower() {
@@ -198,10 +197,16 @@ void tapped_m_space() {
 }
 
 void interrupted_m_space() {
+  if (ng_is_enabled()) {
+    return;
+  }
   register_code(KC_LSFT);
 }
 
 void release_holding_m_space() {
+  if (ng_is_enabled()) {
+    return;
+  }
   unregister_code(KC_LSFT);
 }
 
@@ -324,7 +329,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   /* かなは、他のレイヤーが有効ではないときにだけにしておく */
-  if (!has_anymod() && kana_mode) {
+  if (!has_anymod() && ng_is_enabled()) {
     result = process_record_ng(keycode, record);
   }
 
