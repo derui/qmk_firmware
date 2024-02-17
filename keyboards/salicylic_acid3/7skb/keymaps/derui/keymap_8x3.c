@@ -23,8 +23,6 @@
 
 /* 複数キーの定義 */
 seq_definition_t seq_definitions[] = {
-  /* シフトは、自分自身だけがあるような場合にだけ有効になる */
-  {SHIFT_BIT, SS_TAP(X_SPACE)},
   /* Q行 */
   NSI(Q, "vu"),
   NSI(W, "ki"),
@@ -214,8 +212,36 @@ seq_definition_t seq_definitions[] = {
 
 /* global states */
 uint16_t key_buffer = 0;
-/* The flag to detect shift-key-only release or not */
-bool least_one_sequence_sent = false;
+/*
+  薙刀式全体を管理するためのconfig。booleanそれだけで8bit消費してしまうので、各bitごとに意味を持たせる。
+  0: 薙刀式が有効かどうか
+  1: 連続シフト中かどうか
+ */
+uint8_t naginata_config = 0;
+
+bool ng_is_enabled(void) {
+  return (naginata_config & 0x1) == 0x1;
+}
+
+void ng_enable(void) {
+  naginata_config |= 0x1;
+}
+
+void ng_disable(void) {
+  naginata_config &= ~0x1;
+}
+
+bool ng_is_cont_shift(void) {
+  return (naginata_config & 0x2) == 0x2;
+}
+
+void ng_set_cont_shift(void) {
+  naginata_config |= 0x2;
+}
+
+void ng_unset_cont_shift(void) {
+  naginata_config &= ~0x2;
+}
 
 uint8_t ng_sort_patterns_3[8][3] = {
   {2, 1, 0},
@@ -413,7 +439,7 @@ seq_definition_t* ng_find_seq_definition(uint16_t buffer, bool contain_similar) 
 /* 全体の状態を元に戻す */
 void ng_reset_state() {
   key_buffer = 0;
-  least_one_sequence_sent = false;
+  ng_unset_cont_shift();
 }
 
 bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
@@ -441,7 +467,7 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
 
     /* If shift key is pressing, set mark. */
     if (key_buffer & SHIFT_BIT) {
-      least_one_sequence_sent = true;
+      ng_set_cont_shift();
     }
     
     return false;
@@ -461,7 +487,7 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
     }
 
     /* Do not send string if shift key is released and other sequence already sent */
-    if (key == N_SFT && least_one_sequence_sent) {
+    if (key == N_SFT && ng_is_cont_shift()) {
       ng_reset_state();
       return false;
     }
@@ -471,7 +497,7 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
 
     /* If shift key is pressing, set mark. */
     if (key_buffer & SHIFT_BIT) {
-      least_one_sequence_sent = true;
+      ng_set_cont_shift();
     }
 
     return false;
