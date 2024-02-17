@@ -36,13 +36,6 @@ enum ng_key {
   N_UNKNOWN
 };
 
-/* シフトキーを定義する構造体。 */
-typedef struct {
-  /* LSB is shift mark. */
-  uint16_t keycodes;
-  const char* sequence;
-} seq_definition_t;
-
 void ng_reset_state(void);
 
 bool ng_is_enabled(void);

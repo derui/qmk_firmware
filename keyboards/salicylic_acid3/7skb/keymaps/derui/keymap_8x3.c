@@ -21,6 +21,13 @@
 #define NM2(k1, k2, seq) { (N_ ## k1 | (N_ ## k2 << 5)), seq }
 #define NM3(k1, k2, k3, seq) { N_ ## k1 | (N_ ## k2 << 5) | (N_ ## k3 << 10), seq}
 
+/* シフトキーを定義する構造体。 */
+typedef struct {
+  /* LSB is shift mark. */
+  uint16_t keycodes;
+  const char* sequence;
+} seq_definition_t;
+
 /* 複数キーの定義 */
 seq_definition_t seq_definitions[] = {
   /* Q行 */
