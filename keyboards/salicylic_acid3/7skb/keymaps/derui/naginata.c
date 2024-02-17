@@ -1,7 +1,42 @@
 #include QMK_KEYBOARD_H
 #include "custom_keycodes.h"
-#include "custom_key_handling.h"
-#include "keymap_8x3.h"
+#include "naginata.h"
+
+/* 内部で利用するkeycode。1から始まっているのは、これらを16bitにおしこめるため */
+enum ng_key {
+  N_A = 1,
+  N_B,
+  N_C,
+  N_D,
+  N_E,
+  N_F,
+  N_G,
+  N_H,
+  N_I,
+  N_J,
+  N_K,
+  N_L,
+  N_M,
+  N_N,
+  N_O,
+  N_P,
+  N_Q,
+  N_R,
+  N_S,
+  N_T,
+  N_U,
+  N_V,
+  N_W,
+  N_X,
+  N_Y,
+  N_Z,
+  N_COMM,
+  N_DOT,
+  N_SLSH,
+  N_SCLN,
+  N_SFT,
+  N_UNKNOWN
+};
 
 /* 薙刀式を実装する */
 #define MAX_KEY_CODES 3
@@ -30,6 +65,8 @@ typedef struct {
 
 /* 複数キーの定義 */
 seq_definition_t seq_definitions[] = {
+  NSI(SFT, SS_TAP(X_SPACE)),
+  
   /* Q行 */
   NSI(Q, "vu"),
   NSI(W, "ki"),
@@ -209,6 +246,11 @@ seq_definition_t seq_definitions[] = {
   NM2(Q, L, "xu"),
   NM2(Q, O, "xe"),
   NM2(Q, N, "xo"),
+
+  /* 外来語 */
+  NM3(E, M, K, "texi"),
+  NM3(E, M, P, "texyu"),
+  NM3(G, M, O, "tixe"),
 
   /* 特殊 */
   NM2(V, M, SS_TAP(X_ENTER)),
@@ -407,7 +449,7 @@ void ng_update_buffer_pressed(uint16_t keycode) {
   }
 }
 
-void ng_update_buffer_released(uint16_t keycode) {
+void ng_update_state_released(uint16_t keycode) {
   enum ng_key key = ng_keycode_to_ng_key(keycode);
   if (key == N_SFT) {
     /* シフトキーの場合、全体をリセットする必要がある */
@@ -458,25 +500,10 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
     return true;
   }
 
-  /* 押された場合、現在のバッファで確定できるものがあるか探す */
+  /* 押された場合は、単にbufferに積むのみとする */
   if (record->event.pressed) {
     ng_update_buffer_pressed(keycode);
 
-    seq_definition_t* seq_def = ng_find_seq_definition(key_buffer, true);
-
-    /* 確定できる場合、一つしか存在していないので、そのまま決定してしまって良い */
-    if (!seq_def) {
-      return false;
-    }
-
-    send_string(seq_def->sequence);
-    ng_update_buffer_released(keycode);
-
-    /* If shift key is pressing, set mark. */
-    if (key_buffer & SHIFT_BIT) {
-      ng_set_cont_shift();
-    }
-    
     return false;
   } else {
     /* キーがおされていない場合は何もしない */
@@ -486,10 +513,9 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
 
     /* releaseされた場合、現在のバッファと一致するものを強制する */
     seq_definition_t* def = ng_find_seq_definition(key_buffer, false);
+    ng_update_state_released(keycode);
 
     if (!def) {
-      /* reset state if exact match sequence is not found */
-      ng_update_buffer_released(keycode);
       return false;
     }
 
@@ -500,7 +526,6 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
     }
 
     send_string(def->sequence);
-    ng_update_buffer_released(keycode);
 
     /* If shift key is pressing, set mark. */
     if (key_buffer & SHIFT_BIT) {
