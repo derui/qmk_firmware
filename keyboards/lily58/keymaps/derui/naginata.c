@@ -251,7 +251,14 @@ seq_definition_t seq_definitions[] = {
   NM3(E, M, K, "texi"),
   NM3(E, M, P, "texyu"),
   NM3(G, M, O, "tixe"),
-
+  NM3(D, M, L, "toxu"),
+  NM3(D, J, L, "doxu"),
+  NM3(R, M, O, "sixe"),
+  NM3(V, J, SCLN, "fa"),        /* ふぁ */
+  NM3(V, K, SCLN, "fi"),        /* ふぃ */
+  NM3(V, O, SCLN, "fe"),        /* ふぇ */
+  NM3(V, N, SCLN, "fo"),        /* ふぉ */
+  
   /* 特殊 */
   NM2(V, M, SS_TAP(X_ENTER)),
   NM3(J, K, T, SS_TAP(X_SLSH)),
@@ -265,6 +272,7 @@ uint16_t key_buffer = 0;
   薙刀式全体を管理するためのconfig。booleanそれだけで8bit消費してしまうので、各bitごとに意味を持たせる。
   0: 薙刀式が有効かどうか
   1: 連続シフト中かどうか
+  2: シフトしたキーがspaceかenterか。1ならばenter
  */
 uint8_t naginata_config = 0;
 
@@ -290,6 +298,18 @@ void ng_set_cont_shift(void) {
 
 void ng_unset_cont_shift(void) {
   naginata_config &= ~0x2;
+}
+
+void ng_shifted_by_space(void) {
+  naginata_config &= ~0x4;
+}
+
+void ng_shifted_by_enter(void) {
+  naginata_config |= 0x4;
+}
+
+uint16_t ng_shifted_key(void) {
+  return (naginata_config & 0x4) ? KC_ENTER : KC_SPACE;
 }
 
 uint8_t ng_sort_patterns_3[8][3] = {
@@ -492,7 +512,6 @@ void ng_reset_state() {
 }
 
 bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
-  /* シフト→単打の順で判定を行う */
   enum ng_key key = ng_keycode_to_ng_key(keycode);
 
   /* サポートできないキーの場合は無視する */
@@ -503,6 +522,15 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
   /* 押された場合は、単にbufferに積むのみとする */
   if (record->event.pressed) {
     ng_update_buffer_pressed(keycode);
+
+    // shiftキーの場合は設定を記録しておく
+    if (key == N_SFT) {
+      if (keycode == M_ENTER) {
+        ng_shifted_by_enter();
+      } else if (keycode == M_SPACE) {
+        ng_shifted_by_space();
+      }
+    }
 
     return false;
   } else {
@@ -520,8 +548,14 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
     }
 
     /* Do not send string if shift key is released and other sequence already sent */
-    if (key == N_SFT && ng_is_cont_shift()) {
+    if (key == N_SFT && def->keycodes == SHIFT_BIT) {
+      if (!ng_is_cont_shift()) {
+        // シフトキーが単体で離されたら、最後に押されたshiftキーに対応する処理を返す
+        tap_code(ng_shifted_key());
+      }
+
       ng_reset_state();
+      
       return false;
     }
 
