@@ -246,6 +246,9 @@ seq_definition_t seq_definitions[] = {
   NM2(Q, L, "xu"),
   NM2(Q, O, "xe"),
   NM2(Q, N, "xo"),
+  NM2(Q, P, "xyu"),
+  NM2(Q, I, "xyo"),
+  NM2(Q, H, "xya"),
 
   /* 外来語 */
   NM3(E, M, K, "texi"),
