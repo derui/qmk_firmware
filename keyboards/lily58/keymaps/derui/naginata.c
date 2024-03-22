@@ -108,7 +108,7 @@ seq_definition_t seq_definitions[] = {
   /* NSS(Q, "vu"), */
   NSS(W, "nu"),
   NSS(E, "ri"),
-  NSS(R, "ne"),
+  NSS(R, "me"),
   /* NSS(T, SS_TAP(X_RIGHT)), */
   /* NSS(Y, SS_TAP(X_LEFT)), */
   NSS(U, "sa"),
@@ -118,7 +118,7 @@ seq_definition_t seq_definitions[] = {
 
   /* A行 */
   NSS(A, "se"),
-  NSS(S, "me"),
+  NSS(S, "mi"),
   NSS(D, "ni"),
   NSS(F, "ma"),
   NSS(G, "ti"),
@@ -133,7 +133,7 @@ seq_definition_t seq_definitions[] = {
   /* NSS(X, "hi"), */
   NSS(C, "wo"),
   NSS(V, SS_TAP(X_COMM)),
-  NSS(B, "mi"),
+  NSS(B, "ne"),
   NSS(N, "o"),
   NSS(M, SS_TAP(X_DOT)),
   NSS(COMM, "mu"),
