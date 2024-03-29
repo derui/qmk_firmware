@@ -51,30 +51,18 @@ void release_holding_m_ctltb() {
 }
 
 void tapped_m_enter() {
-  if (ng_is_enabled()) {
-    return;
-  }
   tap_code(KC_ENTER);
 }
 
 void tapped_m_space() {
-  if (ng_is_enabled()) {
-    return;
-  }
   tap_code(KC_SPACE);
 }
 
 void interrupted_m_space() {
-  if (ng_is_enabled()) {
-    return;
-  }
   register_code(KC_LSFT);
 }
 
 void release_holding_m_space() {
-  if (ng_is_enabled()) {
-    return;
-  }
   unregister_code(KC_LSFT);
 }
 
