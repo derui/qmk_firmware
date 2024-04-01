@@ -3,7 +3,7 @@
 #include "custom_key_handling.h"
 #include "keymap_japanese.h"
 #include "custom_keys.h"
-#include "kawasemi.h"
+#include "naginata.h"
 #include "layer.h"
 
 
