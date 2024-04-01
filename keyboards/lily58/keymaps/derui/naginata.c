@@ -204,9 +204,9 @@ seq_definition_t seq_definitions[] = {
   NM2(X, I, "hyo"),
 
   /* み */
-  NM2(B, H, "mya"),
-  NM2(B, P, "myu"),
-  NM2(B, I, "myo"),
+  NM2(S, H, "mya"),
+  NM2(S, P, "myu"),
+  NM2(S, I, "myo"),
 
   /* り */
   NM2(E, H, "rya"),
