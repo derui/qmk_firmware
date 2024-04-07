@@ -267,6 +267,10 @@ seq_definition_t seq_definitions[] = {
   NM3(J, K, T, SS_TAP(X_SLSH)),
   NM3(J, K, D, "?"),
   NM3(J, K, C, "!"),
+
+  /* 編集モード */
+  /* SKKとか用 */
+  NM3(D, F, I, ";"),
 };
 
 /* global states */
