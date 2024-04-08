@@ -1,5 +1,5 @@
-#ifndef CONFIG_DERUI_NAGINATA_H
-#define CONFIG_DERUI_NAGINATA_H
+#ifndef CONFIG_DERUI_NG_LAYER_H
+#define CONFIG_DERUI_NG_LAYER_H
 
 void ng_reset_state(void);
 

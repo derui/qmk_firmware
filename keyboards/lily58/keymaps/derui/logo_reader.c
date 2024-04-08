@@ -1,5 +1,5 @@
 #include QMK_KEYBOARD_H
-#include "naginata.h"
+#include "ng_layer.h"
 
 void render_logo(void) {
 /*

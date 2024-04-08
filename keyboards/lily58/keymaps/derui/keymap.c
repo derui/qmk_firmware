@@ -3,7 +3,7 @@
 #include "custom_key_handling.h"
 #include "keymap_japanese.h"
 #include "custom_keys.h"
-#include "naginata.h"
+#include "ng_layer.h"
 #include "layer.h"
 
 
@@ -24,7 +24,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                              KC_LALT, KC_LGUI, _______, _______, _______,  _______, KC_RALT, KC_RGUI
 ),
 [_LOWER] = LAYOUT(
-  _______,  _______, _______, _______, _______, _______,                     _______, _______, _______,_______, _______, _______,
+  _______,  _______, _______, _______, _______, _______,                     _______, _______, _______,_______, _______, KC_INS,
   _______,  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                   _______, _______, _______,_______, _______, _______,
   _______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, KC_LPRN,                   _______, _______, _______,_______, _______, _______,
   _______, KC_LBRC, KC_RBRC, KC_LCBR, KC_RCBR, KC_RPRN, _______, _______, _______, _______, _______, _______, _______, _______,

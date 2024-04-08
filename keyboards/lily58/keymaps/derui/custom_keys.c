@@ -2,7 +2,7 @@
 #include "custom_keycodes.h"
 #include "custom_key_handling.h"
 #include "custom_keys.h"
-#include "naginata.h"
+#include "ng_layer.h"
 #include "layer.h"
 
 // my configurations
