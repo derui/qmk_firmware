@@ -1,6 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "custom_keycodes.h"
-#include "naginata.h"
+#include "ng_layer.h"
 
 /* 内部で利用するkeycode。1から始まっているのは、これらを16bitにおしこめるため */
 enum ng_key {
