@@ -41,18 +41,15 @@ enum ng_key {
 /* 薙刀式を実装する */
 #define MAX_KEY_CODES 3
 #define KEY_DEF_BITS 5
-#define SHIFT_BIT 0x8000
 
 /* 各シフトシーケンスを生成するためのdefinition
    次のように使う。
 
    NSI(A) => Aの単打
-   NSS(A) => Aのシフト面単打
    NM2(F, K) => FとKの同時シフト
    MN3(F, K, Q) => AとKとQの同時シフト
  */
 #define NSI(k, seq) { N_ ## k, seq }
-#define NSS(k, seq) { SHIFT_BIT | N_ ## k, seq }
 #define NM2(k1, k2, seq) { (N_ ## k1 | (N_ ## k2 << 5)), seq }
 #define NM3(k1, k2, k3, seq) { N_ ## k1 | (N_ ## k2 << 5) | (N_ ## k3 << 10), seq}
 
@@ -65,212 +62,127 @@ typedef struct {
 
 /* 複数キーの定義 */
 seq_definition_t seq_definitions[] = {
-  {SHIFT_BIT, SS_TAP(X_SPACE)},
   
   /* Q行 */
-  NSI(Q, "vu"),
-  NSI(W, "ki"),
-  NSI(E, "te"),
-  NSI(R, "si"),
-  NSI(T, SS_TAP(X_LEFT)),
-  NSI(Y, SS_TAP(X_RIGHT)),
-  NSI(U, SS_TAP(X_BSPC)),
+  NSI(W, "ho"),
+  NSI(E, "su"),
+  NSI(R, "wa"),
+  NSI(U, "sa"),
   NSI(I, "ru"),
-  NSI(O, "su"),
-  NSI(P, "he"),
+  NSI(O, "ti"),
 
   /* A行 */
-  NSI(A, "ro"),
-  NSI(S, "ke"),
-  NSI(D, "to"),
-  NSI(F, "ka"),
-  NSI(G, "xtu"),
-  NSI(H, "ku"),
-  NSI(J, "a"),
-  NSI(K, "i"),
-  NSI(L, "u"),
-  NSI(SCLN, SS_TAP(X_MINS)),
+  NSI(A, "ka"),
+  NSI(S, "i"),
+  NSI(D, "si"),
+  NSI(F, "nn"),
+  NSI(G, "ki"),
+  NSI(H, "u"),
+  NSI(J, "no"),
+  NSI(K, "ha"),
+  NSI(L, "to"),
+  NSI(SCLN, "ta"),
   
   /* Z行 */
-  NSI(Z, "ho"),
-  NSI(X, "hi"),
-  NSI(C, "ha"),
-  NSI(V, "ko"),
-  NSI(B, "so"),
-  NSI(N, "ta"),
-  NSI(M, "na"),
-  NSI(COMM, "nn"),
-  NSI(DOT, "ra"),
-  NSI(SLSH, "re"),
+  NSI(Z, "ma"),
+  NSI(X, "tu"),
+  NSI(C, "ku"),
+  NSI(V, "xtu"),
+  NSI(B, "ko"),
+  NSI(N, "wo"),
+  NSI(M, "mo"),
+  NSI(COMM, "ni"),
+  NSI(DOT, "na"),
+  NSI(SLSH, "te"),
 
   /* シフト面の定義 */
   /* Q行 */
-  /* NSS(Q, "vu"), */
-  NSS(W, "nu"),
-  NSS(E, "ri"),
-  NSS(R, "me"),
-  /* NSS(T, SS_TAP(X_RIGHT)), */
-  /* NSS(Y, SS_TAP(X_LEFT)), */
-  NSS(U, "sa"),
-  NSS(I, "yo"),
-  NSS(O, "e"),
-  NSS(P, "yu"),
+  NM2(K, W, "nu"),
+  NM2(K, E, "mu"),
+  NM2(K, R, "vu"),
+  NM2(F, U, "ne"),
+  NM2(F, I, "he"),
+  NM2(F, O, "e"),
 
   /* A行 */
-  NSS(A, "se"),
-  NSS(S, "mi"),
-  NSS(D, "ni"),
-  NSS(F, "ma"),
-  NSS(G, "ti"),
-  NSS(H, "ya"),
-  NSS(J, "no"),
-  NSS(K, "mo"),
-  NSS(L, "tu"),
-  NSS(SCLN, "hu"),
+  NM2(K, A, "yo"),
+  NM2(K, S, "ri"),
+  NM2(K, D, SS_TAP(X_MINS)),
+  NM2(K, F, "me"),
+  NM2(K, G, "mi"),
+  NM2(D, H, "se"),
+  NM2(D, J, "re"),
+  NM2(D, K, SS_TAP(X_MINS)),
+  NM2(D, L, "o"),
+  NM2(D, SCLN, "ra"),
   
   /* Z行 */
-  /* NSS(Z, "ho"), */
-  /* NSS(X, "hi"), */
-  NSS(C, "wo"),
-  NSS(V, SS_TAP(X_COMM)),
-  NSS(B, "ne"),
-  NSS(N, "o"),
-  NSS(M, SS_TAP(X_DOT)),
-  NSS(COMM, "mu"),
-  NSS(DOT, "wa"),
-  /* NSS(SLSH, "re"),   */
+  NM2(K, Z, "so"),
+  NM2(K, X, "ro"),
+  NM2(K, C, "yu"),
+  NM2(K, V, SS_TAP(X_COMM)),
+  NM2(K, B, "a"),
+  NM2(D, N, "hu"),
+  NM2(D, M, SS_TAP(X_DOT)),
+  NM2(D, COMM, "ke"),
+  NM2(D, DOT, "wi"),
+  NM2(D, SLSH, "ya"),
 
   /* 濁音 */
   /* か行 */
-  NM2(J, F, "ga"),
-  NM2(J, W, "gi"),
-  NM2(F, H, "gu"),
-  NM2(J, S, "ge"),
-  NM2(J, V, "go"),
+  NM2(J, A, "ga"),
+  NM2(J, G, "gi"),
+  NM2(J, C, "gu"),
+  NM2(F, COMM, "ge"),
+  NM2(J, B, "go"),
 
   /* さ行 */
   NM2(F, U, "za"),
-  NM2(J, R, "zi"),
-  NM2(F, O, "zu"),
-  NM2(J, A, "ze"),
-  NM2(J, B, "zo"),
+  NM2(J, D, "zi"),
+  NM2(J, E, "zu"),
+  NM2(F, H, "ze"),
+  NM2(J, Z, "zo"),
 
   /* た行 */
-  NM2(F, N, "da"),
-  NM2(J, G, "di"),
-  NM2(F, L, "du"),
-  NM2(J, E, "de"),
-  NM2(J, D, "do"),
+  NM2(F, SCLN, "da"),
+  NM2(F, O, "di"),
+  NM2(J, X, "du"),
+  NM2(F, SLSH, "de"),
+  NM2(F, L, "do"),
 
   /* は行 */
-  NM2(J, C, "ba"),
-  NM2(J, X, "bi"),
-  NM2(F, SCLN, "bu"),
-  NM2(F, P, "be"),
-  NM2(J, Z, "bo"),
+  NM2(F, K, "ba"),
+  NM2(F, DOT, "bi"),
+  NM2(F, N, "bu"),
+  NM2(F, I, "be"),
+  NM2(J, W, "bo"),
 
   /* 半濁音 */
   /* は行 */
-  NM2(M, C, "pa"),
-  NM2(M, X, "pi"),
-  NM2(V, SCLN, "pu"),
-  NM2(V, P, "pe"),
-  NM2(M, Z, "po"),
-
-  /* 拗音 - 清音 */
-  /* き */
-  NM2(W, H, "kya"),
-  NM2(W, P, "kyu"),
-  NM2(W, I, "kyo"),
-
-  /* し */
-  NM2(R, H, "sya"),
-  NM2(R, P, "syu"),
-  NM2(R, I, "syo"),
-
-  /* ち */
-  NM2(G, H, "tya"),
-  NM2(G, P, "tyu"),
-  NM2(G, I, "tyo"),
-
-  /* に */
-  NM2(D, H, "nya"),
-  NM2(D, P, "nyu"),
-  NM2(D, I, "nyo"),
-
-  /* ひ */
-  NM2(X, H, "hya"),
-  NM2(X, P, "hyu"),
-  NM2(X, I, "hyo"),
-
-  /* み */
-  NM2(S, H, "mya"),
-  NM2(S, P, "myu"),
-  NM2(S, I, "myo"),
-
-  /* り */
-  NM2(E, H, "rya"),
-  NM2(E, P, "ryu"),
-  NM2(E, I, "ryo"),
-
-  /* 拗音 - 濁音 */
-  /* き */
-  NM3(W, H, J, "gya"),
-  NM3(W, P, J, "gyu"),
-  NM3(W, I, J, "gyo"),
-
-  /* し */
-  NM3(R, H, J, "zya"),
-  NM3(R, P, J, "zyu"),
-  NM3(R, I, J, "zyo"),
-
-  /* ち */
-  NM3(G, H, J, "dya"),
-  NM3(G, P, J, "dyu"),
-  NM3(G, I, J, "dyo"),
-
-  /* ひ */
-  NM3(X, H, J, "bya"),
-  NM3(X, P, J, "byu"),
-  NM3(X, I, J, "byo"),
-
-  /* 拗音 - 半濁音 */
-  /* ひ */
-  NM3(X, H, M, "pya"),
-  NM3(X, P, M, "pyu"),
-  NM3(X, I, M, "pyo"),
+  NM2(V, K, "pa"),
+  NM2(V, DOT, "pi"),
+  NM2(V, N, "pu"),
+  NM2(V, I, "pe"),
+  NM2(M, W, "po"),
 
   /* 小書き */
-  NM2(Q, J, "xa"),
-  NM2(Q, K, "xi"),
-  NM2(Q, L, "xu"),
-  NM2(Q, O, "xe"),
-  NM2(Q, N, "xo"),
-  NM2(Q, P, "xyu"),
-  NM2(Q, I, "xyo"),
-  NM2(Q, H, "xya"),
-
-  /* 外来語 */
-  NM3(E, M, K, "texi"),
-  NM3(E, M, P, "texyu"),
-  NM3(G, M, O, "tixe"),
-  NM3(D, M, L, "toxu"),
-  NM3(D, J, L, "doxu"),
-  NM3(R, M, O, "sixe"),
-  NM3(V, J, SCLN, "fa"),        /* ふぁ */
-  NM3(V, K, SCLN, "fi"),        /* ふぃ */
-  NM3(V, O, SCLN, "fe"),        /* ふぇ */
-  NM3(V, N, SCLN, "fo"),        /* ふぉ */
+  NM2(M, B, "xa"),
+  NM2(M, S, "xi"),
+  NM2(V, H, "xu"),
+  NM2(V, O, "xe"),
+  NM2(V, L, "xo"),
+  NM2(M, C, "xyu"),
+  NM2(M, A, "xyo"),
+  NM2(V, SLSH, "xya"),
   
   /* 特殊 */
   NM2(V, M, SS_TAP(X_ENTER)),
-  NM3(J, K, T, SS_TAP(X_SLSH)),
+  NM3(J, K, E, SS_TAP(X_SLSH)),
   NM3(J, K, D, "?"),
   NM3(J, K, C, "!"),
 
   /* 編集モード */
   /* SKKとか用に、使わない同手打鍵を利用する */
-  NM2(J, SCLN, ";"),
 };
 
 /* global states */
@@ -450,7 +362,7 @@ bool ng_is_key_pressed(enum ng_key key, uint16_t buffer) {
   uint16_t buf = buffer;
 
   if (key == N_SFT) {
-    return (buf & SHIFT_BIT) == SHIFT_BIT;
+    return ng_is_cont_shift();
   }
   
   for (int i = 0; i < MAX_KEY_CODES; i++) {
@@ -466,24 +378,23 @@ bool ng_is_key_pressed(enum ng_key key, uint16_t buffer) {
 void ng_update_buffer_pressed(uint16_t keycode) {
   enum ng_key key = ng_keycode_to_ng_key(keycode);
   if (key == N_SFT) {
-    key_buffer = key_buffer | SHIFT_BIT;
+    ng_set_cont_shift();
   } else {
     /* バッファがあふれるのをさけるために、一回32bitにつめなおしている */
     uint32_t current = key_buffer & 0x7FFF;
     current = (current << KEY_DEF_BITS) | key;
     
-    key_buffer = (key_buffer & 0x8000) | (current & 0x7FFF);
+    key_buffer = current & 0x7FFF;
   }
 }
 
 void ng_update_state_released(uint16_t keycode) {
   enum ng_key key = ng_keycode_to_ng_key(keycode);
+  key_buffer = 0;
+  
   if (key == N_SFT) {
-    /* シフトキーの場合、全体をリセットする必要がある */
-    key_buffer = 0;
-  } else {
-    /* シフトキー以外の場合、そもそも確定していないのであれば、シフト部分以外をresetする */
-    key_buffer &= SHIFT_BIT;
+    /* シフトキーの場合、contを初期化する */
+    ng_unset_cont_shift();
   }
 }
 
@@ -518,6 +429,19 @@ void ng_reset_state() {
   ng_unset_cont_shift();
 }
 
+/* shiftされている場合には、先頭だけ大文字にする */
+void send_string_shifted(const char* sequence) {
+  for (int i = 0; i < strlen(sequence); i++) {
+    if (i == 0 && 'a' <= sequence[i] && sequence[i] <= 'z' && ng_is_cont_shift()) {
+      char shifted = sequence[i] - ('a' - 'A');
+      send_string(&shifted);
+    } else {
+      send_string(&sequence[i]);
+      break;
+    }
+  }
+}
+
 bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
   enum ng_key key = ng_keycode_to_ng_key(keycode);
 
@@ -532,6 +456,7 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
 
     // shiftキーの場合は設定を記録しておく
     if (key == N_SFT) {
+      ng_set_cont_shift();
       if (keycode == M_ENTER) {
         ng_shifted_by_enter();
       } else if (keycode == M_SPACE) {
@@ -550,28 +475,22 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
     seq_definition_t* def = ng_find_seq_definition(key_buffer, false);
     ng_update_state_released(keycode);
 
-    if (!def) {
+    if (!def && key != N_SFT) {
       return false;
     }
 
     /* Do not send string if shift key is released and other sequence already sent */
-    if (key == N_SFT && def->keycodes == SHIFT_BIT) {
+    if (key == N_SFT) {
       if (!ng_is_cont_shift()) {
         // シフトキーが単体で離されたら、最後に押されたshiftキーに対応する処理を返す
         tap_code(ng_shifted_key());
+        ng_unset_cont_shift();
       }
 
-      ng_reset_state();
-      
       return false;
     }
 
-    send_string(def->sequence);
-
-    /* If shift key is pressing, set mark. */
-    if (key_buffer & SHIFT_BIT) {
-      ng_set_cont_shift();
-    }
+    send_string_shifted(def->sequence);
 
     return false;
   }
