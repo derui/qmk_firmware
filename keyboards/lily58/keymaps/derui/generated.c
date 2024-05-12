@@ -41,6 +41,8 @@ enum ng_key {
 /* 薙刀式を実装する */
 #define MAX_KEY_CODES 3
 #define KEY_DEF_BITS 5
+#define TURBID_KEY N_F
+#define SEMI_TURBID_KEY N_E
 
 /* 各シフトシーケンスを生成するためのdefinition
    次のように使う。
@@ -64,125 +66,123 @@ typedef struct {
 seq_definition_t seq_definitions[] = {
   
   /* Q行 */
-  NSI(W, "ho"),
-  NSI(E, "su"),
-  NSI(R, "wa"),
-  NSI(U, "sa"),
-  NSI(I, "ru"),
-  NSI(O, "ti"),
+  NSI(W, "no"),
+  /* NSI(E, "ku"), */
+  NSI(R, "re"),
+  NSI(U, "mo"),
+  NSI(I, "to"),
+  NSI(O, "na"),
 
   /* A行 */
-  NSI(A, "ka"),
+  NSI(A, "u"),
   NSI(S, "i"),
-  NSI(D, "si"),
-  NSI(F, "nn"),
-  NSI(G, "ki"),
-  NSI(H, "u"),
-  NSI(J, "no"),
-  NSI(K, "ha"),
-  NSI(L, "to"),
-  NSI(SCLN, "ta"),
+  NSI(D, "nn"),
+  /* NSI(F, "nn"), */
+  NSI(G, "xtu"),
+  NSI(H, "ki"),
+  NSI(J, "si"),
+  NSI(K, "ka"),
+  NSI(L, "ta"),
+  NSI(SCLN, "te"),
   
   /* Z行 */
-  NSI(Z, "ma"),
-  NSI(X, "tu"),
-  NSI(C, "ku"),
-  NSI(V, "xtu"),
-  NSI(B, "ko"),
-  NSI(N, "wo"),
-  NSI(M, "mo"),
-  NSI(COMM, "ni"),
-  NSI(DOT, "na"),
-  NSI(SLSH, "te"),
+  NSI(Z, "tu"),
+  NSI(X, "ku"),
+  NSI(C, "ru"),
+  NSI(V, "ni"),
+  NSI(B, "ri"),
+  NSI(N, "su"),
+  NSI(M, "ha"),
+  NSI(COMM, "ti"),
+  NSI(DOT, "ko"),
+  NSI(SLSH, "wo"),
 
   /* シフト面の定義 */
   /* Q行 */
-  NM2(K, W, "nu"),
-  NM2(K, E, "mu"),
-  NM2(K, R, "vu"),
-  NM2(F, U, "ne"),
-  NM2(F, I, "he"),
-  NM2(F, O, "e"),
+  NM2(K, W, "sa"),
+  NM2(K, E, "ma"),
+  NM2(K, R, "mi"),
+  NM2(D, U, "se"),
+  NM2(D, I, "o"),
+  NM2(D, O, "hi"),
 
   /* A行 */
-  NM2(K, A, "yo"),
-  NM2(K, S, "ri"),
-  NM2(K, D, SS_TAP(X_MINS)),
-  NM2(K, F, "me"),
-  NM2(K, G, "mi"),
-  NM2(D, H, "se"),
-  NM2(D, J, "re"),
-  NM2(D, K, SS_TAP(X_MINS)),
-  NM2(D, L, "o"),
-  NM2(D, SCLN, "ra"),
+  NM2(K, A, "so"),
+  NM2(K, S, "ke"),
+  NM2(K, D, "ro"),
+  NM2(K, F, "ra"),
+  NM2(K, G, "wa"),
+  NM2(D, H, "e"),
+  NM2(D, J, "yo"),
+  NM2(D, K, "ro"),
+  NM2(D, L, "a"),
+  NM2(D, SCLN, SS_TAP(X_MINS)),
   
   /* Z行 */
-  NM2(K, Z, "so"),
-  NM2(K, X, "ro"),
-  NM2(K, C, "yu"),
-  NM2(K, V, SS_TAP(X_COMM)),
-  NM2(K, B, "a"),
-  NM2(D, N, "hu"),
-  NM2(D, M, SS_TAP(X_DOT)),
-  NM2(D, COMM, "ke"),
-  NM2(D, DOT, "wi"),
-  NM2(D, SLSH, "ya"),
+  NM2(K, Z, "nu"),
+  NM2(K, X, "vu"),
+  NM2(K, C, "he"),
+  NM2(K, V, "mu"),
+  NM2(K, B, "ho"),
+  NM2(D, N, "ya"),
+  NM2(D, M, "ne"),
+  NM2(D, COMM, "yu"),
+  NM2(D, DOT, "me"),
+  NM2(D, SLSH, "hu"),
 
   /* 濁音 */
   /* か行 */
-  NM2(J, A, "ga"),
-  NM2(J, G, "gi"),
-  NM2(J, C, "gu"),
-  NM2(F, COMM, "ge"),
-  NM2(J, B, "go"),
+  NM2(F, K, "ga"),
+  NM2(F, H, "gi"),
+  NM2(F, X, "gu"),
+  NM2(F, S, "ge"),
+  NM2(F, DOT, "go"),
 
   /* さ行 */
-  NM2(F, U, "za"),
-  NM2(J, D, "zi"),
-  NM2(J, E, "zu"),
-  NM2(F, H, "ze"),
-  NM2(J, Z, "zo"),
+  NM2(F, W, "za"),
+  NM2(F, J, "zi"),
+  NM2(F, N, "zu"),
+  NM2(F, U, "ze"),
+  NM2(F, A, "zo"),
 
   /* た行 */
-  NM2(F, SCLN, "da"),
-  NM2(F, O, "di"),
-  NM2(J, X, "du"),
-  NM2(F, SLSH, "de"),
-  NM2(F, L, "do"),
+  NM2(F, L, "da"),
+  NM2(F, COMM, "di"),
+  NM2(F, Z, "du"),
+  NM2(F, SCLN, "de"),
+  NM2(F, I, "do"),
 
   /* は行 */
-  NM2(F, K, "ba"),
-  NM2(F, DOT, "bi"),
-  NM2(F, N, "bu"),
-  NM2(F, I, "be"),
-  NM2(J, W, "bo"),
+  NM2(F, M, "ba"),
+  NM2(F, O, "bi"),
+  NM2(F, SLSH, "bu"),
+  NM2(F, C, "be"),
+  NM2(F, B, "bo"),
 
   /* 半濁音 */
   /* は行 */
-  NM2(V, K, "pa"),
-  NM2(V, DOT, "pi"),
-  NM2(V, N, "pu"),
-  NM2(V, I, "pe"),
-  NM2(M, W, "po"),
+  NM2(E, M, "pa"),
+  NM2(E, O, "pi"),
+  NM2(E, SLSH, "pu"),
+  NM2(E, C, "pe"),
+  NM2(E, B, "po"),
 
   /* 小書き */
-  NM2(M, B, "xa"),
-  NM2(M, S, "xi"),
-  NM2(V, H, "xu"),
-  NM2(V, O, "xe"),
-  NM2(V, L, "xo"),
-  NM2(M, C, "xyu"),
-  NM2(M, A, "xyo"),
-  NM2(V, SLSH, "xya"),
+  NM2(E, L, "xa"),
+  NM2(E, S, "xi"),
+  NM2(E, A, "xu"),
+  NM2(E, H, "xe"),
+  NM2(E, I, "xo"),
+  NM2(E, COMM, "xyu"),
+  NM2(E, J, "xyo"),
+  NM2(E, N, "xya"),
   
   /* 特殊 */
-  NM2(V, M, SS_TAP(X_ENTER)),
+  NM2(V, M, SS_TAP(X_DOT)),
+  NM2(F, J, SS_TAP(X_COMM)),
   NM3(J, K, E, SS_TAP(X_SLSH)),
   NM3(J, K, D, "?"),
   NM3(J, K, C, "!"),
-
-  /* 編集モード */
-  /* SKKとか用に、使わない同手打鍵を利用する */
 };
 
 /* global states */
@@ -390,11 +390,20 @@ void ng_update_buffer_pressed(uint16_t keycode) {
 
 void ng_update_state_released(uint16_t keycode) {
   enum ng_key key = ng_keycode_to_ng_key(keycode);
+  uint16_t current = key_buffer;
   key_buffer = 0;
   
   if (key == N_SFT) {
     /* シフトキーの場合、contを初期化する */
     ng_unset_cont_shift();
+  }
+
+  if (key == TURBID_KEY && current == TURBID_KEY) {
+    key_buffer = key;
+  }
+
+  if (key == SEMI_TURBID_KEY && current == SEMI_TURBID_KEY) {
+    key_buffer = key;
   }
 }
 
