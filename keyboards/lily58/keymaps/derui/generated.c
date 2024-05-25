@@ -41,8 +41,7 @@ enum ng_key {
 /* 薙刀式を実装する */
 #define MAX_KEY_CODES 3
 #define KEY_DEF_BITS 5
-#define TURBID_KEY N_F
-#define SEMI_TURBID_KEY N_E
+#define SHIFT_BIT 0x8000
 
 /* 各シフトシーケンスを生成するためのdefinition
    次のように使う。
@@ -52,6 +51,7 @@ enum ng_key {
    MN3(F, K, Q) => AとKとQの同時シフト
  */
 #define NSI(k, seq) { N_ ## k, seq }
+#define NSS(k, seq) { SHIFT_BIT | N_ ## k, seq }
 #define NM2(k1, k2, seq) { (N_ ## k1 | (N_ ## k2 << 5)), seq }
 #define NM3(k1, k2, k3, seq) { N_ ## k1 | (N_ ## k2 << 5) | (N_ ## k3 << 10), seq}
 
@@ -66,123 +66,178 @@ typedef struct {
 seq_definition_t seq_definitions[] = {
   
   /* Q行 */
-  NSI(W, "no"),
-  /* NSI(E, "ku"), */
-  NSI(R, "re"),
-  NSI(U, "mo"),
-  NSI(I, "to"),
-  NSI(O, "na"),
+  NSI(W, "ru"),
+  NSI(E, "to"),
+  NSI(R, "ra"),
+  NSI(U, "ti"),
+  NSI(I, "su"),
+  NSI(O, "ku"),
 
   /* A行 */
-  NSI(A, "u"),
-  NSI(S, "i"),
-  NSI(D, "nn"),
-  /* NSI(F, "nn"), */
-  NSI(G, "xtu"),
+  NSI(A, "ta"),
+  NSI(S, "nn"),
+  NSI(D, "na"),
+  NSI(F, "no"),
+  NSI(G, "ni"),
   NSI(H, "ki"),
-  NSI(J, "si"),
-  NSI(K, "ka"),
-  NSI(L, "ta"),
-  NSI(SCLN, "te"),
+  NSI(J, "ka"),
+  NSI(K, "u"),
+  NSI(L, "i"),
+  NSI(SCLN, "si"),
   
   /* Z行 */
-  NSI(Z, "tu"),
-  NSI(X, "ku"),
-  NSI(C, "ru"),
-  NSI(V, "ni"),
-  NSI(B, "ri"),
-  NSI(N, "su"),
+  NSI(Z, "mo"),
+  NSI(X, "te"),
+  NSI(C, "tu"),
+  NSI(V, "ma"),
+  NSI(B, "wo"),
+  NSI(N, "o"),
   NSI(M, "ha"),
-  NSI(COMM, "ti"),
-  NSI(DOT, "ko"),
-  NSI(SLSH, "wo"),
+  NSI(COMM, "xtu"),
+  NSI(DOT, "ri"),
+  NSI(SLSH, "ko"),
 
   /* シフト面の定義 */
   /* Q行 */
-  NM2(K, W, "sa"),
-  NM2(K, E, "ma"),
-  NM2(K, R, "mi"),
-  NM2(D, U, "se"),
-  NM2(D, I, "o"),
-  NM2(D, O, "hi"),
+  NM2(K, W, "hi"),
+  NM2(K, E, "me"),
+  NM2(K, R, "ke"),
+  NM2(D, U, "ya"),
+  /* NM2(D, I, "yo"), */
+  /* NM2(D, O, "nu"), */
 
   /* A行 */
-  NM2(K, A, "so"),
-  NM2(K, S, "ke"),
-  NM2(K, D, "ro"),
-  NM2(K, F, "ra"),
-  NM2(K, G, "wa"),
-  NM2(D, H, "e"),
-  NM2(D, J, "yo"),
-  NM2(D, K, "ro"),
-  NM2(D, L, "a"),
-  NM2(D, SCLN, SS_TAP(X_MINS)),
+  NM2(K, A, "mi"),
+  NM2(K, S, "hu"),
+  NM2(K, D, "mu"),
+  NM2(K, F, SS_TAP(X_MINS)),
+  NM2(K, G, "he"),
+  NM2(D, H, "nu"),
+  /* NM2(D, J, "re"), */
+  NM2(D, K, "mu"),
+  NM2(D, L, "ho"),
+  NM2(D, SCLN, "yu"),
   
   /* Z行 */
-  NM2(K, Z, "nu"),
-  NM2(K, X, "vu"),
-  NM2(K, C, "he"),
-  NM2(K, V, "mu"),
-  NM2(K, B, "ho"),
-  NM2(D, N, "ya"),
-  NM2(D, M, "ne"),
-  NM2(D, COMM, "yu"),
-  NM2(D, DOT, "me"),
-  NM2(D, SLSH, "hu"),
+  NM2(K, Z, "a"),
+  NM2(K, X, "e"),
+  NM2(K, C, "ne"),
+  NM2(K, V, "re"),
+  NM2(K, B, "se"),
+  NM2(D, N, "sa"),
+  NM2(D, M, "wa"),
+  NM2(D, COMM, "so"),
+  NM2(D, DOT, "yo"),
+  NM2(D, SLSH, "ro"),
 
   /* 濁音 */
+  /* あ行 */
+  NSI(Q, "vu"),
+  
   /* か行 */
-  NM2(F, K, "ga"),
+  NM2(F, J, "ga"),
   NM2(F, H, "gi"),
-  NM2(F, X, "gu"),
-  NM2(F, S, "ge"),
-  NM2(F, DOT, "go"),
+  NM2(F, O, "gu"),
+  NM2(J, R, "ge"),
+  NM2(F, SLSH, "go"),
 
   /* さ行 */
-  NM2(F, W, "za"),
-  NM2(F, J, "zi"),
-  NM2(F, N, "zu"),
-  NM2(F, U, "ze"),
-  NM2(F, A, "zo"),
+  NM2(F, N, "za"),
+  NM2(J, SCLN, "zi"),
+  NM2(F, I, "zu"),
+  NM2(J, B, "ze"),
+  NM2(J, COMM, "zo"),
 
   /* た行 */
-  NM2(F, L, "da"),
-  NM2(F, COMM, "di"),
-  NM2(F, Z, "du"),
-  NM2(F, SCLN, "de"),
-  NM2(F, I, "do"),
+  NM2(J, A, "da"),
+  NM2(F, U, "di"),
+  NM2(J, C, "du"),
+  NM2(J, X, "de"),
+  NM2(J, E, "do"),
 
   /* は行 */
   NM2(F, M, "ba"),
-  NM2(F, O, "bi"),
-  NM2(F, SLSH, "bu"),
-  NM2(F, C, "be"),
-  NM2(F, B, "bo"),
+  NM2(J, W, "bi"),
+  NM2(J, S, "bu"),
+  NM2(J, G, "be"),
+  NM2(F, L, "bo"),
 
   /* 半濁音 */
   /* は行 */
-  NM2(E, M, "pa"),
-  NM2(E, O, "pi"),
-  NM2(E, SLSH, "pu"),
-  NM2(E, C, "pe"),
-  NM2(E, B, "po"),
-
+  NM2(V, M, "pa"),
+  NM2(M, W, "pi"),
+  NM2(M, S, "pu"),
+  NM2(M, G, "pe"),
+  NM2(V, L, "po"),
+  
   /* 小書き */
-  NM2(E, L, "xa"),
-  NM2(E, S, "xi"),
-  NM2(E, A, "xu"),
-  NM2(E, H, "xe"),
-  NM2(E, I, "xo"),
-  NM2(E, COMM, "xyu"),
-  NM2(E, J, "xyo"),
-  NM2(E, N, "xya"),
+  NM2(P, Z, "xa"),
+  NM2(Q, L, "xi"),
+  NM2(Q, K, "xu"),
+  NM2(P, X, "xe"),
+  NM2(Q, N, "xo"),
+  NM2(Q, DOT, "xyo"),
+  NM2(Q, SCLN, "xyu"),
+  NM2(Q, U, "xya"),
   
   /* 特殊 */
-  NM2(V, M, SS_TAP(X_DOT)),
-  NM2(F, J, SS_TAP(X_COMM)),
+  NM2(K, J, SS_TAP(X_DOT)),
+  NM2(D, F, SS_TAP(X_COMM)),
   NM3(J, K, E, SS_TAP(X_SLSH)),
   NM3(J, K, D, "?"),
   NM3(J, K, C, "!"),
+
+  /* 拗音拡張 */
+  /* 濁音 */
+  /* か行 */
+  NM2(A, H, "kya"),
+  NM2(W, H, "kyu"),
+  NM2(E, H, "kyo"),
+  NM3(F, A, H, "gya"),
+  NM3(F, W, H, "gyu"),
+  NM3(F, E, H, "gyo"),
+
+  /* さ行 */
+  NM2(A, SCLN, "sya"),
+  NM2(W, SCLN, "syu"),
+  NM2(E, SCLN, "syo"),
+  NM3(J, A, SCLN, "zya"),
+  NM3(J, W, SCLN, "zyu"),
+  NM3(J, E, SCLN, "zyo"),
+
+  /* た行 */
+  NM2(A, U, "tya"),
+  NM2(W, U, "tyu"),
+  NM2(E, U, "tyo"),
+  NM3(F, A, U, "dya"),
+  NM3(F, W, U, "dyu"),
+  NM3(F, E, U, "dyo"),
+
+  /* は行 */
+  NM2(SCLN, W, "hya"),
+  NM2(O, W, "hyu"),
+  NM2(I, W, "hyo"),
+  NM3(J, SCLN, W, "bya"),
+  NM3(J, O, W, "byu"),
+  NM3(J, I, W, "byo"),
+  NM3(M, SLSH, W, "pya"),
+  NM3(M, L, W, "pyu"),
+  NM3(M, K, W, "pyo"),
+
+  /* な行 */
+  NM2(SLSH, G, "nya"),
+  NM2(O, G, "nyu"),
+  NM2(I, G, "nyo"),
+
+  /* ま行 */
+  NM2(SLSH, A, "mya"),
+  NM2(O, A, "myu"),
+  NM2(I, A, "myo"),
+
+  /* ら行 */
+  NM2(A, DOT, "rya"),
+  NM2(W, DOT, "ryu"),
+  NM2(E, DOT, "ryo"),
 };
 
 /* global states */
@@ -390,20 +445,11 @@ void ng_update_buffer_pressed(uint16_t keycode) {
 
 void ng_update_state_released(uint16_t keycode) {
   enum ng_key key = ng_keycode_to_ng_key(keycode);
-  uint16_t current = key_buffer;
   key_buffer = 0;
-  
+
   if (key == N_SFT) {
     /* シフトキーの場合、contを初期化する */
     ng_unset_cont_shift();
-  }
-
-  if (key == TURBID_KEY && current == TURBID_KEY) {
-    key_buffer = key;
-  }
-
-  if (key == SEMI_TURBID_KEY && current == SEMI_TURBID_KEY) {
-    key_buffer = key;
   }
 }
 
@@ -441,12 +487,13 @@ void ng_reset_state() {
 /* shiftされている場合には、先頭だけ大文字にする */
 void send_string_shifted(const char* sequence) {
   for (int i = 0; i < strlen(sequence); i++) {
+    char shifted[2] = {sequence[i], '\0'};
     if (i == 0 && 'a' <= sequence[i] && sequence[i] <= 'z' && ng_is_cont_shift()) {
-      char shifted = sequence[i] - ('a' - 'A');
-      send_string(&shifted);
+      register_code(KC_LSFT);
+      send_string(shifted);
+      unregister_code(KC_LSFT);
     } else {
-      send_string(&sequence[i]);
-      break;
+      send_string(shifted);
     }
   }
 }
