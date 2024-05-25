@@ -146,7 +146,7 @@ seq_definition_t seq_definitions[] = {
   NM2(J, SCLN, "zi"),
   NM2(F, I, "zu"),
   NM2(J, B, "ze"),
-  NM2(J, COMM, "zo"),
+  NM2(F, COMM, "zo"),
 
   /* た行 */
   NM2(J, A, "da"),
@@ -486,15 +486,18 @@ void ng_reset_state() {
 
 /* shiftされている場合には、先頭だけ大文字にする */
 void send_string_shifted(const char* sequence) {
-  for (int i = 0; i < strlen(sequence); i++) {
-    char shifted[2] = {sequence[i], '\0'};
-    if (i == 0 && 'a' <= sequence[i] && sequence[i] <= 'z' && ng_is_cont_shift()) {
-      register_code(KC_LSFT);
-      send_string(shifted);
-      unregister_code(KC_LSFT);
-    } else {
+  if ('a' <= sequence[0] && sequence[0] <= 'z' && ng_is_cont_shift()) {
+    char shifted[2] = {sequence[0], '\0'};
+    register_code(KC_LSFT);
+    send_string(shifted);
+    unregister_code(KC_LSFT);
+    
+    for (int i = 1; i < strlen(sequence); i++) {
+      char shifted[2] = {sequence[i], '\0'};
       send_string(shifted);
     }
+  } else {
+    send_string(sequence);
   }
 }
 
