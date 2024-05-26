@@ -143,7 +143,7 @@ seq_definition_t seq_definitions[] = {
 
   /* さ行 */
   NM2(F, N, "za"),
-  NM2(J, SCLN, "zi"),
+  NM2(F, SCLN, "zi"),
   NM2(F, I, "zu"),
   NM2(J, B, "ze"),
   NM2(F, COMM, "zo"),
@@ -201,9 +201,9 @@ seq_definition_t seq_definitions[] = {
   NM2(A, SCLN, "sya"),
   NM2(W, SCLN, "syu"),
   NM2(E, SCLN, "syo"),
-  NM3(J, A, SCLN, "zya"),
-  NM3(J, W, SCLN, "zyu"),
-  NM3(J, E, SCLN, "zyo"),
+  NM3(F, A, SCLN, "zya"),
+  NM3(F, W, SCLN, "zyu"),
+  NM3(F, E, SCLN, "zyo"),
 
   /* た行 */
   NM2(A, U, "tya"),
@@ -496,6 +496,7 @@ void send_string_shifted(const char* sequence) {
       char shifted[2] = {sequence[i], '\0'};
       send_string(shifted);
     }
+    ng_unset_cont_shift();
   } else {
     send_string(sequence);
   }
@@ -540,11 +541,9 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
 
     /* Do not send string if shift key is released and other sequence already sent */
     if (key == N_SFT) {
-      if (!ng_is_cont_shift()) {
-        // シフトキーが単体で離されたら、最後に押されたshiftキーに対応する処理を返す
-        tap_code(ng_shifted_key());
-        ng_unset_cont_shift();
-      }
+      // シフトキーが単体で離されたら、最後に押されたshiftキーに対応する処理を返す
+      tap_code(ng_shifted_key());
+      ng_unset_cont_shift();
 
       return false;
     }
