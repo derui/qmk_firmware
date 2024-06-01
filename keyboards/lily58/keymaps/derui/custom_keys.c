@@ -9,6 +9,11 @@
 void tapped_kc_raise() {
   SEND_STRING(SS_TAP(X_INT4));
   SEND_STRING(SS_TAP(X_LNG1));
+
+  if (ng_is_enabled()) {
+    SEND_STRING(SS_TAP(X_SCLN));
+  }
+  
   ng_enable();
 }
 
