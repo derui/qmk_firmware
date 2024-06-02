@@ -244,9 +244,11 @@ seq_definition_t seq_definitions[] = {
 uint16_t key_buffer = 0;
 /*
   薙刀式全体を管理するためのconfig。booleanそれだけで8bit消費してしまうので、各bitごとに意味を持たせる。
-  0: 薙刀式が有効かどうか
-  1: 連続シフト中かどうか
-  2: シフトしたキーがspaceかenterか。1ならばenter
+  1: 薙刀式が有効かどうか
+  2: 連続シフト中かどうか
+  4: シフトしたキーがspaceかenterか。1ならばenter
+  5: 英字モードかどうか
+
  */
 uint8_t naginata_config = 0;
 
@@ -260,6 +262,8 @@ void ng_enable(void) {
 
 void ng_disable(void) {
   naginata_config &= ~0x1;
+
+  ng_reset_state();
 }
 
 bool ng_is_cont_shift(void) {
@@ -284,6 +288,18 @@ void ng_shifted_by_enter(void) {
 
 uint16_t ng_shifted_key(void) {
   return (naginata_config & 0x4) ? KC_ENTER : KC_SPACE;
+}
+
+void ng_set_alphabet_mode(void) {
+  naginata_config |= 0b1000;
+}
+
+void ng_unset_alphabet_mode(void) {
+  naginata_config &= ~0b1000;
+}
+
+bool ng_is_alphabet_mode(void) {
+  return (naginata_config & 0b1000) == 0b1000;
 }
 
 uint8_t ng_sort_patterns_3[8][3] = {
@@ -482,6 +498,7 @@ seq_definition_t* ng_find_seq_definition(uint16_t buffer, bool contain_similar) 
 void ng_reset_state() {
   key_buffer = 0;
   ng_unset_cont_shift();
+  ng_unset_alphabet_mode();
 }
 
 /* shiftされている場合には、先頭だけ大文字にする */
@@ -506,7 +523,7 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
   enum ng_key key = ng_keycode_to_ng_key(keycode);
 
   /* サポートできないキーの場合は無視する */
-  if (key == N_UNKNOWN) {
+  if (key == N_UNKNOWN || (ng_is_alphabet_mode() && key != N_SFT)) {
     return true;
   }
 
@@ -516,12 +533,21 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
 
     // shiftキーの場合は設定を記録しておく
     if (key == N_SFT) {
-      ng_set_cont_shift();
+      ng_unset_alphabet_mode();
+
       if (keycode == M_ENTER) {
         ng_shifted_by_enter();
       } else if (keycode == M_SPACE) {
         ng_shifted_by_space();
       }
+    } else if (ng_is_cont_shift()) {
+      /* 連続シフトのときに他のキーを押下すると、英字モードに入る */
+      ng_unset_cont_shift();
+      ng_set_alphabet_mode();
+      
+      register_code(KC_LSFT);
+      tap_code(keycode);
+      unregister_code(KC_LSFT);
     }
 
     return false;
@@ -542,13 +568,17 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
     /* Do not send string if shift key is released and other sequence already sent */
     if (key == N_SFT) {
       // シフトキーが単体で離されたら、最後に押されたshiftキーに対応する処理を返す
-      tap_code(ng_shifted_key());
-      ng_unset_cont_shift();
+      if (ng_is_alphabet_mode()) {
+        ng_unset_alphabet_mode();
+      } else {
+        tap_code(ng_shifted_key());
+      }
 
       return false;
     }
 
-    send_string_shifted(def->sequence);
+    send_string(def->sequence);
+    /* send_string_shifted(def->sequence); */
 
     return false;
   }
