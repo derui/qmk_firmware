@@ -16,7 +16,8 @@ SRC += ./layer_state_reader.c \
        ./logo_reader.c
 SRC += ./custom_key_handling.c
 #SRC += ./naginata.c
-SRC += ./generated.c
+# SRC += ./generated.c
+SRC += ./seq_map.c
 SRC += ./custom_keys.c
 
         # ./lib/mode_icon_reader.c \
