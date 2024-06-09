@@ -432,7 +432,8 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
       if (!ng_is_alphabet_mode()) {
         tap_code(ng_shifted_key());
       }
-      ng_reset_state();
+      key_buffer = 0;
+      ng_unset_cont_shift();
     }
 
     return false;
