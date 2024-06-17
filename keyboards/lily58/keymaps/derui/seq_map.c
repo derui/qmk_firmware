@@ -105,6 +105,7 @@ seq_definition_t seq_definitions[] = {
   NM2(K, E, "so"),
   NM2(K, R, "me"),
   NM2(K, T, "xu"),
+  NM2(D, Y, SS_TAP(X_SLSH)),
   NM2(D, U, "ho"),
   NM2(D, I, "xe"),
   NM2(D, O, "hu"),
