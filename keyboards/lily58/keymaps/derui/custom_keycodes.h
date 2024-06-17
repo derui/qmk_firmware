@@ -11,6 +11,7 @@ enum custom_keycodes {
   M_RAISE,
   M_ENTER,
   M_LSFTESC,
+  M_RSFTESC,
   M_SPACE,
   M_KANA_SHIFT,
 };

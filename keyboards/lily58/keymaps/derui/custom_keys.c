@@ -95,6 +95,17 @@ void release_holding_m_lsftesc() {
   unregister_code(KC_LSFT);
 }
 
+void tapped_m_rsftesc() {
+  tap_code(KC_ESC);
+}
+
+void interrupted_m_rsftesc() {
+  register_code(KC_RSFT);
+}
+
+void release_holding_m_rsftesc() {
+  unregister_code(KC_RSFT);
+}
 
 custom_key_t m_ctltb = {
   M_CTLTB,
@@ -162,13 +173,25 @@ custom_key_t m_lsftesc = {
   .on_release_holding = release_holding_m_lsftesc,
 };
 
-int all_defined_key_count = 6;
+custom_key_t m_rsftesc = {
+  M_RSFTESC,
+  RELEASED,
+  0,
+  .on_pressed = der_nop,
+  .on_tapped = tapped_m_rsftesc,
+  .on_interrupted = interrupted_m_rsftesc,
+  .on_start_holding = interrupted_m_rsftesc,
+  .on_release_holding = release_holding_m_rsftesc,
+};
+
+int all_defined_key_count = 7;
 custom_key_t *local_keys[] = {
   &kc_lower,
   &kc_raise,
   &m_ctltb,
   &m_enter,
   &m_lsftesc,
+  &m_rsftesc,
   &m_space,
 };
 custom_key_t **defined_keys = local_keys;

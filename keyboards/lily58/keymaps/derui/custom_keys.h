@@ -25,4 +25,8 @@ void tapped_m_lsftesc(void);
 void interrupted_m_lsftesc(void);
 void release_holding_m_lsftesc(void);
 
+void tapped_m_rsftesc(void);
+void interrupted_m_rsftesc(void);
+void release_holding_m_rsftesc(void);
+
 #endif
