@@ -174,9 +174,9 @@ seq_definition_t seq_definitions[] = {
   NM2(Q, L, "xi"),
   NM2(P, S, "xu"),
   NM2(P, Z, "xe"),
-  NM2(Q, N, "xo"),
+  NM2(T, N, "xo"),
   NM2(Q, M, "xyo"),
-  NM2(Q, H, "xyu"),
+  NM2(T, H, "xyu"),
   NM2(Q, SLSH, "xya"),
   
   /* 特殊 */
