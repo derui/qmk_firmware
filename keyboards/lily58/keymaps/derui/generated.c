@@ -66,68 +66,67 @@ typedef struct {
 seq_definition_t seq_definitions[] = {
   
   /* Q行 */
-  NSI(W, "ha"),
+  NSI(W, "ku"),
   NSI(E, "si"),
-  NSI(R, "xtu"),
-  NSI(U, "ko"),
-  NSI(I, "te"),
-  NSI(O, "ku"),
+  NSI(R, "ma"),
+  NSI(U, "wo"),
+  NSI(I, "ki"),
+  NSI(O, "su"),
 
   /* A行 */
   NSI(A, "ta"),
-  NSI(S, "nn"),
-  NSI(D, "u"),
-  NSI(F, "no"),
-  NSI(G, "ni"),
-  NSI(H, "ki"),
-  NSI(J, "ka"),
-  NSI(K, "na"),
+  NSI(S, "u"),
+  NSI(D, "na"),
+  NSI(F, "ka"),
+  NSI(G, "te"),
+  NSI(H, "ni"),
+  NSI(J, "ru"),
+  NSI(K, "no"),
   NSI(L, "i"),
-  NSI(SCLN, "to"),
+  NSI(SCLN, "nn"),
   
   /* Z行 */
-  NSI(Z, "ra"),
-  NSI(X, "ri"),
-  NSI(C, "ru"),
-  NSI(V, "wo"),
-  NSI(B, "o"),
-  NSI(N, "mo"),
-  NSI(M, "ma"),
-  NSI(COMM, "su"),
-  NSI(DOT, "a"),
+  NSI(Z, "ko"),
+  NSI(X, "ha"),
+  NSI(C, "mo"),
+  NSI(V, "to"),
+  NSI(B, "a"),
+  NSI(N, "o"),
+  NSI(M, "ra"),
+  NSI(COMM, "ri"),
+  NSI(DOT, "xtu"),
   NSI(SLSH, "tu"),
 
   /* シフト面の定義 */
   /* Q行 */
-  NM2(K, W, "yu"),
-  NM2(K, E, "e"),
-  NM2(K, R, "ho"),
-  NM2(D, U, "ro"),
-  NM2(D, I, "yo"),
-  NM2(D, O, "re"),
+  NM2(K, E, "re"),
+  NM2(K, R, "ti"),
+  NM2(D, U, "so"),
+  NM2(D, I, "ne"),
+  NM2(D, O, "nu"),
 
   /* A行 */
-  NM2(K, A, "mi"),
-  NM2(K, S, "so"),
-  NM2(K, D, "mu"),
-  NM2(K, F, "wa"),
-  NM2(K, G, "sa"),
-  /* NM2(D, H, "mi"), */
-  /* NM2(D, J, "re"), */
-  NM2(D, K, "mu"),
-  NM2(D, L, "hu"),
-  NM2(D, SCLN, "nu"),
+  NM2(K, A, "me"),
+  NM2(K, S, "se"),
+  NM2(K, D, SS_TAP(X_MINS)),
+  NM2(K, F, "mu"),
+  NM2(K, G, "mi"),
+  NM2(D, H, "yu"),
+  NM2(D, J, "wa"),
+  /* NM2(D, K, "mu"), */
+  NM2(D, L, "he"),
+  NM2(D, SCLN, "ho"),
   
   /* Z行 */
-  NM2(K, Z, "ke"),
-  NM2(K, X, "ti"),
-  NM2(K, C, "se"),
-  NM2(K, V, SS_TAP(X_MINS)),
-  NM2(K, B, "hi"),
-  NM2(D, N, "me"),
-  NM2(D, M, "he"),
-  NM2(D, COMM, "ne"),
-  /* NM2(D, DOT, "yo"), */
+  NM2(K, Z, "e"),
+  NM2(K, X, "ro"),
+  NM2(K, C, "ke"),
+  /* NM2(K, V, SS_TAP(X_MINS)), */
+  NM2(K, B, "sa"),
+  NM2(D, N, "hi"),
+  NM2(D, M, "yo"),
+  /* NM2(D, COMM, "hu"), */
+  NM2(D, DOT, "hu"),
   NM2(D, SLSH, "ya"),
 
   /* 濁音 */
@@ -136,53 +135,53 @@ seq_definition_t seq_definitions[] = {
   
   /* か行 */
   NM2(F, J, "ga"),
-  NM2(F, H, "gi"),
-  NM2(F, O, "gu"),
-  NM2(J, Z, "ge"),
-  NM2(F, U, "go"),
+  NM2(F, I, "gi"),
+  NM2(J, W, "gu"),
+  NM2(J, C, "ge"),
+  NM2(J, Z, "go"),
 
   /* さ行 */
-  NM2(J, G, "za"),
+  NM2(J, B, "za"),
   NM2(J, E, "zi"),
-  NM2(F, COMM, "zu"),
-  NM2(J, C, "ze"),
-  NM2(J, S, "zo"),
+  NM2(F, O, "zu"),
+  NM2(J, S, "ze"),
+  NM2(F, U, "zo"),
 
   /* た行 */
   NM2(J, A, "da"),
-  NM2(J, X, "di"),
+  NM2(J, R, "di"),
   NM2(F, SLSH, "du"),
-  NM2(F, I, "de"),
-  NM2(F, SCLN, "do"),
+  NM2(J, G, "de"),
+  NM2(J, V, "do"),
 
   /* は行 */
-  NM2(J, W, "ba"),
-  NM2(J, B, "bi"),
-  NM2(F, L, "bu"),
-  NM2(F, M, "be"),
-  NM2(J, R, "bo"),
+  NM2(J, X, "ba"),
+  NM2(F, N, "bi"),
+  NM2(F, DOT, "bu"),
+  NM2(F, L, "be"),
+  NM2(F, SCLN, "bo"),
 
   /* 半濁音 */
   /* は行 */
-  NM2(M, W, "pa"),
-  NM2(M, B, "pi"),
-  NM2(V, L, "pu"),
-  NM2(V, M, "pe"),
-  NM2(M, R, "po"),
+  NM2(M, X, "pa"),
+  NM2(V, N, "pi"),
+  NM2(V, DOT, "pu"),
+  NM2(V, L, "pe"),
+  NM2(V, SCLN, "po"),
   
   /* 小書き */
-  NM2(Q, DOT, "xa"),
+  NM2(P, B, "xa"),
   NM2(Q, L, "xi"),
-  NM2(P, D, "xu"),
-  NM2(P, E, "xe"),
-  NM2(P, B, "xo"),
-  NM2(Q, SLSH, "xyo"),
-  NM2(P, W, "xyu"),
-  NM2(P, A, "xya"),
+  NM2(P, S, "xu"),
+  NM2(P, Z, "xe"),
+  NM2(Q, N, "xo"),
+  NM2(Q, M, "xyo"),
+  NM2(Q, H, "xyu"),
+  NM2(Q, SLSH, "xya"),
   
   /* 特殊 */
-  NM2(K, J, SS_TAP(X_DOT)),
-  NM2(D, F, SS_TAP(X_COMM)),
+  NM2(K, L, SS_TAP(X_DOT)),
+  NM2(D, S, SS_TAP(X_COMM)),
   NM3(J, K, E, SS_TAP(X_SLSH)),
   NM3(J, K, D, "?"),
   NM3(J, K, C, "!"),
@@ -190,54 +189,54 @@ seq_definition_t seq_definitions[] = {
   /* 拗音拡張 */
   /* 濁音 */
   /* か行 */
-  NM2(A, H, "kya"),
-  NM2(W, H, "kyu"),
-  NM2(E, H, "kyo"),
-  NM3(F, A, H, "gya"),
-  NM3(F, W, H, "gyu"),
-  NM3(F, E, H, "gyo"),
+  NM2(Q, I, "kya"),
+  NM2(Z, I, "kyu"),
+  NM2(A, I, "kyo"),
+  NM3(F, Q, I, "gya"),
+  NM3(F, Z, I, "gyu"),
+  NM3(F, A, I, "gyo"),
 
   /* さ行 */
-  NM2(SCLN, E, "sya"),
-  NM2(O, E, "syu"),
-  NM2(I, E, "syo"),
-  NM3(J, SCLN, E, "zya"),
-  NM3(J, O, E, "zyu"),
-  NM3(J, I, E, "zyo"),
+  NM2(P, E, "sya"),
+  NM2(SLSH, E, "syu"),
+  NM2(SCLN, E, "syo"),
+  NM3(J, P, E, "zya"),
+  NM3(J, SLSH, E, "zyu"),
+  NM3(J, SCLN, E, "zyo"),
 
   /* た行 */
-  NM2(SCLN, X, "tya"),
-  NM2(O, X, "tyu"),
-  NM2(I, X, "tyo"),
-  NM3(J, SCLN, X, "dya"),
-  NM3(J, O, X, "dyu"),
-  NM3(J, I, X, "dyo"),
+  NM2(P, R, "tya"),
+  NM2(SLSH, R, "tyu"),
+  NM2(SCLN , R, "tyo"),
+  NM3(J, P, R, "dya"),
+  NM3(J, SLSH, R, "dyu"),
+  NM3(J, SCLN, R, "dyo"),
 
   /* は行 */
-  NM2(SCLN, B, "hya"),
-  NM2(O, B, "hyu"),
-  NM2(I, B, "hyo"),
-  NM3(J, SCLN, B, "bya"),
-  NM3(J, O, B, "byu"),
-  NM3(J, I, B, "byo"),
-  NM3(M, SLSH, B, "pya"),
-  NM3(M, L, B, "pyu"),
-  NM3(M, K, B, "pyo"),
+  NM2(Q, N, "hya"),
+  NM2(Z, N, "hyu"),
+  NM2(A, N, "hyo"),
+  NM3(F, Q, N, "bya"),
+  NM3(F, Z, N, "byu"),
+  NM3(F, A, N, "byo"),
+  NM3(V, Q, N, "pya"),
+  NM3(V, Z, N, "pyu"),
+  NM3(V, A, N, "pyo"),
 
   /* な行 */
-  NM2(SCLN, G, "nya"),
-  NM2(O, G, "nyu"),
-  NM2(I, G, "nyo"),
+  NM2(Q, H, "nya"),
+  NM2(Z, H, "nyu"),
+  NM2(A, H, "nyo"),
 
   /* ま行 */
-  NM2(SCLN, A, "mya"),
-  NM2(O, A, "myu"),
-  NM2(I, A, "myo"),
+  NM2(P, G, "mya"),
+  NM2(SLSH, G, "myu"),
+  NM2(SCLN, G, "myo"),
   
   /* ら行 */
-  NM2(SCLN, C, "rya"),
-  NM2(O, C, "ryu"),
-  NM2(I, C, "ryo"),
+  NM2(Q, COMM, "rya"),
+  NM2(Z, COMM, "ryu"),
+  NM2(A, COMM, "ryo"),
 };
 
 /* global states */
