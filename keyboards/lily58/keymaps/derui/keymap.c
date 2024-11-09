@@ -6,7 +6,6 @@
 #include "ng_layer.h"
 #include "layer.h"
 
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
  [_QWERTY] = LAYOUT(
@@ -14,6 +13,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
   M_CTLTB,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   M_LSFTESC,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_LBRC,  KC_RBRC,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, M_RSFTESC,
+                        KC_LGUI, KC_LALT, M_LOWER, M_SPACE, M_ENTER, M_RAISE, KC_RGUI, KC_RALT
+),
+ /* The sturdy layout https://oxey.dev/sturdy/index.html */
+ [_STURDY] = LAYOUT(
+  KC_ESC,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV,
+  KC_TAB,   KC_V,   KC_M,    KC_L,    KC_C,    KC_P,                     KC_X,    KC_F,    KC_O,    KC_U,    KC_J,    KC_BSPC,
+  M_CTLTB,  KC_S,   KC_T,    KC_R,    KC_D,    KC_Y,                     KC_DOT,  KC_N,    KC_A,    KC_E,    KC_I,    KC_SLSH,
+  M_LSFTESC,KC_Z,   KC_K,    KC_Q,    KC_G,    KC_W, KC_LBRC,  KC_RBRC,  KC_B,    KC_H,    KC_QUOT, KC_SCLN,KC_COMM, M_RSFTESC,
                         KC_LGUI, KC_LALT, M_LOWER, M_SPACE, M_ENTER, M_RAISE, KC_RGUI, KC_RALT
 ),
 [_MAC] = LAYOUT(
@@ -39,7 +46,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                              _______, _______, _______,  _______, _______,  _______, _______, _______
 ),
   [_ADJUST] = LAYOUT(
-  QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TG(_MAC),
+  QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TG(_STURDY), TG(_MAC),
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_F1,   KC_F2,   KC_F3, KC_F4,    KC_F5,   KC_DEL,
   XXXXXXX, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, XXXXXXX,                   KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, XXXXXXX, KC_F11,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_F6,   KC_F7,   KC_F8, KC_F9,    KC_F10,  KC_F12,

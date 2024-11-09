@@ -7,6 +7,7 @@
 // entirely and just use numbers.
 enum layer_number {
   _QWERTY = 0,
+  _STURDY,
   _MAC,
   _LOWER,
   _RAISE,
