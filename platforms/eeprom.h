@@ -20,11 +20,11 @@ void     eeprom_update_byte(uint8_t *__p, uint8_t __value);
 void     eeprom_update_word(uint16_t *__p, uint16_t __value);
 void     eeprom_update_dword(uint32_t *__p, uint32_t __value);
 void     eeprom_update_block(const void *__src, void *__dst, size_t __n);
+void eeprom_write_qword(uint64_t *__p, uint64_t __value) {
+         eeprom_update_block(&__value, __p, sizeof(uint64_t));
+}
 #endif
 
-static inline void eeprom_write_qword(uint64_t *__p, uint64_t __value) {
-    eeprom_update_block(&__value, __p, sizeof(uint64_t));
-}
 
 #if defined(EEPROM_CUSTOM)
 #    ifndef EEPROM_SIZE
