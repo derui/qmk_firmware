@@ -15,6 +15,7 @@ void tapped_kc_raise() {
   }
   
   ng_enable();
+
 }
 
 void interrupted_kc_raise() {
@@ -107,6 +108,18 @@ void release_holding_m_rsftesc() {
   unregister_code(KC_RSFT);
 }
 
+void tapped_m_qwerty() {
+  layer_on(_QWERTY);
+  layer_off(_STURDY);
+  ng_set_qwerty_mode();
+}
+
+void tapped_m_sturdy() {
+  layer_on(_STURDY);
+  layer_off(_QWERTY);
+  ng_set_sturdy_mode();
+}
+
 custom_key_t m_ctltb = {
   M_CTLTB,
   RELEASED,
@@ -174,8 +187,7 @@ custom_key_t m_lsftesc = {
 };
 
 custom_key_t m_rsftesc = {
-  M_RSFTESC,
-  RELEASED,
+  M_RSFTESC,  RELEASED,
   0,
   .on_pressed = der_nop,
   .on_tapped = tapped_m_rsftesc,
@@ -184,7 +196,29 @@ custom_key_t m_rsftesc = {
   .on_release_holding = release_holding_m_rsftesc,
 };
 
-int all_defined_key_count = 7;
+custom_key_t m_qwerty = {
+  M_QWERTY,
+  RELEASED,
+  0,
+  .on_pressed = der_nop,
+  .on_tapped = tapped_m_qwerty,
+  .on_interrupted = der_nop,
+  .on_start_holding = der_nop,
+  .on_release_holding = der_nop,
+};
+
+custom_key_t m_sturdy = {
+  M_STURDY,
+  RELEASED,
+  0,
+  .on_pressed = der_nop,
+  .on_tapped = tapped_m_sturdy,
+  .on_interrupted = der_nop,
+  .on_start_holding = der_nop,
+  .on_release_holding = der_nop,
+};
+
+int all_defined_key_count = 9;
 custom_key_t *local_keys[] = {
   &kc_lower,
   &kc_raise,
@@ -193,5 +227,7 @@ custom_key_t *local_keys[] = {
   &m_lsftesc,
   &m_rsftesc,
   &m_space,
+  &m_qwerty,
+  &m_sturdy
 };
 custom_key_t **defined_keys = local_keys;
