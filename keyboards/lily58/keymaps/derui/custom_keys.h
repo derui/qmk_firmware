@@ -29,4 +29,7 @@ void tapped_m_rsftesc(void);
 void interrupted_m_rsftesc(void);
 void release_holding_m_rsftesc(void);
 
+void tapped_m_qwerty(void);
+
+void tapped_m_sturdy(void);
 #endif

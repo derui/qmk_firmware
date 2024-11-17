@@ -247,6 +247,7 @@ uint16_t key_buffer = 0;
   2: 連続シフト中かどうか
   4: シフトしたキーがspaceかenterか。1ならばenter
   5: 英字モードかどうか
+  6: qwerty/sturdyの区別。0ならばqwerty
 
  */
 uint8_t naginata_config = 0;
@@ -301,6 +302,22 @@ bool ng_is_alphabet_mode(void) {
   return (naginata_config & 0b1000) == 0b1000;
 }
 
+void ng_set_sturdy_mode(void) {
+  naginata_config |= 0b10000;
+}
+
+void ng_set_qwerty_mode(void) {
+  naginata_config &= ~0b10000;
+}
+
+bool ng_is_sturdy_mode(void) {
+  return (naginata_config & 0b10000) == 0b10000;
+}
+
+bool ng_is_qwerty_mode(void) {
+  return (naginata_config & 0b10000) == 0;
+}
+
 uint8_t ng_sort_patterns_3[8][3] = {
   {2, 1, 0},
   {0, 2, 1},
@@ -312,7 +329,83 @@ uint8_t ng_sort_patterns_3[8][3] = {
   {0,1,2}
 };
 
-enum ng_key ng_keycode_to_ng_key(uint16_t keycode) {
+/*
+  For Sturdy
+  */
+enum ng_key ng_keycode_to_ng_key_sturdy(uint16_t keycode) {
+  switch (keycode) {
+  case KC_S:
+    return N_A;
+  case KC_W:
+    return N_B;
+  case KC_Q:
+    return N_C;
+  case KC_R:
+    return N_D;
+  case KC_L:
+    return N_E;
+  case KC_D:
+    return N_F;
+  case KC_Y:
+    return N_G;
+  case KC_DOT:
+    return N_H;
+  case KC_O:
+    return N_I;
+  case KC_N:
+    return N_J;
+  case KC_A:
+    return N_K;
+  case KC_E:
+    return N_L;
+  case KC_H:
+    return N_M;
+  case KC_B:
+    return N_N;
+  case KC_U:
+    return N_O;
+  case KC_J:
+    return N_P;
+  case KC_V:
+    return N_Q;
+  case KC_C:
+    return N_R;
+  case KC_T:
+    return N_S;
+  case KC_P:
+    return N_T;
+  case KC_F:
+    return N_U;
+  case KC_G:
+    return N_V;
+  case KC_M:
+    return N_W;
+  case KC_K:
+    return N_X;
+  case KC_X:
+    return N_Y;
+  case KC_Z:
+    return N_Z;
+  case KC_QUOT:
+    return N_COMM;
+  case KC_SCLN:
+    return N_DOT;
+  case KC_COMM:
+    return N_SLSH;
+  case KC_I:
+    return N_SCLN;
+  case M_SPACE:
+  case M_ENTER:
+    return N_SFT;
+  default:
+    return N_UNKNOWN;
+  }
+}
+
+/*
+  For QWERTY
+  */
+enum ng_key ng_keycode_to_ng_key_qwerty(uint16_t keycode) {
   switch (keycode) {
   case KC_A:
     return N_A;
@@ -379,6 +472,14 @@ enum ng_key ng_keycode_to_ng_key(uint16_t keycode) {
     return N_SFT;
   default:
     return N_UNKNOWN;
+  }
+}
+
+enum ng_key ng_keycode_to_ng_key(uint16_t keycode) {
+  if (ng_is_qwerty_mode()) {
+    return ng_keycode_to_ng_key_qwerty(keycode);
+  } else {
+    return ng_keycode_to_ng_key_sturdy(keycode);
   }
 }
 

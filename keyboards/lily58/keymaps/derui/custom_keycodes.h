@@ -14,6 +14,8 @@ enum custom_keycodes {
   M_RSFTESC,
   M_SPACE,
   M_KANA_SHIFT,
+  M_QWERTY,
+  M_STURDY
 };
 
 #endif
