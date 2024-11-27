@@ -348,7 +348,7 @@ enum ng_key ng_keycode_to_ng_key_sturdy(uint16_t keycode) {
     return N_F;
   case KC_Y:
     return N_G;
-  case KC_DOT:
+  case KC_SCLN:
     return N_H;
   case KC_O:
     return N_I;
@@ -386,11 +386,11 @@ enum ng_key ng_keycode_to_ng_key_sturdy(uint16_t keycode) {
     return N_Y;
   case KC_Z:
     return N_Z;
-  case KC_QUOT:
-    return N_COMM;
-  case KC_SCLN:
-    return N_DOT;
   case KC_COMM:
+    return N_COMM;
+  case KC_DOT:
+    return N_DOT;
+  case KC_SLSH:
     return N_SLSH;
   case KC_I:
     return N_SCLN;
