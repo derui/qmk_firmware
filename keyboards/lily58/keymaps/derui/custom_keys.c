@@ -5,6 +5,8 @@
 #include "ng_layer.h"
 #include "layer.h"
 
+#define MODS_SHIFT_MASK  (MOD_BIT(KC_LSFT)|MOD_BIT(KC_RSFT))
+
 // my configurations
 void tapped_kc_raise() {
   SEND_STRING(SS_TAP(X_INT4));
@@ -110,14 +112,46 @@ void release_holding_m_rsftesc() {
 
 void tapped_m_qwerty() {
   layer_on(_QWERTY);
-  layer_off(_STURDY);
+  layer_off(_GRAPHITE);
   ng_set_qwerty_mode();
 }
 
-void tapped_m_sturdy() {
-  layer_on(_STURDY);
+void tapped_m_graphite() {
+  layer_on(_GRAPHITE);
   layer_off(_QWERTY);
-  ng_set_sturdy_mode();
+  ng_set_graphite_mode();
+}
+
+void tapped_m_quot() {
+  if (get_mods() & MODS_SHIFT_MASK) {
+    tap_code(KC_MINS);
+  } else {
+    tap_code(KC_QUOT);
+  }
+}
+
+void tapped_m_mins() {
+  if (get_mods() & MODS_SHIFT_MASK) {
+    tap_code(KC_QUOT);
+  } else {
+    tap_code(KC_MINS);
+  }
+}
+
+void tapped_m_comm() {
+  if (get_mods() & MODS_SHIFT_MASK) {
+    tap_code(KC_SLSH);
+  } else {
+    tap_code(KC_COMM);
+  }
+}
+
+void tapped_m_slsh() {
+  if (get_mods() & MODS_SHIFT_MASK) {
+    tap_code(KC_COMM);
+  } else {
+    tap_code(KC_SLSH);
+  }
 }
 
 custom_key_t m_ctltb = {
@@ -207,18 +241,62 @@ custom_key_t m_qwerty = {
   .on_release_holding = der_nop,
 };
 
-custom_key_t m_sturdy = {
-  M_STURDY,
+custom_key_t m_graphite = {
+  M_GRAPHITE,
   RELEASED,
   0,
   .on_pressed = der_nop,
-  .on_tapped = tapped_m_sturdy,
+  .on_tapped = tapped_m_graphite,
   .on_interrupted = der_nop,
   .on_start_holding = der_nop,
   .on_release_holding = der_nop,
 };
 
-int all_defined_key_count = 9;
+custom_key_t m_quot = {
+  M_QUOT,
+  RELEASED,
+  0,
+  .on_pressed = der_nop,
+  .on_tapped = tapped_m_quot,
+  .on_interrupted = der_nop,
+  .on_start_holding = der_nop,
+  .on_release_holding = der_nop,
+};
+
+custom_key_t m_comm = {
+  M_COMM,
+  RELEASED,
+  0,
+  .on_pressed = der_nop,
+  .on_tapped = tapped_m_comm,
+  .on_interrupted = der_nop,
+  .on_start_holding = der_nop,
+  .on_release_holding = der_nop,
+};
+
+custom_key_t m_mins = {
+  M_MINS,
+  RELEASED,
+  0,
+  .on_pressed = der_nop,
+  .on_tapped = tapped_m_mins,
+  .on_interrupted = der_nop,
+  .on_start_holding = der_nop,
+  .on_release_holding = der_nop,
+};
+
+custom_key_t m_slsh = {
+  M_SLSH,
+  RELEASED,
+  0,
+  .on_pressed = der_nop,
+  .on_tapped = tapped_m_slsh,
+  .on_interrupted = der_nop,
+  .on_start_holding = der_nop,
+  .on_release_holding = der_nop,
+};
+
+int all_defined_key_count = 13;
 custom_key_t *local_keys[] = {
   &kc_lower,
   &kc_raise,
@@ -228,6 +306,10 @@ custom_key_t *local_keys[] = {
   &m_rsftesc,
   &m_space,
   &m_qwerty,
-  &m_sturdy
+  &m_graphite,
+  &m_quot,
+  &m_comm,
+  &m_mins,
+  &m_slsh
 };
 custom_key_t **defined_keys = local_keys;

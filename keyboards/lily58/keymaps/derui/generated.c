@@ -247,7 +247,7 @@ uint16_t key_buffer = 0;
   2: 連続シフト中かどうか
   4: シフトしたキーがspaceかenterか。1ならばenter
   5: 英字モードかどうか
-  6: qwerty/sturdyの区別。0ならばqwerty
+  6: qwerty/graphiteの区別。0ならばqwerty
 
  */
 uint8_t naginata_config = 0;
@@ -302,7 +302,7 @@ bool ng_is_alphabet_mode(void) {
   return (naginata_config & 0b1000) == 0b1000;
 }
 
-void ng_set_sturdy_mode(void) {
+void ng_set_graphite_mode(void) {
   naginata_config |= 0b10000;
 }
 
@@ -310,7 +310,7 @@ void ng_set_qwerty_mode(void) {
   naginata_config &= ~0b10000;
 }
 
-bool ng_is_sturdy_mode(void) {
+bool ng_is_graphite_mode(void) {
   return (naginata_config & 0b10000) == 0b10000;
 }
 
@@ -330,67 +330,67 @@ uint8_t ng_sort_patterns_3[8][3] = {
 };
 
 /*
-  For Sturdy
+  For Graphite
   */
-enum ng_key ng_keycode_to_ng_key_sturdy(uint16_t keycode) {
+enum ng_key ng_keycode_to_ng_key_graphite(uint16_t keycode) {
   switch (keycode) {
-  case KC_S:
+  case KC_N:
     return N_A;
-  case KC_W:
+  case KC_V:
     return N_B;
-  case KC_Q:
+  case KC_M:
     return N_C;
-  case KC_R:
+  case KC_T:
     return N_D;
-  case KC_L:
-    return N_E;
   case KC_D:
+    return N_E;
+  case KC_S:
     return N_F;
-  case KC_Y:
+  case KC_G:
     return N_G;
-  case KC_SCLN:
+  case KC_Y:
     return N_H;
   case KC_O:
     return N_I;
-  case KC_N:
+  case KC_H:
     return N_J;
   case KC_A:
     return N_K;
   case KC_E:
     return N_L;
-  case KC_H:
+  case KC_P:
     return N_M;
-  case KC_B:
+  case KC_K:
     return N_N;
   case KC_U:
     return N_O;
   case KC_J:
     return N_P;
-  case KC_V:
+  case KC_B:
     return N_Q;
-  case KC_C:
+  case KC_W:
     return N_R;
-  case KC_T:
+  case KC_R:
     return N_S;
-  case KC_P:
+  case KC_Z:
     return N_T;
   case KC_F:
     return N_U;
-  case KC_G:
+  case KC_C:
     return N_V;
-  case KC_M:
+  case KC_L:
     return N_W;
-  case KC_K:
-    return N_X;
   case KC_X:
+    return N_X;
+  case KC_QUOT:
     return N_Y;
-  case KC_Z:
+  case KC_Q:
     return N_Z;
-  case KC_COMM:
-    return N_COMM;
   case KC_DOT:
+    return N_COMM;
+  case M_MINS:
     return N_DOT;
-  case KC_SLSH:
+  case M_SLSH:
     return N_SLSH;
   case KC_I:
     return N_SCLN;
@@ -479,7 +479,7 @@ enum ng_key ng_keycode_to_ng_key(uint16_t keycode) {
   if (ng_is_qwerty_mode()) {
     return ng_keycode_to_ng_key_qwerty(keycode);
   } else {
-    return ng_keycode_to_ng_key_sturdy(keycode);
+    return ng_keycode_to_ng_key_graphite(keycode);
   }
 }
 
