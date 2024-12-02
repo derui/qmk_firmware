@@ -8,7 +8,7 @@
 enum layer_number {
   _BASE = 0,
   _QWERTY,
-  _STURDY,
+  _GRAPHITE,
   _MAC,
   _LOWER,
   _RAISE,

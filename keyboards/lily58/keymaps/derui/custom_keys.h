@@ -31,5 +31,11 @@ void release_holding_m_rsftesc(void);
 
 void tapped_m_qwerty(void);
 
-void tapped_m_sturdy(void);
+void tapped_m_graphite(void);
+
+void tapped_m_quot(void);
+void tapped_m_comm(void);
+void tapped_m_mins(void);
+void tapped_m_slsh(void);
+
 #endif
