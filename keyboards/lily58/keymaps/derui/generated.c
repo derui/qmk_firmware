@@ -35,6 +35,7 @@ enum ng_key {
   N_SLSH,
   N_SCLN,
   N_SFT,
+  N_IGNORE,
   N_UNKNOWN
 };
 
@@ -394,6 +395,9 @@ enum ng_key ng_keycode_to_ng_key_graphite(uint16_t keycode) {
     return N_SLSH;
   case KC_I:
     return N_SCLN;
+  case KC_MINS:
+  case KC_SLSH:
+    return N_IGNORE;
   case M_SPACE:
   case M_ENTER:
     return N_SFT;
@@ -625,6 +629,10 @@ bool process_record_ng(uint16_t keycode, keyrecord_t *record) {
   /* サポートできないキーの場合は無視する */
   if (key == N_UNKNOWN || (ng_is_alphabet_mode() && key != N_SFT)) {
     return true;
+  }
+
+  if (key == N_IGNORE) {
+    return false;
   }
 
   /* 押された場合は、単にbufferに積むのみとする */

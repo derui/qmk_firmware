@@ -123,6 +123,9 @@ void tapped_m_graphite() {
 }
 
 void tapped_m_quot() {
+   if (ng_is_enabled()) {
+    return;
+  }
   if (get_mods() & MODS_SHIFT_MASK) {
     tap_code(KC_MINS);
   } else {
@@ -131,6 +134,9 @@ void tapped_m_quot() {
 }
 
 void tapped_m_mins() {
+   if (ng_is_enabled()) {
+    return;
+  }
   if (get_mods() & MODS_SHIFT_MASK) {
     tap_code(KC_QUOT);
   } else {
@@ -139,6 +145,9 @@ void tapped_m_mins() {
 }
 
 void tapped_m_comm() {
+   if (ng_is_enabled()) {
+    return;
+  }
   if (get_mods() & MODS_SHIFT_MASK) {
     tap_code(KC_SLSH);
   } else {
@@ -147,6 +156,9 @@ void tapped_m_comm() {
 }
 
 void tapped_m_slsh() {
+   if (ng_is_enabled()) {
+    return;
+  }
   if (get_mods() & MODS_SHIFT_MASK) {
     tap_code(KC_COMM);
   } else {
