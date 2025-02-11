@@ -15,12 +15,7 @@ enum custom_keycodes {
   M_SPACE,
   M_KANA_SHIFT,
   M_QWERTY,
-  M_GRAPHITE,
-  M_QUOT,
-  M_DOT,
-  M_MINS,
-  M_SLSH,
-  M_COMM
+  M_GALLIUM
 };
 
 #endif

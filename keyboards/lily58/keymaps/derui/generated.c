@@ -248,7 +248,7 @@ uint16_t key_buffer = 0;
   2: 連続シフト中かどうか
   4: シフトしたキーがspaceかenterか。1ならばenter
   5: 英字モードかどうか
-  6: qwerty/graphiteの区別。0ならばqwerty
+  6: qwerty/galliumの区別。0ならばqwerty
 
  */
 uint8_t naginata_config = 0;
@@ -303,7 +303,7 @@ bool ng_is_alphabet_mode(void) {
   return (naginata_config & 0b1000) == 0b1000;
 }
 
-void ng_set_graphite_mode(void) {
+void ng_set_gallium_mode(void) {
   naginata_config |= 0b10000;
 }
 
@@ -311,7 +311,7 @@ void ng_set_qwerty_mode(void) {
   naginata_config &= ~0b10000;
 }
 
-bool ng_is_graphite_mode(void) {
+bool ng_is_gallium_mode(void) {
   return (naginata_config & 0b10000) == 0b10000;
 }
 
@@ -333,11 +333,11 @@ uint8_t ng_sort_patterns_3[8][3] = {
 /*
   For Graphite
   */
-enum ng_key ng_keycode_to_ng_key_graphite(uint16_t keycode) {
+enum ng_key ng_keycode_to_ng_key_gallium(uint16_t keycode) {
   switch (keycode) {
   case KC_N:
     return N_A;
-  case KC_V:
+  case KC_Z:
     return N_B;
   case KC_M:
     return N_C;
@@ -365,39 +365,36 @@ enum ng_key ng_keycode_to_ng_key_graphite(uint16_t keycode) {
     return N_N;
   case KC_U:
     return N_O;
-  case KC_J:
+  case KC_COMM:
     return N_P;
   case KC_B:
     return N_Q;
-  case KC_W:
+  case KC_C:
     return N_R;
   case KC_R:
     return N_S;
-  case KC_Z:
+  case KC_V:
     return N_T;
   case KC_F:
     return N_U;
-  case KC_C:
+  case KC_W:
     return N_V;
   case KC_L:
     return N_W;
   case KC_X:
-    return N_X;
-  case KC_QUOT:
+    return N_Z;
+  case KC_J:
     return N_Y;
   case KC_Q:
-    return N_Z;
-  case KC_DOT:
+    return N_X;
+  case KC_QUOT:
     return N_COMM;
-  case M_MINS:
+  case KC_SCLN:
     return N_DOT;
-  case M_SLSH:
+  case KC_DOT:
     return N_SLSH;
   case KC_I:
     return N_SCLN;
-  case KC_MINS:
-  case KC_SLSH:
-    return N_IGNORE;
   case M_SPACE:
   case M_ENTER:
     return N_SFT;
@@ -483,7 +480,7 @@ enum ng_key ng_keycode_to_ng_key(uint16_t keycode) {
   if (ng_is_qwerty_mode()) {
     return ng_keycode_to_ng_key_qwerty(keycode);
   } else {
-    return ng_keycode_to_ng_key_graphite(keycode);
+    return ng_keycode_to_ng_key_gallium(keycode);
   }
 }
 

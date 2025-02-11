@@ -3,13 +3,13 @@
 
 #define L_BASE 1
 #define L_QWERTY (1 << 1)
-#define L_GRAPHITE (1 << 2)
+#define L_GALLIUM (1 << 2)
 #define L_MAC (1 << 3)
 #define L_LOWER ((1 << 4) | 1)
 #define L_RAISE ((1 << 5) | 1)
 #define L_ADJUST ((1 << 6) | 1)
 #define L_ADJUST_TRI (L_ADJUST | L_RAISE | L_LOWER)
-#define L_GRAPHITE_MAC (L_GRAPHITE | L_MAC)
+#define L_GALLIUM_MAC (L_GALLIUM | L_MAC)
 #define L_QWERTY_MAC (L_QWERTY | L_MAC)
 
 char layer_state_str[24];
@@ -26,11 +26,11 @@ const char *read_layer_state(void) {
   case L_QWERTY_MAC:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: qwerty+mac");
     break;
-  case L_GRAPHITE:
-    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: graphite");
+  case L_GALLIUM:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: gallium");
     break;
-  case L_GRAPHITE_MAC:
-    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: graphite+mac");
+  case L_GALLIUM_MAC:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: gallium+mac");
     break;
   case L_RAISE:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Raise");
