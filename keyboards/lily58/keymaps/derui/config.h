@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define QUICK_TAP_TERM 0
 #define TAPPING_TERM 180
-#define PERMISSIVE_HOLD
+#define HOLD_ON_OTHER_KEY_PRESS
 #define SPLIT_OLED_ENABLE
 
 #undef RGBLED_NUM
