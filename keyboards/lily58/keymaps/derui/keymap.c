@@ -12,7 +12,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   KC_TAB,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   M_CTLTB,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  M_LSFTESC,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_RSFT,
+  M_LSFTESC,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MO(_RAISE),
                         KC_LGUI, KC_LALT, M_LOWER, M_SPACE, M_ENTER, M_RAISE, KC_RGUI, KC_RALT
 ),
  [_QWERTY] = LAYOUT(
@@ -35,22 +35,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______,                   _______, _______, _______,_______, _______, _______,
   _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-                             KC_LALT, KC_LGUI, _______, _______, _______,  _______, KC_RALT, KC_RGUI
+                             KC_LALT, KC_LGUI, _______, _______, _______, _______, KC_RALT, KC_RGUI
 ),
 [_LOWER] = LAYOUT(
-  _______,  _______, _______, _______, _______, _______,                     _______, _______, _______,_______, _______, KC_INS,
-  _______,  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                   _______, _______, _______,_______, _______, _______,
-  _______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, KC_LPRN,                   _______, _______, _______,_______, _______, _______,
-  _______, KC_LBRC, KC_RBRC, KC_LCBR, KC_RCBR, KC_RPRN, _______, _______, _______, _______, _______, _______, _______, _______,
-                             _______, _______, _______, _______, _______,  _______, _______, _______
+  _______, _______, _______, _______, _______, _______,                   _______, _______, _______,_______, _______, KC_INS,
+  _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                     _______, _______, _______,_______, _______, _______,
+  _______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, _______,                   _______, _______, _______,_______, _______, _______,
+  _______, KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______, _______, _______, _______, _______, _______, _______, _______,
+                             _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
 [_RAISE] = LAYOUT(
-  _______, _______, _______, _______, _______, _______,                     _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______,                     KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_TILD,
-  _______, _______, _______, _______, _______, _______,                     KC_MINS, KC_LGUI, KC_LALT, KC_LSFT, KC_LCTL, KC_PIPE,
-  _______, _______, _______, _______, _______, _______,  _______, _______,   KC_GRV,  KC_EQL, KC_UNDS, KC_PLUS, KC_BSLS, _______,
-                             _______, _______, _______,  _______, _______,  _______, _______, _______
+  _______, _______, _______, _______, _______, _______,                    _______, _______, _______, _______, _______, _______,
+  _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                    KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______,
+  _______, KC_SLSH, KC_LCBR, KC_LABK, KC_LBRC, KC_LPRN,                    _______, KC_MINS, KC_EQL,  KC_GRV,  KC_PIPE, _______,
+  _______, _______, KC_RCBR, KC_RABK, KC_RBRC, KC_RPRN,  _______, _______, _______, KC_UNDS, KC_PLUS, KC_TILD, KC_BSLS, _______,
+                             _______, _______, _______,  _______, _______, _______, _______, _______
 ),
   [_ADJUST] = LAYOUT(
   QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, M_QWERTY, M_GALLIUM , TG(_MAC),
