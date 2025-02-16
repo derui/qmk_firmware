@@ -31,16 +31,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                         _______, _______, _______, _______, _______, _______, _______, _______
 ),
 [_MAC] = LAYOUT(
-  _______, _______, _______, _______, _______, _______,                   _______, _______, _______,_______, _______, _______,
-  _______, _______, _______, _______, _______, _______,                   _______, _______, _______,_______, _______, _______,
+  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                              KC_LALT, KC_LGUI, _______, _______, _______, _______, KC_RALT, KC_RGUI
 ),
 [_LOWER] = LAYOUT(
-  _______, _______, _______, _______, _______, _______,                   _______, _______, _______,_______, _______, KC_INS,
-  _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                     _______, _______, _______,_______, _______, _______,
-  _______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, _______,                   _______, _______, _______,_______, _______, _______,
+  _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, KC_INS,
+  _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                     _______, _______, _______, _______, _______, _______,
+  _______, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, _______,                   _______, _______, _______, _______, _______, _______,
   _______, KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______, _______, _______, _______, _______, _______, _______, _______,
                              _______, _______, _______, _______, _______, _______, _______, _______
 ),
@@ -48,15 +48,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_RAISE] = LAYOUT(
   _______, _______, _______, _______, _______, _______,                    _______, _______, _______, _______, _______, _______,
   _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                    KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______,
-  _______, KC_SLSH, KC_LCBR, KC_LABK, KC_LBRC, KC_LPRN,                    _______, KC_MINS, KC_EQL,  KC_GRV,  KC_PIPE, _______,
-  _______, _______, KC_RCBR, KC_RABK, KC_RBRC, KC_RPRN,  _______, _______, _______, KC_UNDS, KC_PLUS, KC_TILD, KC_BSLS, _______,
+  _______, KC_LBRC, KC_LABK, KC_SLSH, KC_RABK, KC_RBRC,                    _______, KC_MINS, KC_EQL,  KC_GRV,  KC_PIPE, _______,
+  _______, _______, KC_LCBR, _______, KC_RCBR, _______,  _______, _______, _______, KC_UNDS, KC_PLUS, KC_TILD, KC_BSLS, _______,
                              _______, _______, _______,  _______, _______, _______, _______, _______
 ),
   [_ADJUST] = LAYOUT(
   QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, M_QWERTY, M_GALLIUM , TG(_MAC),
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_F1,   KC_F2,   KC_F3, KC_F4,    KC_F5,   KC_DEL,
-  XXXXXXX, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, XXXXXXX,                   KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, XXXXXXX, KC_F11,
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_F6,   KC_F7,   KC_F8, KC_F9,    KC_F10,  KC_F12,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   KC_F1,   KC_F2,   KC_UP,   KC_F3,    KC_F4,   KC_DEL,
+  XXXXXXX, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI, XXXXXXX,                   KC_F5,   KC_LEFT, KC_DOWN, KC_RIGHT, XXXXXXX, KC_F11,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_F6,   KC_F7,   KC_F8,   KC_F9,    KC_F10,  KC_F12,
                              _______, _______, _______, _______, _______,  _______, _______, _______
   )
 };
