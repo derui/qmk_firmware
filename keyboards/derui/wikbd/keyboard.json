@@ -1,4 +1,5 @@
 {
+    "$schema": "https://github.com/qmk/qmk_firmware/blob/master/data/schemas/keyboard.jsonschema",
   "manufacturer": "derui",
   "keyboard_name": "derui/wikbd",
   "maintainer": "derui",
@@ -24,6 +25,11 @@
         "rows": ["D4", "C6", "D7", "E6"]
       }
     }
+  },
+  "caps_word":  {
+    "enabled": true,
+    "both_shifts_turns_on": true,
+    "invert_on_shift": true
   },
   "processor": "atmega32u4",
   "url": "",
