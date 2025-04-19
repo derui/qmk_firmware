@@ -108,6 +108,7 @@ static der_seq_def der_seq_defs[] = {
     NS(DOT, "ma"),
     NS(SLSH, "ti"),
 
+  // shift
     NSS(W, "me"),
     NSS(E, "-"),
     NSS(R, "he"),
@@ -123,8 +124,7 @@ static der_seq_def der_seq_defs[] = {
     NSS(J, "yo"),
     NSS(K, "tu"),
     NSS(L, "sa"),
-    NS(SCLN, "ke"),
-
+    NSS(SCLN, "ke"),
     NSS(Z, "hi"),
     NSS(X, "fu"),
 
@@ -132,6 +132,8 @@ static der_seq_def der_seq_defs[] = {
     NSS(COMM, "ya"),
     NSS(DOT, "mu"),
     NSS(SLSH, "nu"),
+
+  // turbids
     ND(W, J, "zu"),
     ND(R, J, "be"),
     ND(U, F, "go"),
@@ -157,7 +159,7 @@ static der_seq_def der_seq_defs[] = {
     ND(G, M, "po"),
     ND(Z, M, "pi"),
     ND(X, M, "pu"),
-    ND(V, M, "po"),
+    ND(V, M, "pa"),
 
     // special keys
     NS(ENTER, "\n"),
