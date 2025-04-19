@@ -7,17 +7,13 @@
 
 #define MODS_SHIFT_MASK  (MOD_BIT(KC_LSFT)|MOD_BIT(KC_RSFT))
 
+
 // my configurations
 void tapped_kc_raise() {
   SEND_STRING(SS_TAP(X_INT4));
   SEND_STRING(SS_TAP(X_LNG1));
 
-  if (ng_is_enabled()) {
-    SEND_STRING(SS_TAP(X_SCLN));
-  }
-  
-  ng_enable();
-
+  layer_on(_JAPANESE);
 }
 
 void interrupted_kc_raise() {
@@ -33,7 +29,7 @@ void release_holding_kc_raise() {
 void tapped_kc_lower() {
   SEND_STRING(SS_TAP(X_INT5));
   SEND_STRING(SS_TAP(X_LNG2));
-  ng_disable();
+  layer_off(_JAPANESE);
 }
 
 void interrupted_kc_lower() {
@@ -59,30 +55,18 @@ void release_holding_m_ctltb() {
 }
 
 void tapped_m_enter() {
-  if (ng_is_enabled()) {
-    return;
-  }
   tap_code(KC_ENTER);
 }
 
 void tapped_m_space() {
-  if (ng_is_enabled()) {
-    return;
-  }
   tap_code(KC_SPACE);
 }
 
 void interrupted_m_space() {
-  if (ng_is_enabled()) {
-    return;
-  }
   register_code(KC_LSFT);
 }
 
 void release_holding_m_space() {
-  if (ng_is_enabled()) {
-    return;
-  }
   unregister_code(KC_LSFT);
 }
 
@@ -113,13 +97,11 @@ void release_holding_m_rsftesc() {
 void tapped_m_qwerty() {
   layer_on(_QWERTY);
   layer_off(_GALLIUM);
-  ng_set_qwerty_mode();
 }
 
 void tapped_m_gallium() {
   layer_on(_GALLIUM);
   layer_off(_QWERTY);
-  ng_set_gallium_mode();
 }
 
 custom_key_t m_ctltb = {

@@ -5,6 +5,7 @@
 #include "custom_keys.h"
 #include "ng_layer.h"
 #include "layer.h"
+#include "kana.h"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -13,7 +14,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   M_CTLTB,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   M_LSFTESC,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MO(_RAISE),
-                        KC_LGUI, KC_LALT, M_LOWER, M_SPACE, M_ENTER, M_RAISE, KC_RGUI, KC_RALT
+                              KC_LGUI, KC_LALT, M_LOWER, M_SPACE, M_ENTER, M_RAISE, KC_RGUI, KC_RALT
 ),
  [_QWERTY] = LAYOUT(
   _______, KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV,
@@ -29,6 +30,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, KC_N,   KC_R,    KC_T,    KC_S,    KC_G,                     KC_Y,    KC_H,    KC_A,    KC_E,    KC_I,    KC_SLSH,
   _______, KC_X,   KC_Q,    KC_M,    KC_W,    KC_Z, KC_LBRC,  KC_RBRC,  KC_K,    KC_P,    KC_QUOT, KC_SCLN, KC_DOT,  _______,
                         _______, _______, _______, _______, _______, _______, _______, _______
+),
+ [_JAPANESE] = LAYOUT(
+  _______, KC_1,  KC_2,   KC_3,   KC_4,   KC_5,                    KC_6,   KC_7,   KC_8,   KC_9,   KC_0,   KC_GRV,
+  _______, N_Q,   N_W,    N_E,    N_R,    N_T,                     N_Y,    N_U,    N_I,    N_O,    N_P,    _______,
+  _______, N_A,   N_S,    N_D,    N_F,    N_G,                     N_H,    N_J,    N_K,    N_L,    N_SCLN, _______,
+  _______, N_Z,   N_X,    N_C,    N_V,    N_B,  _______, _______,  N_N,    N_M,    N_COMM, N_DOT,  N_SLSH, _______,
+                      _______, _______, _______, N_SPACE, M_ENTER, _______, _______, _______
 ),
 [_MAC] = LAYOUT(
   _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
@@ -102,17 +110,13 @@ bool oled_task_user(void) {
 #endif // OLED_ENABLE
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  bool result = true;
-
   if (!process_record_derui(keycode, record)) {
     return false;
   }
 
-  /* かなは、他のレイヤーが有効ではないときにだけにしておく */
-  uint16_t current_layer = get_highest_layer(layer_state);
-  if (!has_anymod() && (current_layer == _QWERTY || current_layer == _MAC || current_layer == _GALLIUM) && ng_is_enabled()) {
-    result = process_record_ng(keycode, record);
+  if (!der_process_record_kana(keycode, record)) {
+    return false;
   }
 
-  return result;
+  return true;
 }

@@ -9,6 +9,7 @@ enum layer_number {
   _BASE = 0,
   _QWERTY,
   _GALLIUM,
+  _JAPANESE,
   _MAC,
   _LOWER,
   _RAISE,

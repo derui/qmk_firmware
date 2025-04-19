@@ -15,9 +15,8 @@ GRAVE_ESC_ENABLE = no
 SRC += ./layer_state_reader.c \
        ./logo_reader.c
 SRC += ./custom_key_handling.c
-#SRC += ./naginata.c
-SRC += ./generated.c
-# SRC += ./seq_map.c
+# SRC += ./generated.c
+SRC += ./kana.c
 SRC += ./custom_keys.c
 
         # ./lib/mode_icon_reader.c \

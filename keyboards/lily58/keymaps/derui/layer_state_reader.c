@@ -4,10 +4,11 @@
 #define L_BASE 1
 #define L_QWERTY (1 << 1)
 #define L_GALLIUM (1 << 2)
-#define L_MAC (1 << 3)
-#define L_LOWER ((1 << 4) | 1)
-#define L_RAISE ((1 << 5) | 1)
-#define L_ADJUST ((1 << 6) | 1)
+#define L_JAPANESE (1 << 3)
+#define L_MAC (1 << 4)
+#define L_LOWER ((1 << 5) | 1)
+#define L_RAISE ((1 << 6) | 1)
+#define L_ADJUST ((1 << 7) | 1)
 #define L_ADJUST_TRI (L_ADJUST | L_RAISE | L_LOWER)
 #define L_GALLIUM_MAC (L_GALLIUM | L_MAC)
 #define L_QWERTY_MAC (L_QWERTY | L_MAC)
@@ -22,6 +23,9 @@ const char *read_layer_state(void) {
     break;
   case L_QWERTY:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: qwerty");
+    break;
+  case L_JAPANESE:
+    snprintf(layer_state_str, sizeof(layer_state_str), "Layer: japanese");
     break;
   case L_QWERTY_MAC:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: qwerty+mac");
