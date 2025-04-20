@@ -188,7 +188,7 @@ static der_seq_def der_seq_defs[] = {
 
     ND(SLSH, E, "tyu"),
     ND(SLSH, D, "tyo"),
-    ND(SLSH, M, "tya"),
+    ND(SLSH, C, "tya"),
 
     ND(G, I, "nyu"),
     ND(G, K, "nyo"),
@@ -216,7 +216,7 @@ static der_seq_def der_seq_defs[] = {
 
     NT(SLSH, E, W, "dyu"),
     NT(SLSH, D, S, "dyo"),
-    NT(SLSH, M, X, "dya"),
+    NT(SLSH, C, X, "dya"),
 
     NT(Z, I, O, "byu"),
     NT(Z, K, L, "byo"),
