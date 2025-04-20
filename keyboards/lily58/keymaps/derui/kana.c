@@ -133,7 +133,7 @@ static der_seq_def der_seq_defs[] = {
     NSS(DOT, "mu"),
     NSS(SLSH, "nu"),
 
-  // turbids
+    // turbids
     ND(W, J, "zu"),
     ND(R, J, "be"),
     ND(U, F, "go"),
@@ -176,6 +176,56 @@ static der_seq_def der_seq_defs[] = {
     ND(T, U, "xyu"),
     ND(T, J, "xyo"),
     ND(T, COMM, "xya"),
+
+    // 拗音拡張
+    ND(A, I, "syu"),
+    ND(A, K, "syo"),
+    ND(A, COMM, "sya"),
+
+    ND(C, I, "kyu"),
+    ND(C, K, "kyo"),
+    ND(C, COMM, "kya"),
+
+    ND(SLSH, E, "tyu"),
+    ND(SLSH, D, "tyo"),
+    ND(SLSH, M, "tya"),
+
+    ND(G, I, "nyu"),
+    ND(G, K, "nyo"),
+    ND(G, COMM, "nya"),
+
+    ND(D, I, "myu"),
+    ND(D, K, "myo"),
+    ND(D, COMM, "mya"),
+
+    ND(Z, I, "hyu"),
+    ND(Z, K, "hyo"),
+    ND(Z, COMM, "hya"),
+
+    ND(X, I, "ryu"),
+    ND(X, K, "ryo"),
+    ND(X, COMM, "rya"),
+    
+    NT(A, I, O, "zyu"),
+    NT(A, K, E, "zyo"),
+    NT(A, COMM, DOT, "zya"),
+
+    NT(C, I, O, "gyu"),
+    NT(C, K, E, "gyo"),
+    NT(C, COMM, DOT, "gya"),
+
+    NT(SLSH, E, W, "dyu"),
+    NT(SLSH, D, S, "dyo"),
+    NT(SLSH, M, X, "dya"),
+
+    NT(Z, I, O, "byu"),
+    NT(Z, K, L, "byo"),
+    NT(Z, COMM, DOT, "bya"),
+
+    NT(Z, I, U, "pyu"),
+    NT(Z, K, J, "pyo"),
+    NT(Z, COMM, M, "pya"),
+
 };
 
 /// functions
