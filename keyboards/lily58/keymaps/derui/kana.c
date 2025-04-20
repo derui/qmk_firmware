@@ -207,11 +207,11 @@ static der_seq_def der_seq_defs[] = {
     ND(X, COMM, "rya"),
     
     NT(A, I, O, "zyu"),
-    NT(A, K, E, "zyo"),
+    NT(A, K, L, "zyo"),
     NT(A, COMM, DOT, "zya"),
 
     NT(C, I, O, "gyu"),
-    NT(C, K, E, "gyo"),
+    NT(C, K, L, "gyo"),
     NT(C, COMM, DOT, "gya"),
 
     NT(SLSH, E, W, "dyu"),
